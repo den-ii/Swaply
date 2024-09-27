@@ -7,7 +7,7 @@ const HistorySvg = ({ fill }: { fill: string }) => {
   const fillActive = fill === Colors.light.tabIconSelected; // Example: Full opacity if fill is defined, half opacity otherwise
 
   return (
-    <Svg width="21" height="24" viewBox="0 0 21 24" fill="none">
+    <Svg width="21" height="22" viewBox="0 0 21 24" fill="none">
       <G clip-path="url(#clip0_2367_3669)">
         <Path
           d="M20.426 1.10493V12.781H11.1337C9.92593 12.781 8.94862 13.7583 8.94862 14.97V24.0002H1.67442C1.0626 24.0002 0.569977 23.5036 0.569977 22.8958V1.10493C0.569977 0.497089 1.0626 0.000488281 1.67442 0.000488281H19.3256C19.9334 0.000488281 20.426 0.497089 20.426 1.10493Z"

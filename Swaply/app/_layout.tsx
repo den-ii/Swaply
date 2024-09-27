@@ -1,5 +1,4 @@
 import { SplashScreen, Stack } from "expo-router";
-
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -15,6 +14,7 @@ export default function RootLayout() {
     Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
+    P22Mackinac_Bold: require("../assets/fonts/Demo_Fonts/Fontspring-DEMO-P22Mackinac-Bold.otf"),
   });
 
   useEffect(() => {
