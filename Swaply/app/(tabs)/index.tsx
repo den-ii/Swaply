@@ -41,6 +41,7 @@ export default function Home() {
   const [sendIsCFA, setSendIsCFA] = useState(true);
   const [sendIsNGN, setSendIsNGN] = useState(false);
   const fee = 2;
+  const [sendRate, setSendRate] = useState(160);
   const sendInputRef = useRef<any | null>(null);
   const receiveInputRef = useRef<any | null>(null);
   const [modalActive, setModalActive] = useState(false);
@@ -48,9 +49,15 @@ export default function Home() {
   useEffect(() => {
     if (sendCountry === "CFA") {
       setSendIsCFA(true);
+      let rate = CountryRate.CFA.NGN;
+      setSendRate(rate);
+      setReceiveValue((Number(sendValue) * rate).toFixed(2));
       setSendIsNGN(false);
     } else {
       setSendIsCFA(false);
+      let rate = CountryRate.NGN.CFA;
+      setSendRate(rate);
+      setReceiveValue((Number(sendValue) * rate).toFixed(2));
       setSendIsNGN(true);
     }
   }, [sendCountry]);
@@ -215,7 +222,7 @@ export default function Home() {
               </View>
               <View style={{ flexDirection: "row", gap: 6, marginTop: 17.75 }}>
                 <FontText fontSize={14} fontWeight={600}>
-                  1 CFA = 160 NGN
+                  {`1 CFA = ${sendRate}`}
                 </FontText>
                 <FontText
                   fontSize={14}
