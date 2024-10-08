@@ -8,6 +8,7 @@ import {
   StatusBar,
   Modal,
 } from "react-native";
+import { useRouter } from "expo-router";
 import Close from "@/assets/images/close.svg";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
@@ -45,6 +46,7 @@ export default function Home() {
   const sendInputRef = useRef<any | null>(null);
   const receiveInputRef = useRef<any | null>(null);
   const [modalActive, setModalActive] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (sendCountry === "CFA") {
@@ -83,6 +85,7 @@ export default function Home() {
   };
 
   const handleConversion = (value: string, sending: boolean) => {
+    console.log(value);
     const rate = CountryRate[sendCountry as keyof typeof CountryRate];
     const conversionRate = rate[receiveCountry as keyof typeof rate];
     if (sending) {
@@ -286,6 +289,8 @@ export default function Home() {
                   inputMode="decimal"
                   keyboardType="number-pad"
                   maxLength={15}
+                  autoCorrect={false}
+                  autoComplete="off"
                   returnKeyType="done"
                   onChangeText={(value) => handleConversion(value, false)}
                   value={receiveValue}
@@ -319,7 +324,10 @@ export default function Home() {
             </View>
           </Pressable>
           <View style={{ marginTop: 16 }}>
-            <Button text={"Continue"} />
+            <Button
+              text={"Continue"}
+              action={() => router.push("/(home)/choose_receipient")}
+            />
           </View>
         </View>
       </View>
