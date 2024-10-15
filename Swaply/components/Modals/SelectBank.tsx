@@ -2,15 +2,40 @@ import { useState } from "react";
 import { Colors } from "../../constants/Colors";
 import FontText from "../FontText";
 import Close from "@/assets/images/close.svg";
-import { Modal, Pressable, View, StyleSheet } from "react-native";
+import {
+  Modal,
+  Pressable,
+  View,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  // Image,
+} from "react-native";
+import { BankSVG } from "../BankSVG";
+import bankList from "@/constants/bankList";
+import { Image } from "expo-image";
+import { recepientDetails } from "@/app/(tabs)/(home)/receipient_details";
 
 export default function SelectBank({
   modalActive,
   setModalActive,
+  handleForm,
 }: {
   modalActive: boolean;
   setModalActive: Function;
+  handleForm: (key: keyof recepientDetails, value: string) => void;
 }) {
+  const [banks, setBanks] = useState(bankList);
+
+  const handleSearchForBank = (search: string) => {
+    setBanks(bankList.filter((bank) => bank.name.includes(search)));
+  };
+
+  const handleSetBank = (bankName: string) => {
+    handleForm("bank", bankName);
+    setModalActive(false);
+  };
+
   return (
     <Modal visible={modalActive} transparent={true} animationType="fade">
       <View style={styles.overlay}>
@@ -45,6 +70,47 @@ export default function SelectBank({
                 Select Bank
               </FontText>
             </View>
+            <View style={{ paddingTop: 16, paddingBottom: 10 }}>
+              <TextInput
+                placeholder="Search for bank"
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 12,
+                  backgroundColor: "#ECEFF1",
+                  borderRadius: 100,
+                  fontSize: 14,
+                  fontFamily: "Inter_500Medium",
+                  color: Colors.light.textDefault,
+                }}
+                onChangeText={handleSearchForBank}
+                cursorColor={Colors.light.textDefault}
+                selectionColor={Colors.light.textDefault}
+                placeholderTextColor={Colors.light.textDisabled}
+              />
+            </View>
+            <ScrollView style={{ marginTop: 16 }}>
+              <View style={{ backgroundColor: "white", borderRadius: 20 }}>
+                {banks.map((bank) => (
+                  <Pressable
+                    onPress={() => handleSetBank(bank.name)}
+                    key={bank.name}
+                  >
+                    <View
+                      style={{
+                        padding: 16,
+                        flexDirection: "row",
+                        gap: 16,
+                        alignItems: "center",
+                      }}
+                    >
+                      <BankSVG bank={bank.name} />
+
+                      <FontText>{bank.name}</FontText>
+                    </View>
+                  </Pressable>
+                ))}
+              </View>
+            </ScrollView>
           </View>
         </View>
       </View>
@@ -78,5 +144,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
+  },
+  bankLogo: {
+    backgroundColor: "white",
+    shadowColor: "#313131",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
   },
 });

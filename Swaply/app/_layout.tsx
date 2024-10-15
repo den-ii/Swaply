@@ -14,7 +14,7 @@ export default function RootLayout() {
     Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
-    P22Mackinac_Bold: require("../assets/fonts/Demo_Fonts/Fontspring-DEMO-P22Mackinac-Bold.otf"),
+    P22Mackinac_Bold: require("../assets/fonts/P22-Mackinac/P22Mackinac-Bold_23.otf"),
   });
 
   useEffect(() => {

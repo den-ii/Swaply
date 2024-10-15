@@ -1,4 +1,4 @@
-import FontText from "@/components/FontText";
+import { useEffect, useCallback, useRef, useState } from "react";
 import {
   Text,
   View,
@@ -8,11 +8,12 @@ import {
   StatusBar,
   Modal,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import Close from "@/assets/images/close.svg";
 import { Colors } from "@/constants/Colors";
+import FontText from "@/components/FontText";
+
 import { UI } from "@/constants/UI";
-import { useEffect, useRef, useState } from "react";
 import { GetCountrySVG } from "@/components/GetCountrySVG";
 import Button from "@/components/Button";
 import ArrowDown from "@/assets/images/arrow-down.svg";
@@ -21,8 +22,9 @@ import Calc from "@/assets/images/calc.svg";
 import CFA_flag from "@/assets/images/CFA_32.svg";
 import NGN_flag from "@/assets/images/NGN_32.svg";
 import Selected from "@/assets/images/selected.svg";
+import { transferStore, transferStoreDefaultValue } from "@/store";
 
-const CountryRate = {
+export const CountryRate = {
   CFA: {
     NGN: 160,
   },
@@ -31,36 +33,54 @@ const CountryRate = {
   },
 };
 
+export const CountryFee = {
+  CFA: {
+    NGN: 2,
+  },
+  NGN: {
+    CFA: 100,
+  },
+};
+
 export default function Home() {
   const [sendCountry, setSendCountry] = useState("CFA");
   const [sendValue, setSendValue] = useState("");
   const [receiveValue, setReceiveValue] = useState("");
   const [receiveCountry, setReceiveCountry] = useState("NGN");
-  const [totalAmount, setTotalAmount] = useState(0.0);
+  const [totalAmount, setTotalAmount] = useState("0.00");
   const [sendInputActive, setSendInputActive] = useState(false);
   const [receiveInputActive, setReceiveInputActive] = useState(false);
   const [sendIsCFA, setSendIsCFA] = useState(true);
   const [sendIsNGN, setSendIsNGN] = useState(false);
-  const fee = 2;
+  const [fee, setFee] = useState(CountryFee.CFA.NGN);
   const [sendRate, setSendRate] = useState(160);
   const sendInputRef = useRef<any | null>(null);
   const receiveInputRef = useRef<any | null>(null);
   const [modalActive, setModalActive] = useState(false);
   const router = useRouter();
 
+  useFocusEffect(
+    useCallback(() => {
+      setSendValue("");
+      setReceiveValue("");
+      setTotalAmount("0.00");
+      transferStore.update((store) => transferStoreDefaultValue);
+    }, [])
+  );
+
   useEffect(() => {
     if (sendCountry === "CFA") {
       setSendIsCFA(true);
-      let rate = CountryRate.CFA.NGN;
-      setSendRate(rate);
-      setReceiveValue((Number(sendValue) * rate).toFixed(2));
       setSendIsNGN(false);
+      setSendRate(CountryRate.CFA.NGN);
+      setFee(CountryFee.CFA.NGN);
+      handleConversion(sendValue, true);
     } else {
       setSendIsCFA(false);
-      let rate = CountryRate.NGN.CFA;
-      setSendRate(rate);
-      setReceiveValue((Number(sendValue) * rate).toFixed(2));
       setSendIsNGN(true);
+      setSendRate(CountryRate.NGN.CFA);
+      setFee(CountryFee.NGN.CFA);
+      handleConversion(sendValue, true);
     }
   }, [sendCountry]);
 
@@ -80,23 +100,57 @@ export default function Home() {
     }
   };
 
-  const formatNumber = (num: string) => {
-    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Regular expression to add commas
+  const handleContinue = () => {
+    transferStore.update((state) => {
+      state.cfaAmount = sendCountry === "CFA" ? sendValue : receiveValue;
+      state.ngnAmount = sendCountry === "NGN" ? sendValue : receiveValue;
+      state.sendingIsCFA = sendCountry === "CFA";
+      state.rate = sendRate;
+      state.transactionFee = fee;
+    });
+    router.push("/(home)/choose_receipient");
+  };
+
+  const formatNumber = (num: number | string): string => {
+    const decimal = num.toString().split(".")[1];
+    const numberStr = typeof num === "number" ? num.toString() : num;
+    return numberStr
+      .split(".")[0]
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      .concat(decimal ? "." + decimal : "");
   };
 
   const handleConversion = (value: string, sending: boolean) => {
-    console.log(value);
+    // if (value.trim() === "") {
+    //   console.error("Empty input");
+    //   return;
+    // }
+
+    const cleanedValue = value.replace(/,/g, ""); // Remove commas from the string
+    const numericValue = Number(cleanedValue);
+
+    if (isNaN(numericValue)) {
+      console.error("Invalid number input");
+      return;
+    }
+
     const rate = CountryRate[sendCountry as keyof typeof CountryRate];
     const conversionRate = rate[receiveCountry as keyof typeof rate];
+
+    const formattedSendValue = formatNumber(numericValue);
+    const formattedReceiveValue = formatNumber(
+      (numericValue * conversionRate).toFixed(2)
+    );
+
     if (sending) {
-      setSendValue(value);
-      setReceiveValue((Number(value) * conversionRate).toFixed(2));
+      setSendValue(formattedSendValue);
+      setReceiveValue(formattedReceiveValue);
     } else {
-      setReceiveValue(value);
-      setSendValue((Number(value) * conversionRate).toFixed(2));
+      setReceiveValue(formatNumber(numericValue));
+      setSendValue(formatNumber(numericValue / conversionRate));
     }
-    // const totalAmount = sending
-    setTotalAmount(Number(value) + fee);
+
+    setTotalAmount(formatNumber(numericValue + fee));
   };
 
   const handleRecieveInputActive = () => {
@@ -158,7 +212,7 @@ export default function Home() {
                     fontSize: 24,
                     fontFamily: "P22Mackinac_Bold",
                     color: Colors.light.textDefault,
-                    width: 180,
+                    width: 220,
                   }}
                   placeholder="0.00"
                   cursorColor={Colors.light.textDefault}
@@ -212,7 +266,7 @@ export default function Home() {
                   fontWeight={600}
                   fontSize={14}
                 >
-                  2 CFA
+                  {`${fee} ${sendCountry === "CFA" ? "CFA" : "NGN"} `}
                 </FontText>
                 <FontText
                   style={{ marginTop: 32 }}
@@ -225,7 +279,7 @@ export default function Home() {
               </View>
               <View style={{ flexDirection: "row", gap: 6, marginTop: 17.75 }}>
                 <FontText fontSize={14} fontWeight={600}>
-                  {`1 CFA = ${sendRate}`}
+                  {`1 ${sendCountry} = ${sendRate}`}
                 </FontText>
                 <FontText
                   fontSize={14}
@@ -241,7 +295,11 @@ export default function Home() {
                   fontWeight={600}
                   style={{ maxWidth: 200 }}
                 >
-                  {`${totalAmount.toFixed(2).toLocaleString()} ${sendCountry}`}
+                  {`${formatNumber(
+                    Number(totalAmount.replace(/,/g, ""))
+                      .toFixed(2)
+                      .toLocaleString()
+                  )} ${sendCountry}`}
                 </FontText>
                 <FontText
                   fontSize={14}
@@ -274,12 +332,13 @@ export default function Home() {
                 >
                   RECEIVER GETS
                 </FontText>
+
                 <TextInput
                   style={{
                     fontSize: 24,
                     fontFamily: "P22Mackinac_Bold",
                     color: Colors.light.textDefault,
-                    width: 180,
+                    width: 220,
                   }}
                   ref={receiveInputRef}
                   placeholder="0.00"
@@ -287,7 +346,7 @@ export default function Home() {
                   selectionColor={Colors.light.textDefault}
                   placeholderTextColor={Colors.light.textDisabled}
                   inputMode="decimal"
-                  keyboardType="number-pad"
+                  keyboardType="decimal-pad"
                   maxLength={15}
                   autoCorrect={false}
                   autoComplete="off"
@@ -324,10 +383,7 @@ export default function Home() {
             </View>
           </Pressable>
           <View style={{ marginTop: 16 }}>
-            <Button
-              text={"Continue"}
-              action={() => router.push("/(home)/choose_receipient")}
-            />
+            <Button text={"Continue"} action={handleContinue} />
           </View>
         </View>
       </View>

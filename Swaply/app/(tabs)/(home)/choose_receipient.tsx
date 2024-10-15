@@ -5,9 +5,13 @@ import { Pressable, TextInput, View } from "react-native";
 import Add from "@/assets/images/add.svg";
 import ChevronRight from "@/assets/images/chevron-right.svg";
 import { useRouter } from "expo-router";
+import { useState } from "react";
+import { transferStore } from "@/store";
 
 export default function ChooseRecipient() {
   const router = useRouter();
+  const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
+
   return (
     <View
       style={{
@@ -18,7 +22,9 @@ export default function ChooseRecipient() {
     >
       <View style={{ paddingBottom: 16 }}>
         <FontText fontSize={34} fontWeight={700} fontFamily="P22">
-          Send to a bank account
+          {sendingIsCFA
+            ? "Send to a bank account"
+            : "Send to a mobile money account"}
         </FontText>
       </View>
       <View>

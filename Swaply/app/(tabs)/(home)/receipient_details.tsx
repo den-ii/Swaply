@@ -15,19 +15,42 @@ import { useRouter } from "expo-router";
 import Button from "@/components/Button";
 import { useState } from "react";
 import SelectBank from "@/components/Modals/SelectBank";
+import Sending from "@/components/Modals/Sending";
+import { transferStore } from "@/store";
+
+export interface recepientDetails {
+  bank: string;
+  accountNumber: string;
+  emailAddress: string;
+  narration: string;
+}
 
 export default function RecipientDetails() {
   const router = useRouter();
 
   const [selectBankModal, setSelectBankModal] = useState(false);
+  const [sendingModal, setSendingModal] = useState(false);
+
   const [checked, setChecked] = useState(false);
 
   const [form, setForm] = useState({
-    bankName: "",
-    accountnumber: "",
+    bank: "",
+    accountNumber: "",
     emailAddress: "",
     narration: "",
+    accountName: "",
   });
+
+  const handleForm = (key: keyof recepientDetails, value: string) => {
+    setForm((form) => ({ ...form, [key]: value }));
+  };
+
+  const handleContinue = () => {
+    transferStore.update((store) => {
+      store.recepientNGN = form;
+    });
+    setSendingModal(true);
+  };
 
   return (
     <View
@@ -47,10 +70,8 @@ export default function RecipientDetails() {
           <View style={styles.inputContainer}>
             <FontText>Select Bank</FontText>
             <View style={styles.input}>
-              {!form.bankName && (
-                <FontText color="#AEB7BF">Access Bank</FontText>
-              )}
-              {form.bankName && <FontText>{form.bankName}</FontText>}
+              {!form.bank && <FontText color="#AEB7BF">Access Bank</FontText>}
+              {form.bank && <FontText>{form.bank}</FontText>}
               <ChevronDown fill="#AEB7BF" />
             </View>
           </View>
@@ -63,12 +84,16 @@ export default function RecipientDetails() {
               maxLength={13}
               placeholder="0732934459"
               placeholderTextColor="#AEB7BF"
+              inputMode="numeric"
+              keyboardType="number-pad"
+              autoCorrect={false}
+              returnKeyType="done"
               onChangeText={(value) =>
                 setForm((form) => ({ ...form, accountNumber: value }))
               }
-              value={form.accountnumber}
+              value={form.accountNumber}
             />
-            {form.accountnumber && (
+            {form.accountNumber && (
               <Pressable
                 onPress={() =>
                   setForm((form) => ({ ...form, accountNumber: "" }))
@@ -87,6 +112,9 @@ export default function RecipientDetails() {
             <TextInput
               style={{ width: 250 }}
               placeholder="johndoe@gmail.com"
+              inputMode="email"
+              autoCapitalize="none"
+              autoCorrect={false}
               placeholderTextColor="#AEB7BF"
               onChangeText={(value) =>
                 setForm((form) => ({ ...form, emailAddress: value }))
@@ -160,16 +188,15 @@ export default function RecipientDetails() {
           </View>
         </View>
         <View style={{ marginTop: 16 }}>
-          <Button
-            text={"Continue"}
-            action={() => router.push("/(home)/choose_receipient")}
-          />
+          <Button text={"Continue"} action={handleContinue} />
         </View>
       </ScrollView>
       <SelectBank
         modalActive={selectBankModal}
         setModalActive={setSelectBankModal}
+        handleForm={handleForm}
       />
+      <Sending modalActive={sendingModal} setModalActive={setSendingModal} />
     </View>
   );
 }
