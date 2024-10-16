@@ -1,6 +1,4 @@
 import FontText from "@/components/FontText";
-import { Colors } from "@/constants/Colors";
-import { UI } from "@/constants/UI";
 import {
   Pressable,
   ScrollView,
@@ -10,17 +8,19 @@ import {
 } from "react-native";
 import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
-import Checkbox from "@/assets/images/checkbox.svg";
-import { useRouter } from "expo-router";
-import Button from "@/components/Button";
-import { useState } from "react";
-import SelectBank from "@/components/Modals/SelectBank";
-import Sending from "@/components/Modals/Sending";
-import { transferStore } from "@/store";
+import { recepientDetailsNGN } from "@/app/(tabs)/(home)/receipient_details";
 
-export default function NGNRecepientDetails({ form, setForm }) {
+export default function NGNRecepientDetails({
+  form,
+  handleForm,
+  setSelectBankModal,
+}: {
+  form: recepientDetailsNGN;
+  handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
+  setSelectBankModal: Function;
+}) {
   return (
-    <ScrollView style={{ marginTop: 16 }}>
+    <ScrollView>
       <Pressable onPress={() => setSelectBankModal(true)}>
         <View style={styles.inputContainer}>
           <FontText>Select Bank</FontText>
@@ -43,17 +43,11 @@ export default function NGNRecepientDetails({ form, setForm }) {
             keyboardType="number-pad"
             autoCorrect={false}
             returnKeyType="done"
-            onChangeText={(value) =>
-              setForm((form) => ({ ...form, accountNumber: value }))
-            }
+            onChangeText={(value) => handleForm("accountNumber", value)}
             value={form.accountNumber}
           />
           {form.accountNumber && (
-            <Pressable
-              onPress={() =>
-                setForm((form) => ({ ...form, accountNumber: "" }))
-              }
-            >
+            <Pressable onPress={() => handleForm("accountNumber", "")}>
               <View style={styles.cancel}>
                 <Close fill="white" width={12} />
               </View>
@@ -67,19 +61,16 @@ export default function NGNRecepientDetails({ form, setForm }) {
           <TextInput
             style={{ width: 250 }}
             placeholder="johndoe@gmail.com"
+            returnKeyType="done"
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
             placeholderTextColor="#AEB7BF"
-            onChangeText={(value) =>
-              setForm((form) => ({ ...form, emailAddress: value }))
-            }
+            onChangeText={(value) => handleForm("emailAddress", value)}
             value={form.emailAddress}
           />
           {form.emailAddress && (
-            <Pressable
-              onPress={() => setForm((form) => ({ ...form, emailAddress: "" }))}
-            >
+            <Pressable onPress={() => handleForm("emailAddress", "")}>
               <View style={styles.cancel}>
                 <Close fill="white" width={12} />
               </View>
@@ -94,15 +85,11 @@ export default function NGNRecepientDetails({ form, setForm }) {
             style={{ width: 260 }}
             placeholderTextColor="#AEB7BF"
             placeholder="Sent with love"
-            onChangeText={(value) =>
-              setForm((form) => ({ ...form, narration: value }))
-            }
+            onChangeText={(value) => handleForm("narration", value)}
             value={form.narration}
           />
           {form.narration && (
-            <Pressable
-              onPress={() => setForm((form) => ({ ...form, narration: "" }))}
-            >
+            <Pressable onPress={() => handleForm("narration", "")}>
               <View style={styles.cancel}>
                 <Close fill="white" width={12} />
               </View>
@@ -110,44 +97,11 @@ export default function NGNRecepientDetails({ form, setForm }) {
           )}
         </View>
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          borderRadius: 16,
-          padding: 16,
-          gap: 13,
-          backgroundColor: "#FFF2E8",
-          marginTop: 16,
-        }}
-      >
-        <Pressable onPress={() => setChecked((checked) => !checked)}>
-          <View
-            style={{
-              width: 16,
-              height: 16,
-              backgroundColor: "white",
-              borderRadius: 4,
-            }}
-          >
-            {checked && <Checkbox fill="#FE6C02" />}
-          </View>
-        </Pressable>
-        <View style={{ flex: 1 }}>
-          <FontText fontSize={12}>
-            By continuing with this payment you’re confirming that the details
-            you’re providing are correct.
-          </FontText>
-        </View>
-      </View>
-      <View style={{ marginTop: 16 }}>
-        <Button text={"Continue"} action={handleContinue} />
-      </View>
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   inputContainer: {
     gap: 8,
     paddingBottom: 16,

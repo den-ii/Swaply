@@ -16,7 +16,7 @@ interface TransferStore {
   recepientCFA?: {
     momoNumber: string;
     fullName: string;
-    momoOperation: string;
+    momoOperator: string;
   } | null;
 }
 export const transferStoreDefaultValue = {

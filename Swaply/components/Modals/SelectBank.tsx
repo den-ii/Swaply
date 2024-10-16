@@ -14,7 +14,7 @@ import {
 import { BankSVG } from "../BankSVG";
 import bankList from "@/constants/bankList";
 import { Image } from "expo-image";
-import { recepientDetails } from "@/app/(tabs)/(home)/receipient_details";
+import { recepientDetailsNGN } from "@/app/(tabs)/(home)/receipient_details";
 
 export default function SelectBank({
   modalActive,
@@ -23,7 +23,7 @@ export default function SelectBank({
 }: {
   modalActive: boolean;
   setModalActive: Function;
-  handleForm: (key: keyof recepientDetails, value: string) => void;
+  handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
 }) {
   const [banks, setBanks] = useState(bankList);
 

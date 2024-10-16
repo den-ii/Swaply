@@ -13,6 +13,10 @@ export default function HomeLayout() {
         name="receipient_details"
         options={{ header: () => <NavBack /> }}
       />
+      <Stack.Screen
+        name="sent"
+        options={{ headerShown: false, presentation: "fullScreenModal" }}
+      />
     </Stack>
   );
 }

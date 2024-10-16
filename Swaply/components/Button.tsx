@@ -31,7 +31,11 @@ const Button = ({
           justifyContent: "center",
         }}
       >
-        <FontText fontWeight={600} color="white" fontSize={16}>
+        <FontText
+          fontWeight={600}
+          color={textColor ? textColor : "white"}
+          fontSize={16}
+        >
           {text}
         </FontText>
       </View>

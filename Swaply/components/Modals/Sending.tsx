@@ -4,12 +4,43 @@ import FontText from "../FontText";
 import Close from "@/assets/images/close.svg";
 import { Modal, Pressable, View, StyleSheet } from "react-native";
 import { transferStore } from "@/store";
+import { useRouter } from "expo-router";
 import CFA from "@/assets/images/CFA_32.svg";
 import NGN from "@/assets/images/NGN_32.svg";
 import BlueLogo from "@/assets/images/blue_logo.svg";
 import RightDots from "@/assets/images/right-dots.svg";
 import LeftDots from "@/assets/images/left-dots.svg";
 import Button from "../Button";
+
+type InfoTuple = [string, string | number | undefined | string[]][] | [];
+
+function Description({ k, v }: { k: string; v: any }) {
+  const isTotalAmount = k === "Total amount";
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+      }}
+    >
+      <FontText
+        fontSize={!isTotalAmount ? 12 : 14}
+        fontWeight={!isTotalAmount ? 400 : 600}
+        style={{
+          color: !isTotalAmount ? Colors.light.neutral : Colors.light.text,
+        }}
+      >
+        {k}
+      </FontText>
+      <FontText
+        fontWeight={!isTotalAmount ? 500 : 600}
+        fontSize={!isTotalAmount ? 12 : 14}
+      >
+        {v}
+      </FontText>
+    </View>
+  );
+}
 
 export default function Sending({
   modalActive,
@@ -19,7 +50,10 @@ export default function Sending({
   setModalActive: Function;
 }) {
   const tStoreValue = transferStore.useState((store) => store);
-  const [description, setDescription] = useState<(string | undefined)[][]>([]);
+  const router = useRouter();
+  const [descriptionNGN, setDescriptionNGN] = useState<InfoTuple>([]);
+  const [descriptionCFA, setDescriptionCFA] = useState<InfoTuple>([]);
+
   useEffect(() => {
     let transactionFeeValue = "";
     let rateValue = "";
@@ -37,16 +71,27 @@ export default function Sending({
         Number(tStoreValue.ngnAmount) + tStoreValue.transactionFee
       ).toFixed(2)} NGN`;
     }
-    setDescription([
-      ["Bank name", tStoreValue.recepientNGN?.bank],
-      ["Account number", tStoreValue.recepientNGN?.accountNumber],
-      ["Email address", tStoreValue.recepientNGN?.emailAddress],
-      ["Account name", tStoreValue.recepientNGN?.accountName],
-      ["Transaction fee", transactionFeeValue],
-      ["Rate", rateValue],
-      ["Total amount", totalAmountValue],
-    ]);
-  }, [tStoreValue.recepientNGN]);
+    if (tStoreValue.sendingIsCFA) {
+      setDescriptionNGN([
+        ["Bank name", tStoreValue.recepientNGN?.bank],
+        ["Account number", tStoreValue.recepientNGN?.accountNumber],
+        ["Email address", tStoreValue.recepientNGN?.emailAddress],
+        ["Account name", tStoreValue.recepientNGN?.accountName],
+        ["Transaction fee", transactionFeeValue],
+        ["Rate", rateValue],
+        ["Total amount", totalAmountValue],
+      ]);
+    } else {
+      setDescriptionCFA([
+        ["Momo number", tStoreValue.recepientCFA?.momoNumber],
+        ["Mobile money operator", tStoreValue.recepientCFA?.momoOperator],
+        ["Full name", tStoreValue.recepientCFA?.fullName],
+        ["Transaction fee", transactionFeeValue],
+        ["Rate", rateValue],
+        ["Total amount", totalAmountValue],
+      ]);
+    }
+  }, [tStoreValue.recepientNGN, tStoreValue.recepientCFA]);
 
   const getSentAmount = () => {
     return tStoreValue.sendingIsCFA
@@ -58,6 +103,10 @@ export default function Sending({
     return !tStoreValue.sendingIsCFA
       ? tStoreValue.cfaAmount + " CFA"
       : tStoreValue.ngnAmount + " NGN";
+  };
+  const handleContinue = () => {
+    router.push("/(home)/sent");
+    setModalActive(false);
   };
 
   return (
@@ -167,35 +216,14 @@ export default function Sending({
                 gap: 16,
               }}
             >
-              {description.map(([key, value]) => {
-                const isTotalAmount = key === "Total amount";
-                return (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <FontText
-                      fontSize={!isTotalAmount ? 12 : 14}
-                      fontWeight={!isTotalAmount ? 400 : 600}
-                      style={{
-                        color: !isTotalAmount
-                          ? Colors.light.neutral
-                          : Colors.light.text,
-                      }}
-                    >
-                      {key}
-                    </FontText>
-                    <FontText
-                      fontWeight={!isTotalAmount ? 500 : 600}
-                      fontSize={!isTotalAmount ? 12 : 14}
-                    >
-                      {value}
-                    </FontText>
-                  </View>
-                );
-              })}
+              {tStoreValue.sendingIsCFA &&
+                descriptionNGN.map(([key, value]) => {
+                  return <Description key={key} k={key} v={value} />;
+                })}
+              {!tStoreValue.sendingIsCFA &&
+                descriptionCFA.map(([key, value]) => {
+                  return <Description key={key} k={key} v={value} />;
+                })}
             </View>
             <View
               style={{
@@ -204,7 +232,7 @@ export default function Sending({
                 paddingBottom: 40,
               }}
             >
-              <Button text={"Continue"} action={() => {}} />
+              <Button text={"Continue"} action={handleContinue} />
             </View>
           </View>
         </View>
