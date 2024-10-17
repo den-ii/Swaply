@@ -54,7 +54,10 @@ export default function Sent() {
                 </FontText>
               </View>
             </View>
-            <Button text={"Okay, got it"} action={() => router.dismissAll()} />
+            <Button
+              text={"Okay, got it"}
+              action={() => router.navigate("/(home)")}
+            />
             <Button
               text={"Download receipt"}
               bgColor="#ECEFF1"

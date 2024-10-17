@@ -71,8 +71,7 @@ export default function CFARecepientDetails({
         <FontText>Full name</FontText>
         <View style={styles.input}>
           <TextInput
-            style={{ width: 200 }}
-            placeholder="John doe"
+            placeholder="John Doe"
             placeholderTextColor="#AEB7BF"
             inputMode="text"
             autoCorrect={false}
@@ -80,11 +79,13 @@ export default function CFARecepientDetails({
             value={form.fullName}
           />
           {form.fullName && (
-            <Pressable onPress={() => handleForm("fullName", "")}>
-              <View style={styles.cancel}>
-                <Close fill="white" width={12} />
-              </View>
-            </Pressable>
+            <View style={styles.cancelContainer}>
+              <Pressable onPress={() => handleForm("fullName", "")}>
+                <View style={styles.cancel}>
+                  <Close fill="white" width={12} />
+                </View>
+              </Pressable>
+            </View>
           )}
         </View>
       </View>
@@ -92,7 +93,6 @@ export default function CFARecepientDetails({
         <FontText>Mobile money operator</FontText>
         <View style={styles.input}>
           <TextInput
-            style={{ width: 250 }}
             placeholder="Select operator"
             inputMode="text"
             autoCapitalize="none"
@@ -102,11 +102,13 @@ export default function CFARecepientDetails({
             value={form.momoOperator}
           />
           {form.momoOperator && (
-            <Pressable onPress={() => handleForm("momoOperator", "")}>
-              <View style={styles.cancel}>
-                <Close fill="white" width={12} />
-              </View>
-            </Pressable>
+            <View style={styles.cancelContainer}>
+              <Pressable onPress={() => handleForm("momoOperator", "")}>
+                <View style={styles.cancel}>
+                  <Close fill="white" width={12} />
+                </View>
+              </Pressable>
+            </View>
           )}
         </View>
       </View>

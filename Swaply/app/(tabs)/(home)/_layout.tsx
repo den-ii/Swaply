@@ -15,7 +15,11 @@ export default function HomeLayout() {
       />
       <Stack.Screen
         name="sent"
-        options={{ headerShown: false, presentation: "fullScreenModal" }}
+        options={{
+          headerShown: false,
+          presentation: "fullScreenModal",
+          animation: "none",
+        }}
       />
     </Stack>
   );

@@ -4,7 +4,7 @@ import FontText from "../FontText";
 import Close from "@/assets/images/close.svg";
 import { Modal, Pressable, View, StyleSheet } from "react-native";
 import { transferStore } from "@/store";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import CFA from "@/assets/images/CFA_32.svg";
 import NGN from "@/assets/images/NGN_32.svg";
 import BlueLogo from "@/assets/images/blue_logo.svg";
@@ -45,9 +45,11 @@ function Description({ k, v }: { k: string; v: any }) {
 export default function Sending({
   modalActive,
   setModalActive,
+  setSentModalActive,
 }: {
   modalActive: boolean;
   setModalActive: Function;
+  setSentModalActive: Function;
 }) {
   const tStoreValue = transferStore.useState((store) => store);
   const router = useRouter();
@@ -105,7 +107,7 @@ export default function Sending({
       : tStoreValue.ngnAmount + " NGN";
   };
   const handleContinue = () => {
-    router.push("/(home)/sent");
+    setSentModalActive(true);
     setModalActive(false);
   };
 

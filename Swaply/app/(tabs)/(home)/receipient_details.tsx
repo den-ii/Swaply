@@ -19,6 +19,7 @@ import Sending from "@/components/Modals/Sending";
 import { transferStore } from "@/store";
 import NGNRecepientDetails from "@/components/recepient-details/NGN";
 import CFARecepientDetails from "@/components/recepient-details/CFA";
+import Sent from "@/components/Modals/Sent";
 
 export interface recepientDetailsNGN {
   bank: string;
@@ -37,8 +38,10 @@ export default function RecipientDetails() {
   const router = useRouter();
 
   const [selectBankModal, setSelectBankModal] = useState(false);
-  const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
   const [sendingModal, setSendingModal] = useState(false);
+  const [sentModal, setSentModal] = useState(false);
+
+  const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
 
   const [checked, setChecked] = useState(false);
 
@@ -145,7 +148,12 @@ export default function RecipientDetails() {
         setModalActive={setSelectBankModal}
         handleForm={handleNGNForm}
       />
-      <Sending modalActive={sendingModal} setModalActive={setSendingModal} />
+      <Sending
+        modalActive={sendingModal}
+        setModalActive={setSendingModal}
+        setSentModalActive={setSentModal}
+      />
+      <Sent modalActive={sentModal} setModalActive={setSentModal} />
     </View>
   );
 }

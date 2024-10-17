@@ -24,7 +24,18 @@ export default function NGNRecepientDetails({
       <Pressable onPress={() => setSelectBankModal(true)}>
         <View style={styles.inputContainer}>
           <FontText>Select Bank</FontText>
-          <View style={styles.input}>
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "white",
+              padding: 16,
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: "#ECEFF1",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             {!form.bank && <FontText color="#AEB7BF">Access Bank</FontText>}
             {form.bank && <FontText>{form.bank}</FontText>}
             <ChevronDown fill="#AEB7BF" />
@@ -35,7 +46,6 @@ export default function NGNRecepientDetails({
         <FontText>Account number</FontText>
         <View style={styles.input}>
           <TextInput
-            style={{ width: 200 }}
             maxLength={13}
             placeholder="0732934459"
             placeholderTextColor="#AEB7BF"
@@ -47,11 +57,13 @@ export default function NGNRecepientDetails({
             value={form.accountNumber}
           />
           {form.accountNumber && (
-            <Pressable onPress={() => handleForm("accountNumber", "")}>
-              <View style={styles.cancel}>
-                <Close fill="white" width={12} />
-              </View>
-            </Pressable>
+            <View style={styles.cancelContainer}>
+              <Pressable onPress={() => handleForm("accountNumber", "")}>
+                <View style={styles.cancel}>
+                  <Close fill="white" width={12} />
+                </View>
+              </Pressable>
+            </View>
           )}
         </View>
       </View>
@@ -59,7 +71,6 @@ export default function NGNRecepientDetails({
         <FontText>Email address</FontText>
         <View style={styles.input}>
           <TextInput
-            style={{ width: 250 }}
             placeholder="johndoe@gmail.com"
             returnKeyType="done"
             inputMode="email"
@@ -70,11 +81,13 @@ export default function NGNRecepientDetails({
             value={form.emailAddress}
           />
           {form.emailAddress && (
-            <Pressable onPress={() => handleForm("emailAddress", "")}>
-              <View style={styles.cancel}>
-                <Close fill="white" width={12} />
-              </View>
-            </Pressable>
+            <View style={styles.cancelContainer}>
+              <Pressable onPress={() => handleForm("emailAddress", "")}>
+                <View style={styles.cancel}>
+                  <Close fill="white" width={12} />
+                </View>
+              </Pressable>
+            </View>
           )}
         </View>
       </View>
@@ -82,18 +95,19 @@ export default function NGNRecepientDetails({
         <FontText>Narration (Optional)</FontText>
         <View style={styles.input}>
           <TextInput
-            style={{ width: 260 }}
             placeholderTextColor="#AEB7BF"
             placeholder="Sent with love"
             onChangeText={(value) => handleForm("narration", value)}
             value={form.narration}
           />
           {form.narration && (
-            <Pressable onPress={() => handleForm("narration", "")}>
-              <View style={styles.cancel}>
-                <Close fill="white" width={12} />
-              </View>
-            </Pressable>
+            <View style={styles.cancelContainer}>
+              <Pressable onPress={() => handleForm("narration", "")}>
+                <View style={styles.cancel}>
+                  <Close fill="white" width={12} />
+                </View>
+              </Pressable>
+            </View>
           )}
         </View>
       </View>
@@ -107,14 +121,12 @@ export const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   input: {
-    flexDirection: "row",
     backgroundColor: "white",
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "#ECEFF1",
-    alignItems: "center",
-    justifyContent: "space-between",
+    position: "relative",
   },
   cancel: {
     width: 16,
@@ -123,5 +135,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#AEB7BF",
+  },
+  cancelContainer: {
+    position: "absolute",
+    top: 16,
+    right: 16,
   },
 });
