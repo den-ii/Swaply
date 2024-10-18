@@ -29,7 +29,7 @@ export default function ChooseRecipient() {
         </FontText>
       </View>
       <View style={{ position: "relative" }}>
-        <View style={{ position: "absolute", top: 18, left: 12, zIndex: 2 }}>
+        <View style={{ position: "absolute", top: 16, left: 12, zIndex: 2 }}>
           <Search />
         </View>
         <TextInput

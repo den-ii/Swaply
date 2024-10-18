@@ -1,10 +1,12 @@
 import { View, Text, SafeAreaView, Modal } from "react-native";
 import SentLogo from "@/assets/images/sent-logo.svg";
+import BlueSentLogo from "@/assets/images/sent-logo-blue.svg";
 import Button from "@/components/Button";
 import { useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import BeneficiaryHeart from "@/assets/images/beneficiary-heart.svg";
 import FontText from "@/components/FontText";
+import { transferStore } from "@/store";
 
 export default function Sent({
   modalActive,
@@ -14,6 +16,7 @@ export default function Sent({
   setModalActive: Function;
 }) {
   const router = useRouter();
+  const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
 
   const handleOkay = () => {
     setModalActive(false);
@@ -27,7 +30,8 @@ export default function Sent({
         <View style={{ flex: 1, justifyContent: "flex-end", padding: 16 }}>
           <View style={{ height: "75%", justifyContent: "space-between" }}>
             <View style={{ alignItems: "center" }}>
-              <SentLogo />
+              {sendingIsCFA && <BlueSentLogo />}
+              {!sendingIsCFA && <SentLogo />}
               <FontText
                 fontSize={24}
                 style={{ marginTop: 24, marginBottom: 4 }}
