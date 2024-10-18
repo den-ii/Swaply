@@ -11,6 +11,8 @@ import BlueLogo from "@/assets/images/blue_logo.svg";
 import RightDots from "@/assets/images/right-dots.svg";
 import LeftDots from "@/assets/images/left-dots.svg";
 import Button from "../Button";
+import CustomModal from "./CustomModal";
+import { useCloseModal } from "@/hooks/useCloseModal";
 
 type InfoTuple = [string, string | number | undefined | string[]][] | [];
 
@@ -52,6 +54,7 @@ export default function Sending({
   setSentModalActive: Function;
 }) {
   const tStoreValue = transferStore.useState((store) => store);
+  const { translateY, closeModal } = useCloseModal(setModalActive);
   const router = useRouter();
   const [descriptionNGN, setDescriptionNGN] = useState<InfoTuple>([]);
   const [descriptionCFA, setDescriptionCFA] = useState<InfoTuple>([]);
@@ -112,134 +115,129 @@ export default function Sending({
   };
 
   return (
-    <Modal visible={modalActive} transparent={true} animationType="fade">
-      <View style={styles.overlay}>
-        <View style={styles.overlay2}>
-          <Pressable style={{ flex: 1 }} onPress={() => setModalActive(false)}>
-            <View style={{ flex: 1 }}></View>
-          </Pressable>
-          <View style={styles.modal}>
+    <CustomModal
+      modalActive={modalActive}
+      closeModal={closeModal}
+      translateY={translateY}
+    >
+      <>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Pressable onPress={closeModal}>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
-              }}
-            >
-              <Pressable onPress={() => setModalActive(false)}>
-                <View
-                  style={{
-                    width: 32,
-                    height: 32,
-                    backgroundColor: "#F5F7F8",
-                    borderRadius: 32,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Close fill="#757D87" />
-                </View>
-              </Pressable>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <FontText
-                fontFamily="P22"
-                fontWeight={700}
-                fontSize={30}
-                style={{ marginTop: 20 }}
-              >
-                You're Sending
-              </FontText>
-              <FontText
-                fontFamily="P22"
-                fontWeight={700}
-                fontSize={30}
-                style={{ textAlign: "center", marginTop: 12 }}
-              >
-                {getSentAmount()}
-              </FontText>
-              <View
-                style={{
-                  backgroundColor: "#ECEFF1",
-                  padding: 12,
-                  borderRadius: 100,
-                  marginTop: 20,
-                }}
-              >
-                <FontText fontWeight={600}>
-                  {"= " + getReceiveAmount()}
-                </FontText>
-              </View>
-            </View>
-            <View
-              style={{
-                marginTop: 20,
-                alignItems: "center",
-                flexDirection: "row",
+                width: 32,
+                height: 32,
+                backgroundColor: "#F5F7F8",
+                borderRadius: 32,
                 justifyContent: "center",
-                gap: 10,
+                alignItems: "center",
               }}
             >
-              <View
-                style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: 64,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#ECEFF1",
-                }}
-              >
-                {tStoreValue.sendingIsCFA ? <CFA /> : <NGN />}
-              </View>
-              <RightDots />
-              <BlueLogo />
-              <LeftDots />
-              <View
-                style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: 64,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#ECEFF1",
-                }}
-              >
-                {tStoreValue.sendingIsCFA ? <NGN /> : <CFA />}
-              </View>
+              <Close fill="#757D87" />
             </View>
-            <View
-              style={{
-                marginTop: 32,
-                backgroundColor: "white",
-                borderWidth: 1,
-                borderColor: "#ECEFF1",
-                borderRadius: 16,
-                padding: 16,
-                gap: 16,
-              }}
-            >
-              {tStoreValue.sendingIsCFA &&
-                descriptionNGN.map(([key, value]) => {
-                  return <Description key={key} k={key} v={value} />;
-                })}
-              {!tStoreValue.sendingIsCFA &&
-                descriptionCFA.map(([key, value]) => {
-                  return <Description key={key} k={key} v={value} />;
-                })}
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "flex-end",
-                paddingBottom: 40,
-              }}
-            >
-              <Button text={"Continue"} action={handleContinue} />
-            </View>
+          </Pressable>
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <FontText
+            fontFamily="P22"
+            fontWeight={700}
+            fontSize={30}
+            style={{ marginTop: 20 }}
+          >
+            You're Sending
+          </FontText>
+          <FontText
+            fontFamily="P22"
+            fontWeight={700}
+            fontSize={30}
+            style={{ textAlign: "center", marginTop: 12 }}
+          >
+            {getSentAmount()}
+          </FontText>
+          <View
+            style={{
+              backgroundColor: "#ECEFF1",
+              padding: 12,
+              borderRadius: 100,
+              marginTop: 20,
+            }}
+          >
+            <FontText fontWeight={600}>{"= " + getReceiveAmount()}</FontText>
           </View>
         </View>
-      </View>
-    </Modal>
+        <View
+          style={{
+            marginTop: 20,
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 10,
+          }}
+        >
+          <View
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 64,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#ECEFF1",
+            }}
+          >
+            {tStoreValue.sendingIsCFA ? <CFA /> : <NGN />}
+          </View>
+          <RightDots />
+          <BlueLogo />
+          <LeftDots />
+          <View
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 64,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#ECEFF1",
+            }}
+          >
+            {tStoreValue.sendingIsCFA ? <NGN /> : <CFA />}
+          </View>
+        </View>
+        <View
+          style={{
+            marginTop: 32,
+            backgroundColor: "white",
+            borderWidth: 1,
+            borderColor: "#ECEFF1",
+            borderRadius: 16,
+            padding: 16,
+            gap: 16,
+          }}
+        >
+          {tStoreValue.sendingIsCFA &&
+            descriptionNGN.map(([key, value]) => {
+              return <Description key={key} k={key} v={value} />;
+            })}
+          {!tStoreValue.sendingIsCFA &&
+            descriptionCFA.map(([key, value]) => {
+              return <Description key={key} k={key} v={value} />;
+            })}
+        </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            paddingBottom: 40,
+          }}
+        >
+          <Button text={"Continue"} action={handleContinue} />
+        </View>
+      </>
+    </CustomModal>
   );
 }
 

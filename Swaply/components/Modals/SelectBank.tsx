@@ -11,12 +11,13 @@ import {
   TextInput,
   // Image,
 } from "react-native";
-import LargeModal from "./LargeModal";
+import Search from "@/assets/images/search.svg";
+import CustomModal from "./CustomModal";
 import { BankSVG } from "../BankSVG";
 import bankList from "@/constants/bankList";
 import { Image } from "expo-image";
 import { recepientDetailsNGN } from "@/app/(tabs)/(home)/receipient_details";
-import { useSharedValue, withDelay, withTiming } from "react-native-reanimated";
+import { useCloseModal } from "@/hooks/useCloseModal";
 
 export default function SelectBank({
   modalActive,
@@ -28,30 +29,19 @@ export default function SelectBank({
   handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
 }) {
   const [banks, setBanks] = useState(bankList);
-  const translateY = useSharedValue(0);
+  const { translateY, closeModal } = useCloseModal(setModalActive);
 
   const handleSearchForBank = (search: string) => {
     setBanks(bankList.filter((bank) => bank.name.includes(search)));
   };
 
-  const closeModal = () => {
-    translateY.value = withTiming(1000);
-    setTimeout(
-      () => {
-        setModalActive(false);
-        translateY.value = 0;
-      },
-
-      500
-    );
-  };
   const handleSetBank = (bankName: string) => {
     handleForm("bank", bankName);
     setModalActive(false);
   };
 
   return (
-    <LargeModal
+    <CustomModal
       modalActive={modalActive}
       closeModal={closeModal}
       translateY={translateY}
@@ -83,12 +73,16 @@ export default function SelectBank({
             Select Bank
           </FontText>
         </View>
-        <View style={{ paddingTop: 16, paddingBottom: 10 }}>
+        <View style={{ marginTop: 16, marginBottom: 10, position: "relative" }}>
+          <View style={{ position: "absolute", top: 11, left: 12, zIndex: 2 }}>
+            <Search />
+          </View>
           <TextInput
             placeholder="Search for bank"
             style={{
               paddingVertical: 10,
-              paddingHorizontal: 12,
+              paddingLeft: 35,
+              paddingRight: 12,
               backgroundColor: "#ECEFF1",
               borderRadius: 100,
               fontSize: 14,
@@ -125,6 +119,6 @@ export default function SelectBank({
           </View>
         </ScrollView>
       </>
-    </LargeModal>
+    </CustomModal>
   );
 }

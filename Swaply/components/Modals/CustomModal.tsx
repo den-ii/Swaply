@@ -1,5 +1,12 @@
 import { ReactElement } from "react";
-import { Modal, Pressable, View, StyleSheet } from "react-native";
+import {
+  Modal,
+  Pressable,
+  View,
+  StyleSheet,
+  RegisteredStyle,
+  ViewStyle,
+} from "react-native";
 import Animated, {
   SharedValue,
   useSharedValue,
@@ -8,15 +15,19 @@ import Animated, {
 } from "react-native-reanimated";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
 
-export default function LargeModal({
+export default function CustomModal({
   modalActive,
   closeModal,
   translateY,
   children,
+  height = "92%",
+  endLimit = 250,
 }: {
   modalActive: boolean;
   closeModal: () => void;
   translateY: SharedValue<number>;
+  height?: string | number;
+  endLimit?: number;
   children?: ReactElement;
 }) {
   const pan = Gesture.Pan();
@@ -28,21 +39,11 @@ export default function LargeModal({
     .onUpdate((e) => {
       console.log(e);
       if (e.translationY > 0) translateY.value = e.translationY;
-
-      // offset.value = {
-      //   x: e.translationX + start.value.x,
-      //   y: e.translationY + start.value.y,
-      // };
     })
     .onEnd((e) => {
-      if (e.translationY > 250) {
+      if (e.translationY > endLimit) {
         closeModal();
       } else translateY.value = withTiming(0);
-      // translateY.value += e.translationY;
-      // start.value = {
-      //   x: offset.value.x,
-      //   y: offset.value.y,
-      // };
     });
 
   return (
@@ -54,7 +55,11 @@ export default function LargeModal({
           </Pressable>
           <GestureDetector gesture={gesture}>
             <Animated.View
-              style={[styles.modal, { transform: [{ translateY }] }]}
+              style={[
+                styles.modal,
+                { transform: [{ translateY }] },
+                { height: height as RegisteredStyle<ViewStyle> },
+              ]}
             >
               {children}
             </Animated.View>
@@ -78,7 +83,6 @@ const styles = StyleSheet.create({
   modal: {
     backgroundColor: "#FAFBFB",
     zIndex: 50,
-    height: "92%",
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     shadowColor: "#000",

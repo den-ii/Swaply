@@ -23,6 +23,8 @@ import CFA_flag from "@/assets/images/CFA_32.svg";
 import NGN_flag from "@/assets/images/NGN_32.svg";
 import Selected from "@/assets/images/selected.svg";
 import { transferStore, transferStoreDefaultValue } from "@/store";
+import CustomModal from "@/components/Modals/CustomModal";
+import Currency from "@/components/Modals/Currency";
 
 export const CountryRate = {
   CFA: {
@@ -387,135 +389,13 @@ export default function Home() {
           </View>
         </View>
       </View>
-      <Modal visible={modalActive} transparent={true} animationType="fade">
-        <View style={styles.overlay}>
-          <View style={styles.overlay2}>
-            <Pressable
-              style={{ flex: 1 }}
-              onPress={() => setModalActive(false)}
-            >
-              <View style={{ flex: 1 }}></View>
-            </Pressable>
-            <View style={styles.modal}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Pressable onPress={() => setModalActive(false)}>
-                  <View
-                    style={{
-                      width: 32,
-                      height: 32,
-                      backgroundColor: "#F5F7F8",
-                      borderRadius: 32,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Close fill="#757D87" />
-                  </View>
-                </Pressable>
-              </View>
-              <View>
-                <FontText fontFamily="P22" fontWeight={700} fontSize={24}>
-                  Send Currency
-                </FontText>
-                <FontText
-                  color={Colors.light.neutral}
-                  fontSize={14}
-                  style={{ marginTop: 8 }}
-                >
-                  Choose the preferred currency you’ll like to send money in
-                </FontText>
-              </View>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#F5F7F8",
-                  borderRadius: 16,
-                  marginTop: 24,
-                }}
-              >
-                <Pressable onPress={() => switchCurrency("CFA")}>
-                  <View style={styles.options}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        gap: 16,
-                        alignItems: "center",
-                      }}
-                    >
-                      <CFA_flag />
-                      <View style={{ gap: 6 }}>
-                        <FontText fontWeight={500} fontSize={16}>
-                          West African CFA fran
-                        </FontText>
-                        <FontText color={Colors.light.neutral} fontSize={14}>
-                          CFA
-                        </FontText>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: 16,
-                        borderWidth: sendIsCFA ? 0 : 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderColor: Colors.light.neutral,
-                      }}
-                    >
-                      {sendIsCFA && <Selected />}
-                    </View>
-                  </View>
-                </Pressable>
-                <View style={{ paddingHorizontal: 16 }}>
-                  <View
-                    style={{ height: 2, backgroundColor: "#F2F6F6" }}
-                  ></View>
-                </View>
-                <Pressable onPress={() => switchCurrency("NGN")}>
-                  <View style={styles.options}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        gap: 16,
-                        alignItems: "center",
-                      }}
-                    >
-                      <NGN_flag />
-                      <View style={{ gap: 6 }}>
-                        <FontText fontWeight={500} fontSize={16}>
-                          Nigerian Naira
-                        </FontText>
-                        <FontText color={Colors.light.neutral} fontSize={14}>
-                          NGN
-                        </FontText>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: 16,
-                        borderWidth: sendIsNGN ? 0 : 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderColor: Colors.light.neutral,
-                      }}
-                    >
-                      {sendIsNGN && <Selected />}
-                    </View>
-                  </View>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <Currency
+        modalActive={modalActive}
+        setModalActive={setModalActive}
+        switchCurrency={switchCurrency}
+        sendIsCFA={sendIsCFA}
+        sendIsNGN={sendIsNGN}
+      />
     </>
   );
 }
@@ -556,12 +436,6 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    padding: 16,
-  },
-  options: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
     padding: 16,
   },
 });

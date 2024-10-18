@@ -6,6 +6,7 @@ import Add from "@/assets/images/add.svg";
 import ChevronRight from "@/assets/images/chevron-right.svg";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import Search from "@/assets/images/search.svg";
 import { transferStore } from "@/store";
 
 export default function ChooseRecipient() {
@@ -27,11 +28,16 @@ export default function ChooseRecipient() {
             : "Send to a mobile money account"}
         </FontText>
       </View>
-      <View>
+      <View style={{ position: "relative" }}>
+        <View style={{ position: "absolute", top: 18, left: 12, zIndex: 2 }}>
+          <Search />
+        </View>
         <TextInput
           placeholder="Search..."
           style={{
-            padding: 16,
+            paddingLeft: 32,
+            paddingRight: 16,
+            paddingVertical: 16,
             backgroundColor: "#ECEFF1",
             borderRadius: 100,
             fontSize: 14,
