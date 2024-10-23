@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
-import { recepientDetailsNGN } from "@/app/(tabs)/(home)/receipient_details";
+import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 
 export default function NGNRecepientDetails({
   form,
@@ -44,9 +44,10 @@ export default function NGNRecepientDetails({
       </Pressable>
       <View style={styles.inputContainer}>
         <FontText>Account number</FontText>
-        <View style={styles.input}>
+        <View>
           <TextInput
             maxLength={13}
+            style={styles.input}
             placeholder="0732934459"
             placeholderTextColor="#AEB7BF"
             inputMode="numeric"
@@ -69,10 +70,11 @@ export default function NGNRecepientDetails({
       </View>
       <View style={styles.inputContainer}>
         <FontText>Email address</FontText>
-        <View style={styles.input}>
+        <View>
           <TextInput
             placeholder="johndoe@gmail.com"
             returnKeyType="done"
+            style={styles.input}
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
@@ -93,8 +95,9 @@ export default function NGNRecepientDetails({
       </View>
       <View style={styles.inputContainer}>
         <FontText>Narration (Optional)</FontText>
-        <View style={styles.input}>
+        <View>
           <TextInput
+            style={styles.input}
             placeholderTextColor="#AEB7BF"
             placeholder="Sent with love"
             onChangeText={(value) => handleForm("narration", value)}
@@ -122,12 +125,13 @@ export const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "white",
-    padding: 16,
     borderRadius: 12,
     borderWidth: 1,
+    padding: 16,
     borderColor: "#ECEFF1",
     position: "relative",
   },
+
   cancel: {
     width: 16,
     height: 16,
@@ -138,7 +142,7 @@ export const styles = StyleSheet.create({
   },
   cancelContainer: {
     position: "absolute",
-    top: 16,
+    top: 18,
     right: 16,
   },
 });

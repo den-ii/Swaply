@@ -9,7 +9,8 @@ import {
 import Close from "@/assets/images/close.svg";
 import PhoneInput from "react-native-phone-number-input";
 import ChevronDown from "@/assets/images/chevron-down.svg";
-import { recepientDetailsCFA } from "@/app/(tabs)/(home)/receipient_details";
+import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
+
 import { styles } from "./NGN";
 import { Colors } from "@/constants/Colors";
 
@@ -69,8 +70,9 @@ export default function CFARecepientDetails({
       </View>
       <View style={styles.inputContainer}>
         <FontText>Full name</FontText>
-        <View style={styles.input}>
+        <View>
           <TextInput
+            style={styles.input}
             placeholder="John Doe"
             placeholderTextColor="#AEB7BF"
             inputMode="text"
@@ -91,10 +93,11 @@ export default function CFARecepientDetails({
       </View>
       <View style={styles.inputContainer}>
         <FontText>Mobile money operator</FontText>
-        <View style={styles.input}>
+        <View>
           <TextInput
             placeholder="Select operator"
             inputMode="text"
+            style={styles.input}
             autoCapitalize="none"
             autoCorrect={false}
             placeholderTextColor="#AEB7BF"

@@ -16,8 +16,8 @@ import CustomModal from "./CustomModal";
 import { BankSVG } from "../BankSVG";
 import bankList from "@/constants/bankList";
 import { Image } from "expo-image";
-import { recepientDetailsNGN } from "@/app/(tabs)/(home)/receipient_details";
 import { useCloseModal } from "@/hooks/useCloseModal";
+import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 
 export default function SelectBank({
   modalActive,

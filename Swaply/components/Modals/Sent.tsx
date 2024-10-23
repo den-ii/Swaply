@@ -20,7 +20,7 @@ export default function Sent({
 
   const handleOkay = () => {
     setModalActive(false);
-    router.navigate("/(home)");
+    router.push("/(home)");
   };
   return (
     <Modal visible={modalActive} transparent={true} animationType="fade">

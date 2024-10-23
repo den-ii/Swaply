@@ -4,8 +4,15 @@ import More from "@/assets/images/tab_more.svg";
 import { Colors } from "@/constants/Colors";
 import TabBeneficiary from "@/components/TabBeneficiary";
 import TabHistory from "@/components/TabHistory";
+import { Redirect } from "expo-router";
 
 export default function TabLayout() {
+  const auth = false;
+
+  if (!auth) {
+    return <Redirect href={"/(onboarding)/"} />;
+  }
+
   return (
     <Tabs
       screenOptions={{

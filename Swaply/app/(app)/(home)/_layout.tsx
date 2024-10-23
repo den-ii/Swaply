@@ -14,11 +14,18 @@ export default function HomeLayout() {
         options={{ header: () => <NavBack /> }}
       />
       <Stack.Screen
+        name="sending"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
         name="sent"
         options={{
           headerShown: false,
           presentation: "fullScreenModal",
-          animation: "none",
+          animation: "fade",
         }}
       />
     </Stack>

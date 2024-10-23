@@ -1,19 +1,28 @@
-import { View, Text, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView, Modal } from "react-native";
 import SentLogo from "@/assets/images/sent-logo.svg";
+import BlueSentLogo from "@/assets/images/sent-logo-blue.svg";
 import Button from "@/components/Button";
 import { useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import BeneficiaryHeart from "@/assets/images/beneficiary-heart.svg";
 import FontText from "@/components/FontText";
+import { transferStore } from "@/store";
 
 export default function Sent() {
   const router = useRouter();
+  const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
+
+  const handleOkay = () => {
+    router.dismissAll();
+    router.push("/(home)");
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFBFB", padding: 16 }}>
       <View style={{ flex: 1, justifyContent: "flex-end", padding: 16 }}>
         <View style={{ height: "75%", justifyContent: "space-between" }}>
           <View style={{ alignItems: "center" }}>
-            <SentLogo />
+            {sendingIsCFA && <BlueSentLogo />}
+            {!sendingIsCFA && <SentLogo />}
             <FontText
               fontSize={24}
               style={{ marginTop: 24, marginBottom: 4 }}
@@ -54,10 +63,7 @@ export default function Sent() {
                 </FontText>
               </View>
             </View>
-            <Button
-              text={"Okay, got it"}
-              action={() => router.navigate("/(home)")}
-            />
+            <Button text={"Okay, got it"} action={handleOkay} />
             <Button
               text={"Download receipt"}
               bgColor="#ECEFF1"

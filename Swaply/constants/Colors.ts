@@ -15,6 +15,7 @@ export const Colors = {
     bgButtonDisabled: "",
     body: "#FAFBFB",
     text: "#11181C",
+    accent: "#FE6C02",
     background: "#fff",
     tint: tintColorLight,
     icon: "#687076",

@@ -11,37 +11,25 @@ import {
 import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
 import Checkbox from "@/assets/images/checkbox.svg";
-import { useRouter } from "expo-router";
+import { useRouter, Link, useLocalSearchParams } from "expo-router";
 import Button from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectBank from "@/components/Modals/SelectBank";
 import Sending from "@/components/Modals/Sending";
 import { transferStore } from "@/store";
 import NGNRecepientDetails from "@/components/recepient-details/NGN";
 import CFARecepientDetails from "@/components/recepient-details/CFA";
 import Sent from "@/components/Modals/Sent";
-
-export interface recepientDetailsNGN {
-  bank: string;
-  accountNumber: string;
-  emailAddress: string;
-  narration: string;
-}
-
-export interface recepientDetailsCFA {
-  momoNumber: string;
-  fullName: string;
-  momoOperator: string;
-}
+import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 
 export default function RecipientDetails() {
   const router = useRouter();
 
   const [selectBankModal, setSelectBankModal] = useState(false);
-  const [sendingModal, setSendingModal] = useState(false);
+  // const [sendingModal, setSendingModal] = useState(false);
   const [sentModal, setSentModal] = useState(false);
 
-  const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
+  const { sendingIsCFA } = transferStore.useState((store) => store);
 
   const [checked, setChecked] = useState(false);
 
@@ -77,7 +65,7 @@ export default function RecipientDetails() {
         store.recepientCFA = CFAForm;
       });
     }
-    setSendingModal(true);
+    router.navigate("/(home)/sending");
   };
 
   return (
@@ -139,7 +127,29 @@ export default function RecipientDetails() {
           </View>
         </Pressable>
 
-        <View style={{ marginTop: 16 }}>
+        <View
+          style={{
+            marginTop: 16,
+            // borderRadius: 100,
+            // backgroundColor: Colors.light.text,
+          }}
+        >
+          {/* <Link
+            href="/(home)/sending"
+            style={{
+              width: "100%",
+              paddingVertical: 20,
+            }}
+          >
+            <FontText
+              color="white"
+              fontWeight={600}
+              fontSize={16}
+              style={{ textAlign: "center" }}
+            >
+              Continue
+            </FontText>
+          </Link> */}
           <Button text={"Continue"} action={handleContinue} />
         </View>
       </View>
@@ -148,11 +158,11 @@ export default function RecipientDetails() {
         setModalActive={setSelectBankModal}
         handleForm={handleNGNForm}
       />
-      <Sending
+      {/* <Sending
         modalActive={sendingModal}
         setModalActive={setSendingModal}
         setSentModalActive={setSentModal}
-      />
+      /> */}
       <Sent modalActive={sentModal} setModalActive={setSentModal} />
     </View>
   );
@@ -182,3 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#AEB7BF",
   },
 });
+
+function useLayoutEffect(arg0: () => void, arg1: any[]) {
+  throw new Error("Function not implemented.");
+}
