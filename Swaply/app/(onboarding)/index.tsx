@@ -9,6 +9,7 @@ import { styles } from "@/components/recepient-details/NGN";
 import Close from "@/assets/images/close.svg";
 import Button from "@/components/Button";
 import Country from "@/components/Modals/Country";
+import { router } from "expo-router";
 
 export default function GetStarted() {
   const [stages, setStages] = useState(5);
@@ -117,7 +118,10 @@ export default function GetStarted() {
           </FontText>
         </View>
         <View style={{ marginVertical: 16 }}>
-          <Button text="Create an account" />
+          <Button
+            text="Create an account"
+            action={() => router.push("/verify-otp")}
+          />
         </View>
         <View
           style={{

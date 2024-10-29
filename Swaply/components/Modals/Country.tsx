@@ -130,7 +130,7 @@ export default function Country({
                 <NGN_flag />
                 <View style={{ gap: 6 }}>
                   <FontText fontWeight={500} fontSize={16}>
-                    Nigerian
+                    Nigeria
                   </FontText>
                   <FontText color={Colors.light.neutral} fontSize={14}>
                     NGN

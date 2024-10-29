@@ -1,5 +1,6 @@
 import { Pressable, View } from "react-native";
 import FontText from "./FontText";
+import * as Haptics from "expo-haptics";
 
 interface ButtonProps {
   loadingColor?: string;
@@ -8,7 +9,7 @@ interface ButtonProps {
   textColor?: string;
   loading?: boolean;
   text?: string;
-  action?: () => void;
+  action: () => void;
 }
 
 const Button = ({
@@ -20,8 +21,12 @@ const Button = ({
   text,
   action,
 }: ButtonProps) => {
+  const handleOnPress = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    action();
+  };
   return (
-    <Pressable onPress={action}>
+    <Pressable onPress={handleOnPress}>
       <View
         style={{
           backgroundColor: bgColor ?? "black",
