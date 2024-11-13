@@ -7,11 +7,12 @@ import CFA_flag from "@/assets/images/CFA_32.svg";
 import NGN_flag from "@/assets/images/NGN_32.svg";
 import Selected from "@/assets/images/selected.svg";
 import { useCloseModal } from "@/hooks/useCloseModal";
+import { Country } from "@/types/country";
 
 interface CurrencyProps {
   setModalActive: Function;
   modalActive: boolean;
-  switchCurrency: (currency: string) => void;
+  switchCurrency: (currency: Country) => void;
   sendIsCFA: boolean;
   sendIsNGN: boolean;
 }
@@ -23,7 +24,7 @@ export default function Currency({
   sendIsCFA,
   sendIsNGN,
 }: CurrencyProps) {
-  const { translateY, closeModal } = useCloseModal(setModalActive);
+  const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
 
   return (
     <CustomModal
@@ -75,7 +76,7 @@ export default function Currency({
             marginTop: 24,
           }}
         >
-          <Pressable onPress={() => switchCurrency("CFA")}>
+          <Pressable onPress={() => switchCurrency(Country.BENIN)}>
             <View style={styles.options}>
               <View
                 style={{
@@ -112,7 +113,7 @@ export default function Currency({
           <View style={{ paddingHorizontal: 16 }}>
             <View style={{ height: 2, backgroundColor: "#F2F6F6" }}></View>
           </View>
-          <Pressable onPress={() => switchCurrency("NGN")}>
+          <Pressable onPress={() => switchCurrency(Country.BENIN)}>
             <View style={styles.options}>
               <View
                 style={{

@@ -8,9 +8,11 @@ import { Redirect } from "expo-router";
 
 export default function TabLayout() {
   const auth = false;
+  const first_time = false;
 
   if (!auth) {
-    return <Redirect href={"/(onboarding)/"} />;
+    if (first_time) return <Redirect href={"/(onboarding)/"} />;
+    return <Redirect href={"/(auth)/"} />;
   }
 
   return (

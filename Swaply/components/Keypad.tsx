@@ -26,9 +26,9 @@ const NumberButton = ({
     return (
       <View
         style={{
-          width: 60,
-          height: 60,
-          borderRadius: 60,
+          width: 70,
+          height: 70,
+          borderRadius: 70,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -39,9 +39,9 @@ const NumberButton = ({
     <Pressable onPress={handleTouchableFeedback}>
       <View
         style={{
-          width: 60,
-          height: 60,
-          borderRadius: 60,
+          width: 70,
+          height: 70,
+          borderRadius: 70,
           backgroundColor: color,
           justifyContent: "center",
           alignItems: "center",

@@ -25,6 +25,7 @@ import Selected from "@/assets/images/selected.svg";
 import { transferStore, transferStoreDefaultValue } from "@/store";
 import CustomModal from "@/components/Modals/CustomModal";
 import Currency from "@/components/Modals/Currency";
+import { Country } from "@/types/country";
 
 export const CountryRate = {
   CFA: {
@@ -45,10 +46,10 @@ export const CountryFee = {
 };
 
 export default function Home() {
-  const [sendCountry, setSendCountry] = useState("CFA");
+  const [sendCountry, setSendCountry] = useState<Country>(Country.BENIN);
   const [sendValue, setSendValue] = useState("");
   const [receiveValue, setReceiveValue] = useState("");
-  const [receiveCountry, setReceiveCountry] = useState("NGN");
+  const [receiveCountry, setReceiveCountry] = useState(Country.NIGERIA);
   const [totalAmount, setTotalAmount] = useState("0.00");
   const [sendInputActive, setSendInputActive] = useState(false);
   const [receiveInputActive, setReceiveInputActive] = useState(false);
@@ -71,7 +72,7 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (sendCountry === "CFA") {
+    if (sendCountry === Country.BENIN) {
       setSendIsCFA(true);
       setSendIsNGN(false);
       setSendRate(CountryRate.CFA.NGN);
@@ -92,19 +93,20 @@ export default function Home() {
     }
   };
 
-  const switchCurrency = (send: string) => {
-    if (send === "CFA") {
-      setSendCountry("CFA");
-      setReceiveCountry("NGN");
+  const switchCurrency = (send: Country) => {
+    if (send === Country.BENIN) {
+      setSendCountry(Country.BENIN);
+      setReceiveCountry(Country.NIGERIA);
     } else {
-      setSendCountry("NGN");
-      setReceiveCountry("CFA");
+      setSendCountry(Country.NIGERIA);
+      setReceiveCountry(Country.BENIN);
     }
   };
 
   const handleContinue = () => {
     transferStore.update((state) => {
-      state.cfaAmount = sendCountry === "CFA" ? sendValue : receiveValue;
+      state.cfaAmount =
+        sendCountry === Country.BENIN ? sendValue : receiveValue;
       state.ngnAmount = sendCountry === "NGN" ? sendValue : receiveValue;
       state.sendingIsCFA = sendCountry === "CFA";
       state.rate = sendRate;
@@ -268,7 +270,11 @@ export default function Home() {
                   fontWeight={600}
                   fontSize={14}
                 >
-                  {`${fee} ${sendCountry === "CFA" ? "CFA" : "NGN"} `}
+                  {`${fee} ${
+                    sendCountry === Country.BENIN
+                      ? Country.BENIN
+                      : Country.NIGERIA
+                  } `}
                 </FontText>
                 <FontText
                   style={{ marginTop: 32 }}

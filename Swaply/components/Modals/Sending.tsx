@@ -54,7 +54,7 @@ export default function Sending({
   setSentModalActive: Function;
 }) {
   const tStoreValue = transferStore.useState((store) => store);
-  const { translateY, closeModal } = useCloseModal(setModalActive);
+  const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
   const router = useRouter();
   const [descriptionNGN, setDescriptionNGN] = useState<InfoTuple>([]);
   const [descriptionCFA, setDescriptionCFA] = useState<InfoTuple>([]);

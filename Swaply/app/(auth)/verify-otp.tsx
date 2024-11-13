@@ -6,10 +6,10 @@ export default function VerifyOtp() {
   return (
     <>
       <Otp
-        title="Verify OTP"
+        title="Reset password"
         email={"danielayomidesolomon@gmail.com"}
-        action={() => router.push("/create-password")}
-        actionText={"Verify OTP"}
+        action={() => router.push("/reset-password")}
+        actionText={"Continue"}
       />
     </>
   );

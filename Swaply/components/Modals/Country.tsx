@@ -22,7 +22,7 @@ export default function Country({
   switchCountry,
   country,
 }: CountryProps) {
-  const { translateY, closeModal } = useCloseModal(setModalActive);
+  const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
   const [NGN, setNGN] = useState(country === "Nigeria");
   const [CFA, setCFA] = useState(country === "Benin Republic");
 

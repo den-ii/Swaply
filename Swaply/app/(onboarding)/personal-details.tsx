@@ -5,6 +5,7 @@ import { UI } from "@/constants/UI";
 import Check from "@/assets/images/check.svg";
 import { TextInput, View, StyleSheet } from "react-native";
 import { router } from "expo-router";
+import { PhoneNumberInput } from "@/components/PhoneNumberInput";
 
 export default function PersonalDetails() {
   return (
@@ -57,7 +58,7 @@ export default function PersonalDetails() {
           placeholder="Doe"
         />
       </View>
-
+      <PhoneNumberInput />
       <View style={{ marginTop: 32 }}>
         <Button
           text="Create an account"

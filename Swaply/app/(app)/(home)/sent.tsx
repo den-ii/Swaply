@@ -66,6 +66,7 @@ export default function Sent() {
             <Button text={"Okay, got it"} action={handleOkay} />
             <Button
               text={"Download receipt"}
+              action={() => {}}
               bgColor="#ECEFF1"
               textColor={Colors.light.text}
             />

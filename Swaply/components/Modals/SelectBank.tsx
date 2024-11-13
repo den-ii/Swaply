@@ -29,7 +29,7 @@ export default function SelectBank({
   handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
 }) {
   const [banks, setBanks] = useState(bankList);
-  const { translateY, closeModal } = useCloseModal(setModalActive);
+  const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
 
   const handleSearchForBank = (search: string) => {
     setBanks(bankList.filter((bank) => bank.name.includes(search)));

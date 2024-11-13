@@ -26,6 +26,7 @@ export function OnboardingHeader({
       >
         {new Array(stages).fill("").map((_, index) => (
           <View
+            key={index}
             style={{
               flex: 1,
               height: 4,

@@ -131,7 +131,7 @@ export default function GetStarted() {
             justifyContent: "center",
           }}
         >
-          <FontText fontWeight={600}>{"Already have an account? "}</FontText>
+          <FontText fontWeight={400}>{"Already have an account? "}</FontText>
           <FontText
             fontWeight={600}
             style={{ textDecorationLine: "underline" }}

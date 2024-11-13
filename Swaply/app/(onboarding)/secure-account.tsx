@@ -2,11 +2,17 @@ import FontText from "@/components/FontText";
 import Keypad from "@/components/Keypad";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
+import usePasskeys from "@/hooks/usePassKey";
 import { useState } from "react";
 import { View } from "react-native";
-import * as Haptics from "expo-haptics";
 
-const PasskeyField = ({ fill, index }: { fill: number; index: number }) => {
+export const PasskeyField = ({
+  fill,
+  index,
+}: {
+  fill: number;
+  index: number;
+}) => {
   const filled = fill >= index ? Colors.base : "#AEB7BF";
 
   return (
@@ -22,25 +28,43 @@ const PasskeyField = ({ fill, index }: { fill: number; index: number }) => {
   );
 };
 
-export default function SecureAccount() {
-  const [passkeys, setPasskeys] = useState(new Array(6).fill(""));
-  const [fill, setFill] = useState(-1);
+export const PasskeyContainer = ({
+  passkeys,
+  fill,
+  handleKeyPadPress,
+}: {
+  passkeys: any[];
+  fill: number;
+  handleKeyPadPress: (value: number | string) => void;
+}) => {
+  return (
+    <View>
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 16,
+          justifyContent: "center",
+          gap: 16,
+        }}
+      >
+        {passkeys.map((_, index) => (
+          <PasskeyField key={index} fill={fill} index={index} />
+        ))}
+      </View>
+      <View
+        style={{
+          marginTop: 80,
+          alignItems: "center",
+        }}
+      >
+        <Keypad func={handleKeyPadPress} />
+      </View>
+    </View>
+  );
+};
 
-  const handleKeyPadPress = (value: number | string) => {
-    if (value === "backspace") {
-      if (fill === -1) return;
-      const newFill = fill - 1;
-      setPasskeys(passkeys.map((key, index) => (index === fill ? "" : key)));
-      setFill(newFill);
-      return;
-    }
-    if (fill === 5) return;
-    const newFill = fill + 1;
-    setPasskeys(
-      passkeys.map((key, index) => (index === newFill ? value : key))
-    );
-    setFill(newFill);
-  };
+export default function SecureAccount() {
+  const { passkeys, fill, handleKeyPadPress } = usePasskeys();
 
   return (
     <View
@@ -59,28 +83,11 @@ export default function SecureAccount() {
           access.
         </FontText>
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginTop: 16,
-          justifyContent: "center",
-          gap: 16,
-        }}
-      >
-        {passkeys.map((_, index) => (
-          <PasskeyField fill={fill} index={index} />
-        ))}
-      </View>
-      <View
-        style={{
-          justifyContent: "flex-end",
-          flex: 1,
-          paddingBottom: 100,
-          alignItems: "center",
-        }}
-      >
-        <Keypad func={handleKeyPadPress} />
-      </View>
+      <PasskeyContainer
+        passkeys={passkeys}
+        fill={fill}
+        handleKeyPadPress={handleKeyPadPress}
+      />
     </View>
   );
 }
