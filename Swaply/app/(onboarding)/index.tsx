@@ -99,6 +99,7 @@ export default function GetStarted() {
           </FontText>
           <FontText
             fontSize={12}
+            color={Colors.base}
             style={{
               textDecorationLine: "underline",
             }}
@@ -110,6 +111,7 @@ export default function GetStarted() {
           </FontText>
           <FontText
             fontSize={12}
+            color={Colors.base}
             style={{
               textDecorationLine: "underline",
             }}
@@ -123,22 +125,25 @@ export default function GetStarted() {
             action={() => router.push("/verify-otp")}
           />
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <FontText fontWeight={400}>{"Already have an account? "}</FontText>
-          <FontText
-            fontWeight={600}
-            style={{ textDecorationLine: "underline" }}
+        <Pressable onPress={() => router.navigate("/(auth)/sign-in")}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            Log in
-          </FontText>
-        </View>
+            <FontText fontWeight={400}>{"Already have an account? "}</FontText>
+            <FontText
+              fontWeight={600}
+              color={Colors.base}
+              style={{ textDecorationLine: "underline" }}
+            >
+              Log in
+            </FontText>
+          </View>
+        </Pressable>
       </View>
       {modalActive && (
         <Country

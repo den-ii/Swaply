@@ -1,10 +1,18 @@
-import { StatusBar, View, SafeAreaView, TextInput } from "react-native";
+import {
+  StatusBar,
+  View,
+  SafeAreaView,
+  TextInput,
+  Pressable,
+} from "react-native";
 import HomeHeaderBanner from "@/assets/images/home_header.svg";
 import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import Button from "@/components/Button";
 import { Link, router } from "expo-router";
+import Entypo from "@expo/vector-icons/Entypo";
+import Password from "@/components/Password";
 
 export default function SignIn() {
   const handleContinue = () => {
@@ -52,24 +60,9 @@ export default function SignIn() {
             />
           </View>
 
-          <View style={{ marginTop: 16 }}>
+          <View style={{ marginTop: 8 }}>
             <FontText>Password</FontText>
-            <TextInput
-              placeholderTextColor={"#AEB7BF"}
-              style={{
-                fontSize: 14,
-                fontFamily: "Inter_600SemiBold",
-                borderRadius: 12,
-                borderColor: "#ECEFF1",
-                borderWidth: 1,
-                padding: 16,
-                marginTop: 8,
-              }}
-              cursorColor={Colors.light.text}
-              secureTextEntry={true}
-              selectionColor={Colors.light.text}
-              placeholder="********"
-            />
+            <Password value={""} onChangeText={() => {}} />
           </View>
           <FontText
             color={Colors.light.neutral}
@@ -81,29 +74,31 @@ export default function SignIn() {
           <View style={{ marginTop: 32 }}>
             <Button text={"Continue"} action={handleContinue} />
           </View>
-          <Link
-            href="/sign-in"
-            style={{
-              marginTop: 30,
-              flexDirection: "row",
-              justifyContent: "center",
-              gap: 4,
-            }}
-          >
-            <FontText style={{ textAlign: "center" }}>
-              {"Don't have an account? "}
-            </FontText>
-            <FontText
-              fontWeight={600}
-              color={Colors.base}
+          <Pressable onPress={() => router.push("/(onboarding)/")}>
+            <View
               style={{
-                textAlign: "center",
-                textDecorationLine: "underline",
+                marginTop: 30,
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 4,
+                backgroundColor: "transparent",
               }}
             >
-              {"Sign up"}
-            </FontText>
-          </Link>
+              <FontText style={{ textAlign: "center" }}>
+                {"Don't have an account? "}
+              </FontText>
+              <FontText
+                fontWeight={600}
+                color={Colors.base}
+                style={{
+                  textAlign: "center",
+                  textDecorationLine: "underline",
+                }}
+              >
+                {"Sign up"}
+              </FontText>
+            </View>
+          </Pressable>
         </View>
       </View>
     </>
