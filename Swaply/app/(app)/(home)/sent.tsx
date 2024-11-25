@@ -7,6 +7,7 @@ import { Colors } from "@/constants/Colors";
 import BeneficiaryHeart from "@/assets/images/beneficiary-heart.svg";
 import FontText from "@/components/FontText";
 import { transferStore } from "@/store";
+import SuccessScreen from "@/components/SuccessScreen";
 
 export default function Sent() {
   const router = useRouter();
@@ -17,30 +18,47 @@ export default function Sent() {
     router.push("/(home)");
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFBFB", padding: 16 }}>
-      <View style={{ flex: 1, justifyContent: "flex-end", padding: 16 }}>
-        <View style={{ height: "75%", justifyContent: "space-between" }}>
-          <View style={{ alignItems: "center" }}>
-            {sendingIsCFA && <BlueSentLogo />}
-            {!sendingIsCFA && <SentLogo />}
-            <FontText
-              fontSize={24}
-              style={{ marginTop: 24, marginBottom: 4 }}
-              fontFamily="P22"
-              fontWeight={600}
-            >
-              400,000.00 sent!
-            </FontText>
-            <FontText
-              fontSize={16}
-              color={Colors.light.neutral}
-              fontWeight={500}
-            >
-              Transfer Succesful
-            </FontText>
-          </View>
-          <View style={{ gap: 12, paddingBottom: 20 }}>
-            <View
+    <SuccessScreen
+      headerText="CFA 360.00 sent!"
+      leadingText="Transfer Successful"
+    >
+      <View
+        style={{
+          borderWidth: 1,
+          borderRadius: 16,
+          borderColor: "#ECEFF1",
+          backgroundColor: "#FFF",
+          marginBottom: 4,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            padding: 16,
+          }}
+        >
+          <BeneficiaryHeart />
+          <FontText fontSize={14} fontWeight={500}>
+            Save to beneficiary
+          </FontText>
+        </View>
+      </View>
+      <Button text={"Okay, got it"} action={handleOkay} />
+      <Button
+        text={"Download receipt"}
+        action={() => {}}
+        bgColor="#ECEFF1"
+        textColor={Colors.light.text}
+      />
+    </SuccessScreen>
+  );
+}
+
+{
+  /* 
+<View
               style={{
                 borderWidth: 1,
                 borderRadius: 16,
@@ -70,9 +88,5 @@ export default function Sent() {
               bgColor="#ECEFF1"
               textColor={Colors.light.text}
             />
-          </View>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+          </View> */
 }

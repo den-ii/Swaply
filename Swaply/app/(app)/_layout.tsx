@@ -7,7 +7,7 @@ import TabHistory from "@/components/TabHistory";
 import { Redirect } from "expo-router";
 
 export default function TabLayout() {
-  const auth = false;
+  const auth = true;
   const first_time = false;
 
   if (!auth) {
