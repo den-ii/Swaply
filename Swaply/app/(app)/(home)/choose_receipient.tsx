@@ -6,8 +6,8 @@ import Add from "@/assets/images/add.svg";
 import ChevronRight from "@/assets/images/chevron-right.svg";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import Search from "@/assets/images/search.svg";
 import { transferStore } from "@/store";
+import Search from "@/components/Search";
 
 export default function ChooseRecipient() {
   const router = useRouter();
@@ -28,27 +28,7 @@ export default function ChooseRecipient() {
             : "Send to a mobile money account"}
         </FontText>
       </View>
-      <View style={{ position: "relative" }}>
-        <View style={{ position: "absolute", top: 16, left: 12, zIndex: 2 }}>
-          <Search />
-        </View>
-        <TextInput
-          placeholder="Search..."
-          style={{
-            paddingLeft: 32,
-            paddingRight: 16,
-            paddingVertical: 16,
-            backgroundColor: "#ECEFF1",
-            borderRadius: 100,
-            fontSize: 14,
-            fontFamily: "Inter_600SemiBold",
-            color: Colors.light.textDefault,
-          }}
-          cursorColor={Colors.light.textDefault}
-          selectionColor={Colors.light.textDefault}
-          placeholderTextColor={Colors.light.textDisabled}
-        />
-      </View>
+      <Search />
       <View>
         <Pressable onPress={() => router.push("/(home)/receipient_details")}>
           <View

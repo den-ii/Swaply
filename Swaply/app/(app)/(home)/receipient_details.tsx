@@ -8,14 +8,11 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import Close from "@/assets/images/close.svg";
-import ChevronDown from "@/assets/images/chevron-down.svg";
 import Checkbox from "@/assets/images/checkbox.svg";
-import { useRouter, Link, useLocalSearchParams } from "expo-router";
+import { useRouter } from "expo-router";
 import Button from "@/components/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SelectBank from "@/components/Modals/SelectBank";
-import Sending from "@/components/Modals/Sending";
 import { transferStore } from "@/store";
 import NGNRecepientDetails from "@/components/recepient-details/NGN";
 import CFARecepientDetails from "@/components/recepient-details/CFA";
