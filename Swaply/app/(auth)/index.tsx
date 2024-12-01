@@ -1,10 +1,10 @@
-import { SafeAreaView, View } from "react-native";
+import { Pressable, SafeAreaView, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import FontText from "@/components/FontText";
 import { PasskeyContainer } from "../(onboarding)/secure-account";
 import usePasskeys from "@/hooks/usePassKey";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 export default function EntryPoint() {
   const { passkeys, fill, handleKeyPadPress } = usePasskeys();
@@ -35,30 +35,30 @@ export default function EntryPoint() {
             handleKeyPadPress={handleKeyPadPress}
           />
         </View>
-
-        <Link
-          href="/sign-in"
-          style={{
-            marginTop: 35,
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: 4,
-          }}
-        >
-          <FontText style={{ textAlign: "center" }}>
-            {"Not your account? "}
-          </FontText>
-          <FontText
-            fontWeight={600}
-            color={Colors.base}
+        <Pressable onPress={() => router.push("/sign-in")}>
+          <View
             style={{
-              textAlign: "center",
-              textDecorationLine: "underline",
+              marginTop: 35,
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 4,
             }}
           >
-            {"Switch account"}
-          </FontText>
-        </Link>
+            <FontText style={{ textAlign: "center" }}>
+              {"Not your account? "}
+            </FontText>
+            <FontText
+              fontWeight={600}
+              color={Colors.base}
+              style={{
+                textAlign: "center",
+                textDecorationLine: "underline",
+              }}
+            >
+              {"Switch account"}
+            </FontText>
+          </View>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

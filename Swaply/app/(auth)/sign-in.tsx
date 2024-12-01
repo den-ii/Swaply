@@ -64,15 +64,22 @@ export default function SignIn() {
             <FontText>Password</FontText>
             <Password value={""} onChangeText={() => {}} />
           </View>
-          <FontText
-            color={Colors.light.neutral}
-            fontWeight={500}
-            style={{ marginTop: 8, textAlign: "right" }}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              marginTop: 8,
+            }}
           >
-            Forgot Password?
-          </FontText>
+            <Pressable onPress={() => router.push("/(auth)/verify-otp")}>
+              <FontText color={Colors.light.neutral} fontWeight={500}>
+                Forgot Password?
+              </FontText>
+            </Pressable>
+          </View>
+
           <View style={{ marginTop: 32 }}>
-            <Button text={"Continue"} action={handleContinue} />
+            <Button text={"Log In"} action={() => {}} />
           </View>
           <Pressable onPress={() => router.push("/(onboarding)/")}>
             <View

@@ -8,11 +8,11 @@ import Button from "./Button";
 import Password from "./Password";
 
 export default function PasswordVerification({
-  onContinue,
+  action,
   headerText,
   labelText,
 }: {
-  onContinue: () => void;
+  action: () => void;
   headerText: string;
   labelText: string;
 }) {
@@ -61,10 +61,7 @@ export default function PasswordVerification({
       </View>
 
       <View style={{ marginTop: 32 }}>
-        <Button
-          text="Continue"
-          action={() => router.push("/personal-details")}
-        />
+        <Button text="Continue" action={action} />
       </View>
     </View>
   );

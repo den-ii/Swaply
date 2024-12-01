@@ -14,8 +14,7 @@ export default function Sent() {
   const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
 
   const handleOkay = () => {
-    router.dismissAll();
-    router.push("/(home)");
+    router.navigate("/(home)");
   };
   return (
     <SuccessScreen
@@ -54,39 +53,4 @@ export default function Sent() {
       />
     </SuccessScreen>
   );
-}
-
-{
-  /* 
-<View
-              style={{
-                borderWidth: 1,
-                borderRadius: 16,
-                borderColor: "#ECEFF1",
-                backgroundColor: "#FFF",
-                marginBottom: 4,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 12,
-                  padding: 16,
-                }}
-              >
-                <BeneficiaryHeart />
-                <FontText fontSize={14} fontWeight={500}>
-                  Save to beneficiary
-                </FontText>
-              </View>
-            </View>
-            <Button text={"Okay, got it"} action={handleOkay} />
-            <Button
-              text={"Download receipt"}
-              action={() => {}}
-              bgColor="#ECEFF1"
-              textColor={Colors.light.text}
-            />
-          </View> */
 }

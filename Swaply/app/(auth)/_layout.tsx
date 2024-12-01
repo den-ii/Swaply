@@ -4,7 +4,7 @@ import { Stack } from "expo-router";
 
 export default function AuthLayout() {
   return (
-    <Stack screenOptions={{ animation: "fade" }}>
+    <Stack screenOptions={{}}>
       <Stack.Screen
         name="index"
         options={{
@@ -28,7 +28,16 @@ export default function AuthLayout() {
       <Stack.Screen
         name="reset-password"
         options={{
+          headerShown: true,
           header: () => <NavBack />,
+        }}
+      />
+      <Stack.Screen
+        name="reset-success"
+        options={{
+          headerShown: false,
+          presentation: "fullScreenModal",
+          animation: "fade",
         }}
       />
     </Stack>

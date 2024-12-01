@@ -18,8 +18,7 @@ export default function SuccessScreen({
   children: React.ReactNode;
 }) {
   const handleOkay = () => {
-    router.dismissAll();
-    router.push("/(home)");
+    router.navigate("/(home)");
   };
   return (
     <SafeAreaView
