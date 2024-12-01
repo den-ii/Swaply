@@ -6,14 +6,19 @@ import { useEffect, useState } from "react";
 import NotFound from "./NotFound";
 import { router } from "expo-router";
 
-
-
 function BeneficiaryProfile({ beneficiary }: { beneficiary: any }) {
   const image =
     beneficiary.firstName[0].toUpperCase() +
     beneficiary.lastName[0].toUpperCase();
   return (
-    <Pressable onPress={() => router.push( {pathname: "/beneficiary_details", params: {id: beneficiary.id}})}>
+    <Pressable
+      onPress={() =>
+        router.push({
+          pathname: "/beneficiary/beneficiary_details",
+          params: { id: beneficiary.id },
+        })
+      }
+    >
       <View
         style={{
           flexDirection: "row",
