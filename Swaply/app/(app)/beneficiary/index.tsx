@@ -8,7 +8,7 @@ import NoBeneficiary from "@/components/beneficiary/NoBeneficiary";
 import { useState } from "react";
 import BeneficiaryList from "@/components/beneficiary/BeneficiaryList";
 
-export  const beneficiaries = [
+export const beneficiaries = [
   {
     id: 0,
     firstName: "John",
@@ -26,7 +26,6 @@ export  const beneficiaries = [
 ];
 
 export default function Beneficiary() {
-
   const [searchVal, setSearchVal] = useState("");
 
   return (

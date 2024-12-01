@@ -6,8 +6,12 @@ import TabBeneficiary from "@/components/TabBeneficiary";
 import TabHistory from "@/components/TabHistory";
 import { Redirect } from "expo-router";
 
+export const unstable_settings = {
+  initialRouteName: "(home)",
+};
+
 export default function TabLayout() {
-  const auth = false;
+  const auth = true;
   const first_time = false;
 
   if (!auth) {
@@ -17,6 +21,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      initialRouteName="(home)"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
@@ -44,7 +49,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(beneficiary)"
+        name="beneficiary"
         options={{
           tabBarLabel: "Beneficiary",
           tabBarIcon: ({ focused }) => (
