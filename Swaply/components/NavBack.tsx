@@ -11,7 +11,7 @@ export default function NavBack() {
     <View
       style={{
         justifyContent: "center",
-        backgroundColor: Colors.light.body,
+        backgroundColor: "#fff",
         paddingHorizontal: UI.paddingHorizontal,
         paddingTop: 60,
         paddingBottom: 16,

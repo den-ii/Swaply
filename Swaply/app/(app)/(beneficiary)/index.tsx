@@ -8,23 +8,24 @@ import NoBeneficiary from "@/components/beneficiary/NoBeneficiary";
 import { useState } from "react";
 import BeneficiaryList from "@/components/beneficiary/BeneficiaryList";
 
+export  const beneficiaries = [
+  {
+    id: 0,
+    firstName: "John",
+    lastName: "Doe",
+    bankName: "Access Bank",
+    bankNo: "0987457382",
+  },
+  {
+    id: 1,
+    firstName: "Ayomide",
+    lastName: "Doe",
+    bankName: "First Bank",
+    bankNo: "0987457382",
+  },
+];
+
 export default function Beneficiary() {
-  const beneficiaries = [
-    {
-      id: 0,
-      firstName: "John",
-      lastName: "Doe",
-      bankName: "Access Bank",
-      bankNo: "0987457382",
-    },
-    {
-      id: 1,
-      firstName: "Ayomide",
-      lastName: "Doe",
-      bankName: "First Bank",
-      bankNo: "0987457382",
-    },
-  ];
 
   const [searchVal, setSearchVal] = useState("");
 

@@ -26,7 +26,7 @@ const FontText = ({
   };
 
   // Set the font family based on the fontWeight prop
-  if (fontFamily == "P22") {
+  if (fontFamily?.toUpperCase() == "P22") {
     switch (fontWeight) {
       case 400:
         fullStyles.fontFamily = "Inter_400Regular";

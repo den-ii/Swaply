@@ -113,7 +113,7 @@ export default function Currency({
           <View style={{ paddingHorizontal: 16 }}>
             <View style={{ height: 2, backgroundColor: "#F2F6F6" }}></View>
           </View>
-          <Pressable onPress={() => switchCurrency(Country.BENIN)}>
+          <Pressable onPress={() => switchCurrency(Country.NIGERIA)}>
             <View style={styles.options}>
               <View
                 style={{

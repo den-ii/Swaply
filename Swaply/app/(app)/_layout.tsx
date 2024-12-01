@@ -44,7 +44,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="beneficiary"
+        name="(beneficiary)"
         options={{
           tabBarLabel: "Beneficiary",
           tabBarIcon: ({ focused }) => (
