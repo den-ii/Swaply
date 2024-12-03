@@ -55,17 +55,6 @@ export default function KYC() {
             click here to update
           </Text>
         </Text>
-
-        {/* <FontText
-          fontWeight={600}
-          color={Colors.base}
-          style={{
-            textAlign: "center",
-            textDecorationLine: "underline",
-          }}
-        >
-          {"Sign up"}
-        </FontText> */}
       </View>
     </View>
   );

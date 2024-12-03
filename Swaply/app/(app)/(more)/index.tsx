@@ -211,9 +211,14 @@ export default function More() {
                 <View style={styles.list}>
                   <View style={styles.listDescription}>
                     <SectionIcon Icon={Language} />
-                    <FontText fontSize={14} fontWeight={500}>
-                      App language
-                    </FontText>
+                    <View style={{ gap: 2 }}>
+                      <FontText fontSize={14} fontWeight={500}>
+                        App language
+                      </FontText>
+                      <FontText fontSize={12} color={Colors.light.neutral}>
+                        English
+                      </FontText>
+                    </View>
                   </View>
                   <ChevronRight fill={Colors.light.neutral} />
                 </View>
