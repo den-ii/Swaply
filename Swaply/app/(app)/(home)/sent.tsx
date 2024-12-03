@@ -1,6 +1,4 @@
 import { View, Text, SafeAreaView, Modal } from "react-native";
-import SentLogo from "@/assets/images/sent-logo.svg";
-import BlueSentLogo from "@/assets/images/sent-logo-blue.svg";
 import Button from "@/components/Button";
 import { useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";

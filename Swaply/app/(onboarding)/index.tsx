@@ -3,7 +3,7 @@ import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import React, { useState } from "react";
 import ChevronDown from "@/assets/images/chevron-down.svg";
-import { Pressable, TextInput, View } from "react-native";
+import { Pressable, TextInput, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "@/components/recepient-details/NGN";
 import Close from "@/assets/images/close.svg";
@@ -90,34 +90,20 @@ export default function GetStarted() {
             paddingHorizontal: 6,
           }}
         >
-          <FontText
-            fontSize={12}
-            color={"#757D87"}
-            style={{ textAlign: "center" }}
-          >
-            {"By creating an account, I agree to Swaply’s "}
-          </FontText>
-          <FontText
-            fontSize={12}
-            color={Colors.base}
-            style={{
-              textDecorationLine: "underline",
-            }}
-          >
-            {"Terms & Condition"}
-          </FontText>
-          <FontText fontSize={12} color={"#757D87"}>
-            {"and acknowledge "}
-          </FontText>
-          <FontText
-            fontSize={12}
-            color={Colors.base}
-            style={{
-              textDecorationLine: "underline",
-            }}
-          >
-            {"Privacy policy."}
-          </FontText>
+          <Text style={{ fontSize: 12, color: "#757D87", textAlign: "center" }}>
+            <Text style={{}}>By creating an account, I agree to Swaply’s </Text>
+            <Text
+              style={{ color: Colors.base, textDecorationLine: "underline" }}
+            >
+              Terms & Conditions
+            </Text>
+            <Text style={{}}> and acknowledge </Text>
+            <Text
+              style={{ color: Colors.base, textDecorationLine: "underline" }}
+            >
+              Privacy Policy.
+            </Text>
+          </Text>
         </View>
         <View style={{ marginVertical: 16 }}>
           <Button
@@ -132,16 +118,21 @@ export default function GetStarted() {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
+              marginTop: 16,
             }}
           >
-            <FontText fontWeight={400}>{"Already have an account? "}</FontText>
-            <FontText
-              fontWeight={600}
-              color={Colors.base}
-              style={{ textDecorationLine: "underline" }}
-            >
-              Log in
-            </FontText>
+            <Text>
+              <Text>Already have an account? </Text>
+              <Text
+                style={{
+                  color: Colors.base,
+                  textDecorationLine: "underline",
+                  fontFamily: "Inter_500Medium",
+                }}
+              >
+                Log in
+              </Text>
+            </Text>
           </View>
         </Pressable>
       </View>

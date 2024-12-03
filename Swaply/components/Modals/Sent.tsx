@@ -77,6 +77,7 @@ export default function Sent({
                 text={"Download receipt"}
                 bgColor="#ECEFF1"
                 textColor={Colors.light.text}
+                action={() => {}}
               />
             </View>
           </View>

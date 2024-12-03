@@ -1,4 +1,4 @@
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack } from "expo-router";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -29,13 +29,7 @@ export default function RootLayout() {
   }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="(onboarding)" />
-      </Stack>
+      <Slot />
     </GestureHandlerRootView>
   );
 }

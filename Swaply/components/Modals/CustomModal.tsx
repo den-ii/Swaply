@@ -33,11 +33,8 @@ export default function CustomModal({
   const pan = Gesture.Pan();
 
   const gesture = pan
-    .onBegin((e) => {
-      console.log(e);
-    })
+    .onBegin((e) => {})
     .onUpdate((e) => {
-      console.log(e);
       if (e.translationY > 0) translateY.value = e.translationY;
     })
     .onEnd((e) => {

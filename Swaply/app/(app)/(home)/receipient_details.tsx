@@ -132,7 +132,7 @@ export default function RecipientDetails() {
           }}
         >
           {/* <Link
-            href="/(home)/sending"
+            href="/home/sending"
             style={{
               width: "100%",
               paddingVertical: 20,

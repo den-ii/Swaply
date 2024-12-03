@@ -28,7 +28,7 @@ export default function ChooseRecipient() {
             : "Send to a mobile money account"}
         </FontText>
       </View>
-      <Search />
+      <Search value={""} setValue={() => {}} />
       <View>
         <Pressable onPress={() => router.push("/(home)/receipient_details")}>
           <View

@@ -4,7 +4,7 @@ import CustomModal from "./CustomModal";
 import FontText from "../FontText";
 import { Colors } from "@/constants/Colors";
 import { useCloseModal } from "@/hooks/useCloseModal";
-import { beneficiaries } from "@/app/(app)/beneficiary";
+import { beneficiaries } from "@/app/(app)/(beneficiary)";
 import Button from "../Button";
 
 interface DeleteBeneficiaryProps {

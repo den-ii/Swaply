@@ -18,7 +18,7 @@ export default function ResetSuccess() {
         style={{
           marginTop: 16,
           marginBottom: 4,
-          height: 350,
+          height: "60%",
         }}
       >
         <Button text={"Back to Log in"} action={handleOkay} />

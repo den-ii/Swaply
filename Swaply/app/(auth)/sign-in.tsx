@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   TextInput,
   Pressable,
+  Text,
 } from "react-native";
 import HomeHeaderBanner from "@/assets/images/home_header.svg";
 import FontText from "@/components/FontText";
@@ -11,7 +12,6 @@ import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import Button from "@/components/Button";
 import { Link, router } from "expo-router";
-import Entypo from "@expo/vector-icons/Entypo";
 import Password from "@/components/Password";
 
 export default function SignIn() {
@@ -91,19 +91,24 @@ export default function SignIn() {
                 backgroundColor: "transparent",
               }}
             >
-              <FontText style={{ textAlign: "center" }}>
-                {"Don't have an account? "}
-              </FontText>
-              <FontText
-                fontWeight={600}
-                color={Colors.base}
+              <Text
                 style={{
                   textAlign: "center",
-                  textDecorationLine: "underline",
+                  fontFamily: "Inter_400Regular",
+                  fontSize: 14,
                 }}
               >
-                {"Sign up"}
-              </FontText>
+                <Text>Don't have an account? </Text>
+                <Text
+                  style={{
+                    color: Colors.base,
+                    fontFamily: "Inter_500Medium",
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Sign up
+                </Text>
+              </Text>
             </View>
           </Pressable>
         </View>
