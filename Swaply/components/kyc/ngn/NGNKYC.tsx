@@ -3,12 +3,13 @@ import { Colors } from "@/constants/Colors";
 import ChevronRight from "@/assets/images/chevron-right.svg";
 import { styles } from "@/app/(app)/(more)/index";
 
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { router } from "expo-router";
 
 export default function NGNKYC() {
   return (
     <View style={styles.sectionContainer}>
-      <Pressable>
+      <Pressable onPress={() => router.push("/(kyc)/nin")}>
         <View style={styles.list}>
           <View style={{ gap: 2 }}>
             <FontText fontSize={14} fontWeight={500}>
@@ -21,7 +22,7 @@ export default function NGNKYC() {
           <ChevronRight fill={Colors.light.neutral} />
         </View>
       </Pressable>
-      <Pressable>
+      <Pressable onPress={() => router.push("/(kyc)/bvn")}>
         <View style={styles.list}>
           <View style={{ gap: 2 }}>
             <FontText fontSize={14} fontWeight={500}>

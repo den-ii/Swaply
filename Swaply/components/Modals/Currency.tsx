@@ -26,6 +26,11 @@ export default function Currency({
 }: CurrencyProps) {
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
 
+  const handleCurrencySwitch = (currency: Country) => {
+    switchCurrency(currency);
+    closeModal();
+  };
+
   return (
     <CustomModal
       modalActive={modalActive}
@@ -76,7 +81,7 @@ export default function Currency({
             marginTop: 24,
           }}
         >
-          <Pressable onPress={() => switchCurrency(Country.BENIN)}>
+          <Pressable onPress={() => handleCurrencySwitch(Country.BENIN)}>
             <View style={styles.options}>
               <View
                 style={{
@@ -90,12 +95,12 @@ export default function Currency({
                   <FontText fontWeight={500} fontSize={16}>
                     West African CFA fran
                   </FontText>
-                  <FontText color={Colors.light.neutral} fontSize={14}>
-                    CFA
-                  </FontText>
                 </View>
               </View>
-              <View
+              <FontText color={Colors.light.neutral} fontSize={14}>
+                CFA
+              </FontText>
+              {/* <View
                 style={{
                   width: 16,
                   height: 16,
@@ -107,13 +112,13 @@ export default function Currency({
                 }}
               >
                 {sendIsCFA && <Selected />}
-              </View>
+              </View> */}
             </View>
           </Pressable>
           <View style={{ paddingHorizontal: 16 }}>
             <View style={{ height: 2, backgroundColor: "#F2F6F6" }}></View>
           </View>
-          <Pressable onPress={() => switchCurrency(Country.NIGERIA)}>
+          <Pressable onPress={() => handleCurrencySwitch(Country.NIGERIA)}>
             <View style={styles.options}>
               <View
                 style={{
@@ -127,12 +132,12 @@ export default function Currency({
                   <FontText fontWeight={500} fontSize={16}>
                     Nigerian Naira
                   </FontText>
-                  <FontText color={Colors.light.neutral} fontSize={14}>
-                    NGN
-                  </FontText>
                 </View>
               </View>
-              <View
+              <FontText color={Colors.light.neutral} fontSize={14}>
+                NGN
+              </FontText>
+              {/* <View
                 style={{
                   width: 16,
                   height: 16,
@@ -144,7 +149,7 @@ export default function Currency({
                 }}
               >
                 {sendIsNGN && <Selected />}
-              </View>
+              </View> */}
             </View>
           </Pressable>
         </View>

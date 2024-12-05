@@ -18,6 +18,7 @@ export const Colors = {
     body: "#FAFBFB",
     text: "#11181C",
     accent: "#FE6C02",
+    lightAccent: "#FFF2E8",
     background: "#fff",
     tint: tintColorLight,
     icon: "#687076",

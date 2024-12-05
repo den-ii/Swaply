@@ -23,8 +23,8 @@ import CFA_flag from "@/assets/images/CFA_32.svg";
 import NGN_flag from "@/assets/images/NGN_32.svg";
 import Selected from "@/assets/images/selected.svg";
 import { transferStore, transferStoreDefaultValue } from "@/store";
-import CustomModal from "@/components/Modals/CustomModal";
-import Currency from "@/components/Modals/Currency";
+import CustomModal from "@/components/modals/CustomModal";
+import Currency from "@/components/modals/Currency";
 import { Country } from "@/types/country";
 
 export const CountryRate = {

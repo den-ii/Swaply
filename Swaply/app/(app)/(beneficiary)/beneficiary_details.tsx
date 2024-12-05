@@ -6,7 +6,7 @@ import { UI } from "@/constants/UI";
 import FontText from "@/components/FontText";
 import NGN_10 from "@/assets/images/NGN_10.svg";
 import Button from "@/components/Button";
-import DeleteBeneficiary from "@/components/Modals/DeleteBeneciary";
+import DeleteBeneficiary from "@/components/modals/DeleteBeneciary";
 import { useState } from "react";
 
 export default function BeneficiaryDetails() {
