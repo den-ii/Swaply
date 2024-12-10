@@ -5,7 +5,7 @@ import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import VerificationInProgress from "@/components/modals/VerificationInProgress";
+import VerificationInProgress from "@/components/modalsoo/VerificationInProgress";
 
 export default function NIN() {
   const [nin, setNin] = useState("");
