@@ -6,7 +6,7 @@ import { Colors } from "@/constants/Colors";
 import { useCloseModal } from "@/hooks/useCloseModal";
 import Button from "../Button";
 
-export default function VerificationInProgress({
+export default function InformationSaved({
   setModalActive,
   modalActive,
 }: {
@@ -47,13 +47,13 @@ export default function VerificationInProgress({
         </View>
         <View>
           <FontText fontFamily="P22" fontWeight={700} fontSize={24}>
-            Verification in progress
+            Information Saved
           </FontText>
         </View>
         <View style={{ marginTop: 16 }}>
           <FontText color={Colors.light.neutral}>
-            We’ll notify you once checks are all complete. This typically takes
-            between 3 minutes to an hour.
+            Your information has been securely updated. Thank you for verifying
+            your information
           </FontText>
         </View>
         <View

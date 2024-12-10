@@ -1,4 +1,4 @@
-import { Pressable, View, StyleSheet } from "react-native";
+import { Pressable, Text, View, StyleSheet } from "react-native";
 import Close from "@/assets/images/close.svg";
 import CustomModal from "./CustomModal";
 import FontText from "../FontText";
@@ -6,7 +6,7 @@ import { Colors } from "@/constants/Colors";
 import { useCloseModal } from "@/hooks/useCloseModal";
 import Button from "../Button";
 
-export default function VerificationInProgress({
+export default function InformationUpdate({
   setModalActive,
   modalActive,
 }: {
@@ -47,15 +47,21 @@ export default function VerificationInProgress({
         </View>
         <View>
           <FontText fontFamily="P22" fontWeight={700} fontSize={24}>
-            Verification in progress
+            Information Update
           </FontText>
         </View>
-        <View style={{ marginTop: 16 }}>
-          <FontText color={Colors.light.neutral}>
-            We’ll notify you once checks are all complete. This typically takes
-            between 3 minutes to an hour.
-          </FontText>
-        </View>
+        <Text
+          style={{
+            marginTop: 16,
+            fontSize: 14,
+            fontFamily: "Inter_400Regular",
+          }}
+        >
+          <Text style={{ color: Colors.light.neutral }}>
+            To update any of your information, please send an email to{" "}
+          </Text>
+          <Text style={{ color: Colors.base }}>support@swaply.com</Text>
+        </Text>
         <View
           style={{ flex: 1, justifyContent: "flex-end", paddingBottom: 12 }}
         >

@@ -38,7 +38,7 @@ export default function BVN() {
         </FontText>
         <Text
           style={{
-            fontFamily: "Inter_400Medium",
+            fontFamily: "Inter_400Regular",
             marginTop: 16,
             color: Colors.light.neutral,
           }}

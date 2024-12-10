@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import VerificationInProgress from "@/components/modals/VerificationInProgress";
 
-export default function NIN() {
-  const [nin, setNin] = useState("");
+export default function CIP() {
+  const [cip, setCIP] = useState("");
   const [verificationInProgress, setVerificationInProgress] = useState(false);
   const [modalActive, setModalActive] = useState(true);
 
@@ -16,7 +16,7 @@ export default function NIN() {
     if (verificationInProgress) setModalActive(true);
   }, []);
 
-  const verifyNIN = () => {
+  const verifyCIP = () => {
     setVerificationInProgress(true);
     setModalActive(true);
     // Call API to verify NIN
@@ -34,7 +34,7 @@ export default function NIN() {
     >
       <View style={{ flex: 1 }}>
         <FontText fontSize={34} fontWeight={700} fontFamily="p22">
-          NIN
+          CIP
         </FontText>
         <Text
           style={{
@@ -43,25 +43,25 @@ export default function NIN() {
             color: Colors.light.neutral,
           }}
         >
-          <Text>Please verify your National Identity Number. Dial</Text>
-          <Text style={{ color: Colors.base }}> *346# </Text>
-          <Text>to get NIN</Text>
+          <Text>
+            Please verify your Certificat d'Identification Personnelle
+          </Text>
         </Text>
         <View style={{ marginTop: 32 }}>
           <CustomInput
-            label="NIN"
+            label="CIP"
             inputMode="numeric"
             returnKey
-            placeholder="Please enter NIN"
-            value={nin}
-            setValue={setNin}
+            placeholder="Please enter CIP"
+            value={cip}
+            setValue={setCIP}
           />
         </View>
       </View>
       <View style={{ paddingVertical: 16, gap: 16 }}>
         <DataSecure />
         <View>
-          <Button text="Verify NIN" action={verifyNIN} />
+          <Button text="Verify CIP" action={verifyCIP} />
         </View>
       </View>
       {verificationInProgress && (

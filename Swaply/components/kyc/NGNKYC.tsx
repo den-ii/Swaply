@@ -35,7 +35,7 @@ export default function NGNKYC() {
           <ChevronRight fill={Colors.light.neutral} />
         </View>
       </Pressable>
-      <Pressable>
+      <Pressable onPress={() => router.push("/next_of_kin")}>
         <View style={styles.list}>
           <View style={styles.listDescription}>
             <FontText
@@ -49,7 +49,7 @@ export default function NGNKYC() {
           <ChevronRight fill={Colors.light.neutral} />
         </View>
       </Pressable>
-      <Pressable>
+      <Pressable onPress={() => router.push("/ngn_address")}>
         <View style={styles.listWithoutBorder}>
           <View style={styles.listDescription}>
             <FontText

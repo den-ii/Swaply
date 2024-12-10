@@ -67,6 +67,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderColor: "#ECEFF1",
     position: "relative",
+    fontSize: 14,
+    fontFamily: "Inter_400Regular",
   },
 
   cancel: {

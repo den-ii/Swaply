@@ -35,6 +35,7 @@ export const PhoneNumberInput = ({}) => {
           borderColor: "#ECEFF1",
           borderWidth: 1,
           marginTop: 8,
+          backgroundColor: "white",
         }}
       >
         <Pressable onPress={() => setModalActive(true)}>
@@ -56,7 +57,10 @@ export const PhoneNumberInput = ({}) => {
             </View>
           </View>
         </Pressable>
-        <TextInput style={{ flex: 1, paddingHorizontal: 12 }} />
+        <TextInput
+          style={{ flex: 1, paddingHorizontal: 12 }}
+          placeholder="901 234 8909"
+        />
       </View>
       <PhoneNumberModal
         countryCode={countryCode}
