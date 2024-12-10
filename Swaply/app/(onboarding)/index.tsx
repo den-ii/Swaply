@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "@/components/recepient-details/NGN";
 import Close from "@/assets/images/close.svg";
 import Button from "@/components/Button";
-import Country from "@/components/modalsoo/Country";
+import Country from "@/components/modals/Country";
 import { router } from "expo-router";
 
 export default function GetStarted() {

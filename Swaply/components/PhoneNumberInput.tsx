@@ -2,7 +2,7 @@ import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import FontText from "./FontText";
 import CFA_flag from "@/assets/images/CFA_32.svg";
 import NGN_flag from "@/assets/images/NGN_32.svg";
-import CustomModal from "./modalsoo/CustomModal";
+import CustomModal from "./modals/CustomModal";
 import NGN from "@/assets/images/NGN_16.svg";
 import CFA from "@/assets/images/CFA_16.svg";
 

@@ -12,11 +12,11 @@ import Checkbox from "@/assets/images/checkbox.svg";
 import { useRouter } from "expo-router";
 import Button from "@/components/Button";
 import { useState } from "react";
-import SelectBank from "@/components/modalsoo/SelectBank";
+import SelectBank from "@/components/modals/SelectBank";
 import { transferStore } from "@/store";
 import NGNRecepientDetails from "@/components/recepient-details/NGN";
 import CFARecepientDetails from "@/components/recepient-details/CFA";
-import Sent from "@/components/modalsoo/Sent";
+import Sent from "@/components/modals/Sent";
 import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 
 export default function RecipientDetails() {
