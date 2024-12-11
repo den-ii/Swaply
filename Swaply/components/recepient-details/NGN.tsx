@@ -20,7 +20,7 @@ export default function NGNRecepientDetails({
   setSelectBankModal: Function;
 }) {
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Pressable onPress={() => setSelectBankModal(true)}>
         <View style={styles.inputContainer}>
           <FontText>Select Bank</FontText>

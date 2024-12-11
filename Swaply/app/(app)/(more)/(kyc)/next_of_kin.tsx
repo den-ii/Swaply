@@ -50,7 +50,14 @@ export default function NextOfKin() {
           Please enter the details of your Next of kin
         </Text>
       </View>
-      <ScrollView style={{ flex: 1, marginTop: 16, paddingTop: 16 }}>
+      <ScrollView
+        style={{
+          flex: 1,
+          marginTop: 16,
+          paddingTop: 16,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
         <View>
           <CustomInput
             label="Name of Next of Kin"

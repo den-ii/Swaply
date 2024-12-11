@@ -102,7 +102,7 @@ export default function BeneficiaryList({
           >
             RECENT RECIPIENTS
           </FontText>
-          <ScrollView style={{ gap: 12 }}>
+          <ScrollView style={{ gap: 12 }} showsVerticalScrollIndicator={false}>
             {searchedList.map((beneficiary) => (
               <BeneficiaryProfile
                 key={beneficiary.id}

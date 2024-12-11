@@ -29,8 +29,8 @@ export default function KYC() {
             Please provide the following documents to verify your account
           </FontText>
         </View>
-        {/* <NGNKYC /> */}
-        <CFAKYC />
+        <NGNKYC />
+        {/* <CFAKYC /> */}
       </View>
       <Pressable onPress={() => setInformationUpdateModal(true)}>
         <View

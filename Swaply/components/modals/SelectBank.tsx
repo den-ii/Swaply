@@ -95,7 +95,10 @@ export default function SelectBank({
             placeholderTextColor={Colors.light.textDisabled}
           />
         </View>
-        <ScrollView style={{ marginTop: 16 }}>
+        <ScrollView
+          style={{ marginTop: 16 }}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={{ backgroundColor: "white", borderRadius: 20 }}>
             {banks.map((bank) => (
               <Pressable

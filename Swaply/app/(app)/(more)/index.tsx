@@ -59,60 +59,65 @@ export default function More() {
             </View>
           </Pressable>
         </View>
-        <ScrollView style={{ paddingBottom: 20 }}>
-          <View
-            style={{
-              padding: 16,
-              marginTop: 16,
-              borderWidth: 1,
-              borderRadius: 16,
-              backgroundColor: "#fff",
-              borderColor: "#F5F7F8",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              gap: 8,
-            }}
-          >
-            <View style={{ gap: 8 }}>
-              <View
-                style={{
-                  backgroundColor: Colors.light.accent,
-                  width: 48,
-                  height: 48,
-                  borderRadius: 48,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <FontText fontSize={18} fontWeight={600} color={"#fff"}>
-                  AD
-                </FontText>
-              </View>
-              <FontText fontFamily="p22" fontSize={24} fontWeight={700}>
-                Ayomide Daniel
-              </FontText>
-              <FontText fontSize={14} color={Colors.light.neutral}>
-                Daniel@gmail.com
-              </FontText>
-            </View>
+        <ScrollView
+          style={{ paddingBottom: 20 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <Pressable onPress={() => router.push("/account-limit")}>
             <View
               style={{
+                padding: 16,
+                marginTop: 16,
+                borderWidth: 1,
+                borderRadius: 16,
+                backgroundColor: "#fff",
+                borderColor: "#F5F7F8",
                 flexDirection: "row",
-                height: 24,
-                justifyContent: "center",
-                gap: 4,
-                paddingHorizontal: 9,
-                borderRadius: 75,
-                alignItems: "center",
-                backgroundColor: "#FFBB8B",
+                justifyContent: "space-between",
+                gap: 8,
               }}
             >
-              <Star />
-              <FontText fontSize={10.5} fontWeight={500}>
-                Tier 1
-              </FontText>
+              <View style={{ gap: 8 }}>
+                <View
+                  style={{
+                    backgroundColor: Colors.light.accent,
+                    width: 48,
+                    height: 48,
+                    borderRadius: 48,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <FontText fontSize={18} fontWeight={600} color={"#fff"}>
+                    AD
+                  </FontText>
+                </View>
+                <FontText fontFamily="p22" fontSize={24} fontWeight={700}>
+                  Ayomide Daniel
+                </FontText>
+                <FontText fontSize={14} color={Colors.light.neutral}>
+                  Daniel@gmail.com
+                </FontText>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  height: 24,
+                  justifyContent: "center",
+                  gap: 4,
+                  paddingHorizontal: 9,
+                  borderRadius: 75,
+                  alignItems: "center",
+                  backgroundColor: "#FFBB8B",
+                }}
+              >
+                <Star />
+                <FontText fontSize={10.5} fontWeight={500}>
+                  Tier 1
+                </FontText>
+              </View>
             </View>
-          </View>
+          </Pressable>
           <View style={{ paddingTop: 20, paddingBottom: 16 }}>
             <View>
               <FontText

@@ -50,7 +50,10 @@ export default function AddressCFA() {
           Please enter the full details of your current address
         </Text>
       </View>
-      <ScrollView style={{ flex: 1, paddingTop: 16 }}>
+      <ScrollView
+        style={{ flex: 1, paddingTop: 16 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{ gap: 12, marginBottom: 16 }}>
           <FontText>Department</FontText>
           <Pressable onPress={() => {}}>
