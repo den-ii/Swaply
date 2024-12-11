@@ -44,7 +44,7 @@ export default function AccountLimit() {
               padding: 16,
               backgroundColor: "white",
               borderWidth: 1,
-              borderColor: activeIndex === index ? "#039AFF" : "#FFF",
+              borderColor: activeIndex === index ? "#039AFF" : "#F5F7F8",
 
               borderRadius: 16,
               marginBottom: 16,
@@ -66,7 +66,8 @@ export default function AccountLimit() {
                     paddingHorizontal: 9,
                     borderRadius: 75,
                     alignItems: "center",
-                    backgroundColor: index === 0 ? "#FFBB8B" : "#85D1FF",
+                    backgroundColor:
+                      index === activeIndex ? "#FFBB8B" : "#85D1FF",
                   }}
                 >
                   <Star />
