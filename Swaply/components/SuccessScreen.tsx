@@ -18,7 +18,7 @@ export default function SuccessScreen({
   children: React.ReactNode;
 }) {
   const handleOkay = () => {
-    router.navigate("/(home)");
+    router.navigate("/(app)/(tabs)");
   };
   return (
     <SafeAreaView

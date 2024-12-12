@@ -9,6 +9,14 @@ export default function SecurityLayout() {
         name="code-change"
         options={{ header: () => <NavBack /> }}
       />
+      <Stack.Screen
+        name="code-change-success"
+        options={{
+          headerShown: false,
+          presentation: "fullScreenModal",
+          animation: "fade",
+        }}
+      />
     </Stack>
   );
 }

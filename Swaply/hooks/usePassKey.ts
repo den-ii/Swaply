@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function usePasskeys() {
+export default function usePasskeys(doneFunction: () => void) {
   const [passkeys, setPasskeys] = useState(new Array(6).fill(""));
   const [fill, setFill] = useState(-1);
+
+  useEffect(() => {
+    if (fill === 5) doneFunction();
+  }, [fill]);
 
   const handleKeyPadPress = (value: number | string) => {
     if (value === "backspace") {

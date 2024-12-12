@@ -6,25 +6,35 @@ import { Pressable, View } from "react-native";
 import { useState } from "react";
 import { PasskeyContainer } from "@/components/Passkey";
 import usePasskeys from "@/hooks/usePassKey";
+import { router } from "expo-router";
 
 export default function CodeChange() {
   const {
     passkeys: currentCode,
     fill: currentCodeFill,
     handleKeyPadPress: handleCurrentCodeKeyPadPress,
-  } = usePasskeys();
+  } = usePasskeys(currentCodeDone);
   const {
     passkeys: newCode,
     fill: newCodeFill,
     handleKeyPadPress: handleNewCodeKeyPadPress,
-  } = usePasskeys();
+  } = usePasskeys(newCodeDone);
   const {
     passkeys: verifyNewCode,
     fill: verifyNewCodeFill,
     handleKeyPadPress: handleVerifyNewCodeKeyPadPress,
-  } = usePasskeys();
+  } = usePasskeys(verifyCodeDone);
 
   const [step, setStep] = useState(0);
+  function currentCodeDone() {
+    setStep(1);
+  }
+  function newCodeDone() {
+    setStep(2);
+  }
+  function verifyCodeDone() {
+    router.push("/code-change-success");
+  }
   return (
     <View
       style={{
