@@ -1,8 +1,7 @@
 import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import ChevronRight from "@/assets/images/chevron-right.svg";
-import { styles } from "@/app/(app)/(more)/index";
-
+import { styles } from "@/app/(app)/(tabs)/more";
 import { View, Pressable } from "react-native";
 import { router } from "expo-router";
 

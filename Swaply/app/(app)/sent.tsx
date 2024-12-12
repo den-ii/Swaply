@@ -12,7 +12,7 @@ export default function Sent() {
   const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
 
   const handleOkay = () => {
-    router.navigate("/(home)");
+    router.navigate("/(tabs)/");
   };
   return (
     <SuccessScreen

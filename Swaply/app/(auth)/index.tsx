@@ -2,9 +2,9 @@ import { Pressable, SafeAreaView, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import FontText from "@/components/FontText";
-import { PasskeyContainer } from "../(onboarding)/secure-account";
 import usePasskeys from "@/hooks/usePassKey";
 import { Link, router } from "expo-router";
+import { PasskeyContainer } from "@/components/Passkey";
 
 export default function EntryPoint() {
   const { passkeys, fill, handleKeyPadPress } = usePasskeys();
@@ -44,18 +44,18 @@ export default function EntryPoint() {
               gap: 4,
             }}
           >
-            <FontText style={{ textAlign: "center" }}>
+            {/* <FontText style={{ textAlign: "center" }}>
               {"Not your account? "}
-            </FontText>
+            </FontText> */}
             <FontText
               fontWeight={600}
               color={Colors.base}
               style={{
                 textAlign: "center",
-                textDecorationLine: "underline",
+                // textDecorationLine: "underline",
               }}
             >
-              {"Switch account"}
+              {"Forgot Code?"}
             </FontText>
           </View>
         </Pressable>

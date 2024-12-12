@@ -1,97 +1,68 @@
-import { Tabs } from "expo-router";
-import Home from "@/assets/images/tab_home.svg";
-import More from "@/assets/images/tab_more.svg";
-import { Colors } from "@/constants/Colors";
-import TabBeneficiary from "@/components/TabBeneficiary";
-import TabHistory from "@/components/TabHistory";
-import { Redirect } from "expo-router";
+import NavBack from "@/components/NavBack";
+import { Stack } from "expo-router";
 
 export const unstable_settings = {
-  initialRouteName: "(home)/index",
+  initialRouteName: "/(tabs)/index",
 };
 
-export default function TabLayout() {
-  const auth = true;
-  const first_time = false;
-
-  if (!auth) {
-    if (first_time) return <Redirect href={"/(onboarding)/"} />;
-    return <Redirect href={"/(auth)/"} />;
-  }
-
+export default function AppLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarShowLabel: true,
-        tabBarActiveTintColor: Colors.light.text,
-        tabBarInactiveTintColor: Colors.light.tabIconDefault,
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontFamily: "Inter_600SemiBold",
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="(home)"
+    <Stack screenOptions={{}}>
+      <Stack.Screen
+        name="(tabs)"
         options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ focused }) => (
-            <Home
-              fill={
-                focused
-                  ? Colors.light.tabIconSelected
-                  : Colors.light.tabIconDefault
-              }
-            />
-          ),
+          headerShown: false,
         }}
       />
-      <Tabs.Screen
-        name="(beneficiary)"
+      <Stack.Screen
+        name="choose_recipient"
         options={{
-          tabBarLabel: "Beneficiary",
-          tabBarIcon: ({ focused }) => (
-            <TabBeneficiary
-              fill={
-                focused
-                  ? Colors.light.tabIconSelected
-                  : Colors.light.tabIconDefault
-              }
-            />
-          ),
+          header: () => <NavBack />,
         }}
       />
-      <Tabs.Screen
-        name="history"
+      <Stack.Screen
+        name="receipient_details"
+        options={{ header: () => <NavBack /> }}
+      />
+      <Stack.Screen
+        name="beneficiary_details"
+        options={{ header: () => <NavBack /> }}
+      />
+      <Stack.Screen
+        name="sending"
         options={{
-          tabBarLabel: "History",
-          tabBarIcon: ({ focused }) => (
-            <TabHistory
-              fill={
-                focused
-                  ? Colors.light.tabIconSelected
-                  : Colors.light.tabIconDefault
-              }
-            />
-          ),
+          headerShown: false,
+          presentation: "modal",
         }}
       />
-      <Tabs.Screen
-        name="(more)"
+      <Stack.Screen
+        name="sent"
         options={{
-          tabBarLabel: "More",
-          tabBarIcon: ({ focused }) => (
-            <More
-              fill={
-                focused
-                  ? Colors.light.tabIconSelected
-                  : Colors.light.tabIconDefault
-              }
-            />
-          ),
+          headerShown: false,
+          presentation: "fullScreenModal",
+          animation: "fade",
         }}
       />
-    </Tabs>
+      <Stack.Screen
+        name="(kyc)"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="(security)"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="account-limit"
+        options={{ header: () => <NavBack /> }}
+      />
+      <Stack.Screen
+        name="notifications"
+        options={{ header: () => <NavBack /> }}
+      />
+    </Stack>
   );
 }

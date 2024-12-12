@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { beneficiaries } from ".";
+import { beneficiaries } from "./(tabs)/beneficiary";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import FontText from "@/components/FontText";

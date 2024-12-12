@@ -140,7 +140,7 @@ export default function More() {
                     <ChevronRight fill={Colors.light.neutral} />
                   </View>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={() => router.push("/(app)/(security)")}>
                   <View style={styles.list}>
                     <View style={styles.listDescription}>
                       <SectionIcon Icon={Security} />
@@ -151,7 +151,7 @@ export default function More() {
                     <ChevronRight fill={Colors.light.neutral} />
                   </View>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={() => router.push("/notifications")}>
                   <View style={styles.list}>
                     <View style={styles.listDescription}>
                       <SectionIcon Icon={Notifications} />
@@ -167,7 +167,7 @@ export default function More() {
                     <ChevronRight fill={Colors.light.neutral} />
                   </View>
                 </Pressable>
-                <Pressable onPress={() => router.push("/(kyc)")}>
+                <Pressable onPress={() => router.push("/(app)/(kyc)")}>
                   <View style={styles.listWithoutBorder}>
                     <View style={styles.listDescription}>
                       <SectionIcon Icon={KYC} />

@@ -36,7 +36,7 @@ export default function Country({
       modalActive={modalActive}
       closeModal={closeModal}
       translateY={translateY}
-      height={342}
+      height={312}
       endLimit={100}
     >
       <>

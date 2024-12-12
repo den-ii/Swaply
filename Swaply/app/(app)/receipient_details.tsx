@@ -62,7 +62,7 @@ export default function RecipientDetails() {
         store.recepientCFA = CFAForm;
       });
     }
-    router.navigate("/(home)/sending");
+    router.navigate("/sending");
   };
 
   return (

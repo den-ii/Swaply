@@ -1,12 +1,12 @@
 import NavBack from "@/components/NavBack";
 import { Stack } from "expo-router";
 
-export default function BeneficiaryLayout() {
+export default function SecurityLayout() {
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="index" options={{ header: () => <NavBack /> }} />
       <Stack.Screen
-        name="beneficiary_details"
+        name="code-change"
         options={{ header: () => <NavBack /> }}
       />
     </Stack>

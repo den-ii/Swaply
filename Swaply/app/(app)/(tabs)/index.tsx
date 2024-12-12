@@ -112,7 +112,7 @@ export default function Home() {
       state.rate = sendRate;
       state.transactionFee = fee;
     });
-    router.push("/(home)/choose_receipient");
+    router.push("/(app)/choose_recipient");
   };
 
   const formatNumber = (num: number | string): string => {

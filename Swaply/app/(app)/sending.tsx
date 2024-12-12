@@ -99,7 +99,7 @@ export default function Sending() {
   };
 
   const handleContinue = () => {
-    router.push("/(home)/sent");
+    router.push("/sent");
   };
 
   return (

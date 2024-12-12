@@ -162,7 +162,7 @@ export default function AccountLimit() {
           </View>
         ))}
       </View>
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+      <View style={{ flex: 1, justifyContent: "flex-end", paddingBottom: 16 }}>
         <Button text="Upgrade to Tier 2" action={() => {}} />
       </View>
     </View>

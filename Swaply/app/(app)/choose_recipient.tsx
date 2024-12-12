@@ -30,7 +30,7 @@ export default function ChooseRecipient() {
       </View>
       <Search value={""} setValue={() => {}} />
       <View>
-        <Pressable onPress={() => router.push("/(home)/receipient_details")}>
+        <Pressable onPress={() => router.push("/receipient_details")}>
           <View
             style={{
               backgroundColor: "white",
@@ -63,7 +63,7 @@ export default function ChooseRecipient() {
               >
                 <Add fill="#D45A02" />
               </View>
-              <FontText fontWeight={500} fontSize={16}>
+              <FontText fontWeight={500} fontSize={14}>
                 Send to a new recipient
               </FontText>
             </View>

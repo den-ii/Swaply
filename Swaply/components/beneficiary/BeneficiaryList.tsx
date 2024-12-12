@@ -14,7 +14,7 @@ function BeneficiaryProfile({ beneficiary }: { beneficiary: any }) {
     <Pressable
       onPress={() =>
         router.push({
-          pathname: "/(beneficiary)/beneficiary_details",
+          pathname: "/(app)/beneficiary_details",
           params: { id: beneficiary.id },
         })
       }
