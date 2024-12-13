@@ -11,10 +11,12 @@ export default function PasswordVerification({
   action,
   headerText,
   labelText,
+  buttonText,
 }: {
   action: () => void;
   headerText: string;
   labelText: string;
+  buttonText?: string;
 }) {
   return (
     <View
@@ -24,13 +26,13 @@ export default function PasswordVerification({
         backgroundColor: Colors.light.body,
       }}
     >
-      <View style={{ paddingBottom: 16 }}>
+      <View style={{ paddingBottom: 4, paddingTop: 16 }}>
         <FontText fontFamily="P22" fontWeight={700} fontSize={34}>
           {headerText}
         </FontText>
       </View>
 
-      <View style={{ marginTop: 32, marginBottom: 16 }}>
+      <View style={{ marginTop: 16, marginBottom: 16 }}>
         <FontText>{labelText}</FontText>
         <Password value={""} onChangeText={() => {}} />
       </View>
@@ -61,7 +63,7 @@ export default function PasswordVerification({
       </View>
 
       <View style={{ marginTop: 32 }}>
-        <Button text="Continue" action={action} />
+        <Button text={buttonText ?? "Continue"} action={action} />
       </View>
     </View>
   );

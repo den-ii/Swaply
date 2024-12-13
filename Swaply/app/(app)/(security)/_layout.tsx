@@ -17,6 +17,18 @@ export default function SecurityLayout() {
           animation: "fade",
         }}
       />
+      <Stack.Screen
+        name="password-change"
+        options={{ header: () => <NavBack /> }}
+      />
+      <Stack.Screen
+        name="password-change-success"
+        options={{
+          headerShown: false,
+          presentation: "fullScreenModal",
+          animation: "fade",
+        }}
+      />
     </Stack>
   );
 }

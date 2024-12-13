@@ -1,11 +1,18 @@
 import NavBack from "@/components/NavBack";
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 
 export const unstable_settings = {
   initialRouteName: "/(tabs)/index",
 };
 
 export default function AppLayout() {
+  const auth = true;
+  const first_time = false;
+
+  if (!auth) {
+    if (first_time) return <Redirect href={"/(onboarding)/"} />;
+    return <Redirect href={"/(auth)/"} />;
+  }
   return (
     <Stack screenOptions={{}}>
       <Stack.Screen

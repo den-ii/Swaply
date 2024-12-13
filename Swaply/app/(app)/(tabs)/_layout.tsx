@@ -8,14 +8,6 @@ import { Redirect } from "expo-router";
 import { useEffect } from "react";
 
 export default function TabLayout() {
-  const auth = true;
-  const first_time = false;
-
-  if (!auth) {
-    if (first_time) return <Redirect href={"/(onboarding)/"} />;
-    return <Redirect href={"/(auth)/"} />;
-  }
-
   return (
     <Tabs
       screenOptions={{

@@ -32,7 +32,7 @@ export default function Security() {
           borderRadius: 16,
         }}
       >
-        <Pressable>
+        <Pressable onPress={() => router.push("/password-change")}>
           <View
             style={{
               padding: 16,
