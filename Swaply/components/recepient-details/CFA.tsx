@@ -7,12 +7,12 @@ import {
   StyleSheet,
 } from "react-native";
 import Close from "@/assets/images/close.svg";
-import PhoneInput from "react-native-phone-number-input";
 import ChevronDown from "@/assets/images/chevron-down.svg";
 import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 
 import { styles } from "./NGN";
 import { Colors } from "@/constants/Colors";
+import { PhoneNumberInput } from "../PhoneNumberInput";
 
 export default function CFARecepientDetails({
   form,
@@ -26,37 +26,7 @@ export default function CFARecepientDetails({
       <View style={styles.inputContainer}>
         <FontText>Momo number</FontText>
         <View style={{ position: "relative" }}>
-          <PhoneInput
-            layout="first"
-            containerStyle={{
-              borderRadius: 12,
-              borderColor: "#ECEFF1",
-              width: "100%",
-              borderWidth: 1,
-            }}
-            defaultCode="NG"
-            textInputProps={{
-              inputMode: "numeric",
-              keyboardType: "number-pad",
-              maxLength: 11,
-            }}
-            onChangeFormattedText={(value) => handleForm("momoNumber", value)}
-            textContainerStyle={{
-              borderRadius: 12,
-              width: "100%",
-              backgroundColor: "white",
-            }}
-            textInputStyle={{
-              fontFamily: "Inter_400Regular",
-              fontSize: 14,
-              color: Colors.light.text,
-            }}
-            codeTextStyle={{
-              fontFamily: "Inter_400Regular",
-              fontSize: 14,
-              color: Colors.light.text,
-            }}
-          />
+          <PhoneNumberInput />
           <View style={{ position: "absolute", top: 20, right: 15 }}>
             {form.momoNumber && (
               <Pressable onPress={() => handleForm("momoNumber", "")}>

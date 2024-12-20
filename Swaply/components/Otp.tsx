@@ -11,13 +11,44 @@ export default function Otp({
   email,
   action,
   actionText,
+  loading,
 }: {
   title: string;
   email: string;
-  action: () => void;
+  action: (val: any) => void;
   actionText: string;
+  loading?: boolean;
 }) {
   const [otp, setOtp] = useState("");
+  const [time, setTime] = useState(20);
+  const [interval, handleInterval] = useState<any>(null);
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    if (otp.length < 7) {
+      setDisabled(true);
+      return;
+    }
+    setDisabled(false);
+  }, [otp]);
+
+  useEffect(() => {
+    if (time <= 0) return;
+    const interval = setInterval(() => {
+      setTime((time) => time - 1);
+    }, 1000);
+    handleInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (time <= 0) {
+      clearInterval(interval);
+      return;
+    }
+  }, [time]);
 
   const handleOtpText = ({ key }: { key: string }) => {
     console.log("key:", key);
@@ -55,19 +86,33 @@ export default function Otp({
             textAlign: "center",
             fontFamily: "Inter_600SemiBold",
           }}
-          cursorColor={Colors.light.text}
           keyboardType="number-pad"
           onKeyPress={({ nativeEvent }) => handleOtpText(nativeEvent)}
-          selectionColor={Colors.light.text}
           placeholder="000-000"
           value={otp}
           maxLength={7}
         />
       </View>
-      <FontText style={{ textAlign: "center" }}>Resend OTP (20s)</FontText>
+      <FontText
+        style={{ textAlign: "center" }}
+        fontWeight={600}
+        color={Colors.light.textDisabled}
+      >{`Resend OTP (${time}s)`}</FontText>
 
       <View style={{ marginTop: 16 }}>
-        <Button text="Verify OTP" action={action} />
+        <Button
+          text="Verify OTP"
+          loading={loading}
+          disabled={disabled}
+          action={() =>
+            action({
+              code: otp
+                .split("")
+                .filter((v) => v !== "-")
+                .join(""),
+            })
+          }
+        />
       </View>
     </View>
   );

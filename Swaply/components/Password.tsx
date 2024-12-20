@@ -1,15 +1,17 @@
 import { Colors } from "@/constants/Colors";
-import Entypo from "@expo/vector-icons/Entypo";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import EyeOpen from "@/assets/images/eye-open.svg";
+import EyeClose from "@/assets/images/eye-slash.svg";
 import { useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
 
 export default function Password({
   value,
   onChangeText,
+  error,
 }: {
-  value: number | string;
-  onChangeText: (value: string | number) => void;
+  value: string;
+  onChangeText: (value: string) => void;
+  error?: boolean;
 }) {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -21,32 +23,30 @@ export default function Password({
         <View
           style={{
             position: "absolute",
-            top: 22,
-            right: 20,
-            width: 30,
+            top: 8,
+            right: 0,
+            padding: 16,
           }}
         >
-          {showPassword && <Entypo name="eye" size={22} color="#AEB7BF" />}
-          {!showPassword && (
-            <MaterialCommunityIcons name="eye-off" size={22} color="#AEB7BF" />
-          )}
+          {showPassword && <EyeOpen />}
+          {!showPassword && <EyeClose />}
         </View>
       </Pressable>
 
       <TextInput
         placeholderTextColor={"#AEB7BF"}
+        value={value}
+        onChangeText={(value) => onChangeText(value)}
         style={{
           fontSize: 14,
-          fontFamily: "Inter_600SemiBold",
+          fontFamily: "Inter_400Regular",
           borderRadius: 12,
-          borderColor: "#ECEFF1",
+          borderColor: error ? Colors.error : "#ECEFF1",
           borderWidth: 1,
           padding: 16,
           marginTop: 8,
         }}
-        cursorColor={Colors.light.text}
         secureTextEntry={!showPassword}
-        selectionColor={Colors.light.text}
         placeholder="********"
       />
     </View>

@@ -6,10 +6,13 @@ import {
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
 import { useFonts } from "expo-font";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast from "@/components/Toast";
+import { toastStore } from "@/store";
 
 export default function RootLayout() {
+  const toastActive = toastStore.useState((state) => state.active);
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -29,6 +32,7 @@ export default function RootLayout() {
   }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      {toastActive && <Toast />}
       <Slot />
     </GestureHandlerRootView>
   );

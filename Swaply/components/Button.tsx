@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { ActivityIndicator, Pressable, View } from "react-native";
 import FontText from "./FontText";
 import * as Haptics from "expo-haptics";
 
@@ -8,41 +8,48 @@ interface ButtonProps {
   loadingTextColor?: string;
   textColor?: string;
   loading?: boolean;
+  disabled?: boolean;
   text?: string;
   action: () => void;
 }
 
 const Button = ({
-  loadingColor,
-  bgColor,
-  loadingTextColor,
+  loadingColor = "#AEB7BF",
+  bgColor = "#121212",
+  loadingTextColor = "#fff",
   textColor,
   loading,
+  disabled,
   text,
   action,
 }: ButtonProps) => {
   const handleOnPress = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    if (disabled || loading) return;
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     action();
   };
+
   return (
     <Pressable onPress={handleOnPress}>
       <View
         style={{
-          backgroundColor: bgColor ?? "black",
+          backgroundColor: disabled || loading ? loadingColor : bgColor,
           paddingVertical: 20,
           borderRadius: 100,
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <FontText
-          fontWeight={600}
-          color={textColor ? textColor : "white"}
-          fontSize={16}
-        >
-          {text}
-        </FontText>
+        {!loading && (
+          <FontText
+            fontWeight={600}
+            color={textColor ? textColor : "white"}
+            fontSize={16}
+          >
+            {text}
+          </FontText>
+        )}
+        {loading && <ActivityIndicator size="small" color="#fff" />}
       </View>
     </Pressable>
   );

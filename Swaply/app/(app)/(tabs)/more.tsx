@@ -124,6 +124,7 @@ export default function More() {
                 fontSize={12}
                 color={Colors.light.neutral}
                 fontWeight={500}
+                style={{ paddingLeft: 16 }}
               >
                 GENERAL
               </FontText>
@@ -186,6 +187,7 @@ export default function More() {
               fontSize={12}
               color={Colors.light.neutral}
               fontWeight={500}
+              style={{ paddingLeft: 16 }}
             >
               OTHERS
             </FontText>

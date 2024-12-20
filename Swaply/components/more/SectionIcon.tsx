@@ -9,7 +9,7 @@ export default function SectionIcon({ Icon }: { Icon: React.ElementType }) {
         backgroundColor: Colors.base,
         width: 28,
         height: 28,
-        borderRadius: 10,
+        borderRadius: 6,
         justifyContent: "center",
         alignItems: "center",
       }}

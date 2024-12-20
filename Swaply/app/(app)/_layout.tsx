@@ -1,4 +1,5 @@
 import NavBack from "@/components/NavBack";
+import { authStore } from "@/store";
 import { Redirect, Stack } from "expo-router";
 
 export const unstable_settings = {
@@ -6,10 +7,10 @@ export const unstable_settings = {
 };
 
 export default function AppLayout() {
-  const auth = true;
-  const first_time = false;
+  const isAuthenticated = authStore.useState((state) => state.isAuthenticated);
+  const first_time = true;
 
-  if (!auth) {
+  if (!isAuthenticated) {
     if (first_time) return <Redirect href={"/(onboarding)/"} />;
     return <Redirect href={"/(auth)/"} />;
   }

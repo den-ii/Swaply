@@ -8,11 +8,12 @@ import NGN_flag from "@/assets/images/NGN_32.svg";
 import Selected from "@/assets/images/selected.svg";
 import { useCloseModal } from "@/hooks/useCloseModal";
 import { useEffect, useState } from "react";
+import { CountryE } from "@/types";
 
 interface CountryProps {
   setModalActive: Function;
   modalActive: boolean;
-  switchCountry: (country: string) => void;
+  switchCountry: Function;
   country: string;
 }
 
@@ -23,8 +24,8 @@ export default function Country({
   country,
 }: CountryProps) {
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
-  const [NGN, setNGN] = useState(country === "Nigeria");
-  const [CFA, setCFA] = useState(country === "Benin Republic");
+  const [NGN, setNGN] = useState(country === CountryE.NIGERIA);
+  const [CFA, setCFA] = useState(country === CountryE.BENIN);
 
   useEffect(() => {
     setNGN(country === "Nigeria");
@@ -81,7 +82,7 @@ export default function Country({
             marginTop: 24,
           }}
         >
-          <Pressable onPress={() => switchCountry("Benin Republic")}>
+          <Pressable onPress={() => switchCountry(CountryE.BENIN)}>
             <View style={styles.options}>
               <View
                 style={{
@@ -118,7 +119,7 @@ export default function Country({
           <View style={{ paddingHorizontal: 16 }}>
             <View style={{ height: 2, backgroundColor: "#F2F6F6" }}></View>
           </View>
-          <Pressable onPress={() => switchCountry("Nigeria")}>
+          <Pressable onPress={() => switchCountry(CountryE.NIGERIA)}>
             <View style={styles.options}>
               <View
                 style={{

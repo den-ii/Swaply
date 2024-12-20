@@ -9,6 +9,23 @@ import { View } from "react-native";
 
 export default function SecureAccount() {
   const { passkeys, fill, handleKeyPadPress } = usePasskeys();
+  const {
+    passkeys: confirmPasskeys,
+    fill: confirmFill,
+    handleKeyPadPress: confirmHandleKeyPadPress,
+  } = usePasskeys();
+
+  const [stage, setStage] = useState(0);
+  function next() {
+    if (stage === 0) {
+      setStage(1);
+    }
+  }
+  function confirmNext() {
+    if (stage === 1) {
+      c;
+    }
+  }
 
   return (
     <View

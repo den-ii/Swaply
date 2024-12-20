@@ -13,14 +13,31 @@ import { useCloseModal } from "@/hooks/useCloseModal";
 import { Colors } from "@/constants/Colors";
 import { CountryCode, Country } from "@/types/country";
 
-export const PhoneNumberInput = ({}) => {
+export const PhoneNumberInput = ({
+  countryCode,
+  switchCountryCode,
+  showError,
+  value,
+  handleValueChange,
+  error,
+}: {
+  countryCode: CountryCode;
+  switchCountryCode: (country: CountryCode) => void;
+  showError: boolean;
+  value: string;
+  handleValueChange: (value: string) => void;
+  error?: boolean;
+}) => {
   const [country, setCountry] = useState<Country>(Country.NIGERIA);
-  const [countryCode, setCountryCode] = useState<CountryCode>(
-    CountryCode.NIGERIA
-  );
 
-  const switchCountryCode = (countryCode: CountryCode) => {
-    setCountryCode(countryCode);
+  const [focus, setFocus] = useState(false);
+
+  const handleBlur = () => {
+    setFocus(false);
+  };
+
+  const handleFocus = () => {
+    setFocus(true);
   };
 
   const isNigeria = countryCode === CountryCode.NIGERIA;
@@ -31,9 +48,10 @@ export const PhoneNumberInput = ({}) => {
       <View
         style={{
           flexDirection: "row",
+          position: "relative",
           borderRadius: 12,
-          borderColor: "#ECEFF1",
-          borderWidth: 1,
+          borderColor: error ? Colors.error : focus ? "#416680" : "#ECEFF1",
+          borderWidth: 1.5,
           marginTop: 8,
           backgroundColor: "white",
         }}
@@ -60,8 +78,31 @@ export const PhoneNumberInput = ({}) => {
         <TextInput
           style={{ flex: 1, paddingHorizontal: 12 }}
           placeholder="901 234 8909"
+          inputMode="tel"
+          returnKeyType="done"
+          value={value}
+          onChangeText={(value) => handleValueChange(value)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
+        {value?.length > 0 && (
+          <Pressable
+            onPress={() => handleValueChange("")}
+            style={styles.cancelContainer}
+          >
+            <View style={styles.cancel}>
+              <Close fill="white" width={12} />
+            </View>
+          </Pressable>
+        )}
       </View>
+      <FontText
+        fontSize={12}
+        color={Colors.error}
+        style={{ marginTop: 8, opacity: error ? 1 : 0 }}
+      >
+        {error ? "Phone number is invalid, please try again" : "empyy"}
+      </FontText>
       <PhoneNumberModal
         countryCode={countryCode}
         modalActive={modalActive}
@@ -190,5 +231,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     paddingVertical: 20,
+  },
+  cancel: {
+    width: 16,
+    height: 16,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#AEB7BF",
+  },
+  cancelContainer: {
+    position: "absolute",
+    top: 18,
+    width: 20,
+    height: 20,
+    right: 12,
   },
 });

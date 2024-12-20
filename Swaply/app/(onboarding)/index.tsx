@@ -9,16 +9,54 @@ import { styles } from "@/components/recepient-details/NGN";
 import Close from "@/assets/images/close.svg";
 import Button from "@/components/Button";
 import Country from "@/components/modals/Country";
-import { router } from "expo-router";
+import CFA_16 from "@/assets/images/CFA_16.svg";
+import NGN_16 from "@/assets/images/NGN_16.svg";
+import { CountryE } from "@/types";
+import { Redirect, router } from "expo-router";
+import CustomInput from "@/components/CustomInput";
+import { useForm } from "react-hook-form";
+import useSWRMutation from "swr/mutation";
+import { registerUser } from "@/api/authApi";
+import { authStore, toastStore, ToastType } from "@/store";
 
 export default function GetStarted() {
-  const [stages, setStages] = useState(5);
-  const [country, setCountry] = useState("Nigeria");
+  const { trigger, data, isMutating, error } = useSWRMutation(
+    "user/register",
+    registerUser,
+    {
+      onSuccess: (data) => {
+        if (data.status) router.push("/verify-otp");
+      },
+    }
+  );
+  const [country, setCountry] = useState<CountryE>(CountryE.NIGERIA);
   const [modalActive, setModalActive] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    resetField,
+    getValues,
+    clearErrors,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      emailAddress: "",
+    },
+  });
 
-  const [emailAddress, setEmailAddress] = useState("");
-  const currentStage = 0;
-
+  const handleCreateAccount = ({ emailAddress }: { emailAddress: string }) => {
+    authStore.update((s) => {
+      s.email = emailAddress;
+    });
+    trigger({ email: emailAddress, country });
+  };
+  const handleEmailError = () => {
+    toastStore.update((s) => {
+      s.active = true;
+      s.message = "Invalid email address, please try again.";
+      s.type = ToastType.ERROR;
+    });
+  };
   return (
     <>
       <View
@@ -51,35 +89,36 @@ export default function GetStarted() {
                 justifyContent: "space-between",
               }}
             >
-              {<FontText>{country}</FontText>}
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+              >
+                {country === CountryE.BENIN ? <CFA_16 /> : <NGN_16 />}
+                <FontText>{country}</FontText>
+              </View>
               <ChevronDown fill="#AEB7BF" />
             </View>
           </Pressable>
         </View>
         <View style={[styles.inputContainer, { marginTop: 16 }]}>
-          <FontText>Email address</FontText>
-          <View>
-            <TextInput
-              placeholder="johndoe@gmail.com"
-              returnKeyType="done"
-              style={styles.input}
-              inputMode="email"
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor="#AEB7BF"
-              onChangeText={(value) => setEmailAddress(value)}
-              value={emailAddress}
-            />
-            {emailAddress && (
-              <View style={styles.cancelContainer}>
-                <Pressable onPress={() => setEmailAddress("")}>
-                  <View style={styles.cancel}>
-                    <Close fill="white" width={12} />
-                  </View>
-                </Pressable>
-              </View>
-            )}
-          </View>
+          <CustomInput
+            label="Email address"
+            inputMode="email"
+            returnKey={true}
+            resetField={resetField}
+            name="emailAddress"
+            placeholder="Placeholder"
+            control={control}
+            clearErrors={clearErrors}
+            isValid={isValid}
+            error={errors.emailAddress}
+            rules={{
+              required: "Email address is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "Invalid email address, please try again.",
+              },
+            }}
+          />
         </View>
         <View
           style={{
@@ -108,7 +147,8 @@ export default function GetStarted() {
         <View style={{ marginVertical: 16 }}>
           <Button
             text="Create an account"
-            action={() => router.push("/verify-otp")}
+            action={handleSubmit(handleCreateAccount, handleEmailError)}
+            loading={isMutating}
           />
         </View>
         <Pressable onPress={() => router.navigate("/(auth)/sign-in")}>

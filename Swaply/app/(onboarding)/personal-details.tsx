@@ -6,8 +6,68 @@ import Check from "@/assets/images/check.svg";
 import { TextInput, View, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { PhoneNumberInput } from "@/components/PhoneNumberInput";
+import CustomInput from "@/components/CustomInput";
+import { set, useForm } from "react-hook-form";
+import { useState } from "react";
+import { CountryCode } from "@/types/country";
+import { onboardingStore } from "@/store";
 
 export default function PersonalDetails() {
+  const {
+    control,
+    handleSubmit,
+    resetField,
+    getValues,
+    clearErrors,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      phone: "",
+    },
+  });
+  const [phoneError, setPhoneError] = useState(false);
+  const [showPhoneError, setShowPhoneError] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState<CountryCode>(
+    CountryCode.NIGERIA
+  );
+
+  const handlePhoneNumberChange = (value: string) => {
+    setPhone(value);
+    if (value.length < 10) {
+      setPhoneError(true);
+    } else {
+      setPhoneError(false);
+    }
+  };
+
+  const handlePhoneError = () => {
+    if (phone.length < 10) {
+      setPhoneError(true);
+      setShowPhoneError(true);
+      return true;
+    }
+  };
+
+  const onSubmit = ({
+    firstName,
+    lastName,
+  }: {
+    firstName: string;
+    lastName: string;
+  }) => {
+    if (handlePhoneError()) return;
+    onboardingStore.update((s) => {
+      s.firstName = firstName;
+      s.lastName = lastName;
+      s.phone = phone;
+      s.countryCode = countryCode;
+    });
+    router.push("/secure-account");
+  };
+
   return (
     <View
       style={{
@@ -22,63 +82,73 @@ export default function PersonalDetails() {
         </FontText>
       </View>
 
-      <View style={{ marginTop: 32, marginBottom: 16 }}>
-        <FontText>First name</FontText>
-        <TextInput
-          placeholderTextColor={"#AEB7BF"}
-          style={{
-            fontSize: 14,
-            fontFamily: "Inter_400Regular",
-            borderRadius: 12,
-            borderColor: "#ECEFF1",
-            borderWidth: 1,
-            padding: 16,
-            marginTop: 8,
-          }}
-          cursorColor={Colors.light.text}
-          selectionColor={Colors.light.text}
+      <View style={{ marginTop: 16 }}>
+        <CustomInput
+          label="First name"
+          inputMode="text"
+          returnKey={true}
+          resetField={resetField}
+          name="firstName"
           placeholder="John"
-        />
-      </View>
-      <View style={{ marginBottom: 16 }}>
-        <FontText>Last name</FontText>
-        <TextInput
-          placeholderTextColor={"#AEB7BF"}
-          style={{
-            fontSize: 14,
-            fontFamily: "Inter_400Regular",
-            borderRadius: 12,
-            borderColor: "#ECEFF1",
-            borderWidth: 1,
-            padding: 16,
-            marginTop: 8,
+          control={control}
+          clearErrors={clearErrors}
+          isValid={isValid}
+          error={errors.firstName}
+          rules={{
+            required: "First name is required, please try again",
           }}
-          cursorColor={Colors.light.text}
-          selectionColor={Colors.light.text}
-          placeholder="Doe"
         />
       </View>
-      <PhoneNumberInput />
+      <View style={{ marginTop: -10 }}>
+        <CustomInput
+          label="Last name"
+          inputMode="text"
+          returnKey={true}
+          resetField={resetField}
+          name="lastName"
+          placeholder="Doe"
+          control={control}
+          clearErrors={clearErrors}
+          isValid={isValid}
+          error={errors.lastName}
+          rules={{
+            required: "Last name is required, please try again",
+          }}
+        />
+      </View>
+      <View style={{ marginTop: -10 }}>
+        <FontText>Phone number</FontText>
+        <PhoneNumberInput
+          value={phone}
+          handleValueChange={handlePhoneNumberChange}
+          error={phoneError && showPhoneError}
+          showError={showPhoneError}
+          countryCode={countryCode}
+          switchCountryCode={(countryCode: CountryCode) =>
+            setCountryCode(countryCode)
+          }
+        />
+      </View>
       <View style={{ marginTop: 32 }}>
         <Button
           text="Create an account"
-          action={() => router.push("/secure-account")}
+          action={handleSubmit(onSubmit, handlePhoneError)}
         />
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  validation: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "#ECEFF1",
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 100,
-    gap: 4,
-  },
-});
+// const styles = StyleSheet.create({
+//   validation: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     borderWidth: 1,
+//     borderColor: "#ECEFF1",
+//     paddingVertical: 4,
+//     paddingHorizontal: 8,
+//     borderRadius: 100,
+//     gap: 4,
+//   },
+// });

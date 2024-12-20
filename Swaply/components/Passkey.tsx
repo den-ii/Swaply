@@ -4,7 +4,9 @@ import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import usePasskeys from "@/hooks/usePassKey";
 import { useState } from "react";
+import Identity from "@/assets/images/identity.svg";
 import { View } from "react-native";
+import Toggle from "./Toggle";
 
 export const PasskeyField = ({
   fill,
@@ -51,13 +53,34 @@ export const PasskeyContainer = ({
           <PasskeyField key={index} fill={fill} index={index} />
         ))}
       </View>
-      <View
-        style={{
-          marginTop: 80,
-          alignItems: "center",
-        }}
-      >
-        <Keypad func={handleKeyPadPress} />
+      <View style={{ marginTop: 80 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 16,
+            backgroundColor: "white",
+            borderRadius: 16,
+            borderWidth: 1,
+            borderColor: "#ECEFF1",
+            marginBottom: 32,
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+            <Identity />
+            <FontText fontWeight={500}>Use Face Id</FontText>
+          </View>
+          <Toggle />
+        </View>
+        <View
+          style={{
+            // marginTop: 80,
+            alignItems: "center",
+          }}
+        >
+          <Keypad func={handleKeyPadPress} />
+        </View>
       </View>
     </View>
   );

@@ -8,10 +8,13 @@ const tintColorDark = "#fff";
 
 export const Colors = {
   base: "#039AFF",
+  error: "#F23C57",
+  success: "#0D9013",
 
   light: {
     neutral: "#757D87",
     textPrimary: "#026DB5",
+    success: "#0D9013",
     textDefault: "#2C3137",
     textDisabled: "#AEB7BF",
     bgButtonDisabled: "",
@@ -19,6 +22,7 @@ export const Colors = {
     text: "#11181C",
     accent: "#FE6C02",
     lightAccent: "#FFF2E8",
+    error: "#F23C57",
     background: "#fff",
     tint: tintColorLight,
     icon: "#687076",
