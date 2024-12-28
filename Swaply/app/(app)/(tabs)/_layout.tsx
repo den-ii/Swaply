@@ -15,9 +15,16 @@ export default function TabLayout() {
         tabBarShowLabel: true,
         tabBarActiveTintColor: Colors.light.text,
         tabBarInactiveTintColor: Colors.light.tabIconDefault,
-
+        tabBarStyle: {
+          paddingTop: 16,
+          paddingBottom: 24,
+          backgroundColor: "#fff",
+          borderTopWidth: 1,
+          borderTopColor: "#F2F6F6",
+        },
         tabBarLabelStyle: {
           fontSize: 12,
+          marginTop: 4,
           fontFamily: "Inter_600SemiBold",
         },
       }}

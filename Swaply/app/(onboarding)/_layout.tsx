@@ -1,8 +1,15 @@
 import NavBack from "@/components/NavBack";
 import { OnboardingHeader } from "@/components/OnboardingHeader";
+import { statusBarStore } from "@/store";
 import { Stack } from "expo-router";
+import { useLayoutEffect } from "react";
 
 export default function OnboardingLayout() {
+  useLayoutEffect(() => {
+    statusBarStore.update((s) => {
+      s.barStyle = "dark-content";
+    });
+  }, []);
   return (
     <Stack screenOptions={{ animation: "fade" }}>
       <Stack.Screen

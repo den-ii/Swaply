@@ -1,10 +1,11 @@
-import { authStore, toastStore, ToastType } from "@/store";
+import { authStore, onboardingStore, toastStore, ToastType } from "@/store";
 import { CountryE } from "@/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import useSWRMutation from "swr/mutation";
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
-/*------------------------------------ REGISTER ------------------------------------------------*/
+/*------------------------------------ Register ------------------------------------------------*/
 
 export async function registerUser(
   url: string,
@@ -51,8 +52,8 @@ export async function codeActivation(
   const data = await res.json();
   console.log(data);
   if (data.status) {
-    authStore.update((s) => {
-      s.regToken = data.token;
+    onboardingStore.update((s) => {
+      s.token = data.data.token;
     });
   } else if (data.message === "Invalid verification code") {
     toastStore.update((s) => {
@@ -68,4 +69,246 @@ export async function codeActivation(
     });
   }
   return { statusCode: res.status, data };
+}
+
+/*------------------------------------ Onboarding ------------------------------------------------*/
+
+export async function onboardUser(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      firstName: string;
+      lastName: string;
+      countryCode: string;
+      phone: string;
+      pin: string;
+      token: string | null;
+      password: string;
+    };
+  }
+) {
+  const { firstName, lastName, countryCode, phone, pin, token, password } = arg;
+  console.log("args: ", firstName, lastName, countryCode, phone, pin, token);
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      countryCode,
+      phone,
+      pin,
+      password,
+    }),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+}
+
+/*------------------------------------ Login ------------------------------------------------*/
+
+export async function loginUser(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      email: string;
+      password: string;
+    };
+  }
+) {
+  const { email, password } = arg;
+  console.log("args: ", email, password);
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  if (data.status) {
+    const token = data.data.token;
+    await AsyncStorage.setItem("loginToken", token);
+    await AsyncStorage.setItem("email", email);
+    authStore.update((s) => {
+      s.loginToken = token;
+      s.email = email;
+      s.isReturningUser = true;
+    });
+  } else if (data.errorCode === "INVALID_CREDENTIALS") {
+    toastStore.update((s) => {
+      s.active = true;
+      s.message = "Invalid email or password, please try again.";
+      s.type = ToastType.ERROR;
+    });
+  } else {
+    toastStore.update((s) => {
+      s.active = true;
+      s.message = data.message;
+      s.type = ToastType.ERROR;
+    });
+  }
+  return data;
+}
+
+/*------------------------------------ Pin Authentication ------------------------------------------------*/
+export async function pinAuthentication(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      pin: string;
+      token: string;
+    };
+  }
+) {
+  const { pin } = arg;
+  console.log("args: ", pin);
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      pin,
+    }),
+    headers: {
+      Authorization: `Bearer ${arg.token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  if (data.status) {
+    const token = data.data.token;
+    await AsyncStorage.setItem("token", token);
+    authStore.update((s) => {
+      s.token = token;
+      s.isAuthenticated = true;
+      s.isReturningUser = true;
+    });
+  } else {
+    toastStore.update((s) => {
+      s.active = true;
+      s.message = data.message;
+      s.type = ToastType.ERROR;
+    });
+  }
+  return data;
+}
+
+/*------------------------------------ Forgot Password ------------------------------------------------*/
+export async function forgotPassword(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      email: string;
+    };
+  }
+) {
+  const { email } = arg;
+  console.log("args: ", arg.email);
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+}
+
+/*------------------------------------Validate OTP ------------------------------------------------*/
+export async function validateOTP(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      code: string;
+    };
+  }
+) {
+  const { code } = arg;
+  console.log("args: ", code);
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      code,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log("data:", data);
+  if (data.status) {
+    authStore.update((s) => {
+      s.otp = code;
+    });
+  } else if (data.message === "Invalid verification code") {
+    toastStore.update((s) => {
+      s.active = true;
+      s.message = "Invalid OTP, please try again.";
+      s.type = ToastType.ERROR;
+    });
+  } else {
+    toastStore.update((s) => {
+      s.active = true;
+      s.message = data.message;
+      s.type = ToastType.ERROR;
+    });
+  }
+  return data;
+}
+
+/*------------------------------------ Reset Password ------------------------------------------------*/
+export async function resetPassword(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      code: string;
+      password: string;
+    };
+  }
+) {
+  const { code, password } = arg;
+  console.log("args: ", code, password);
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      code,
+      password,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
 }

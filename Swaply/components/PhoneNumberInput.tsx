@@ -12,6 +12,7 @@ import Close from "@/assets/images/close.svg";
 import { useCloseModal } from "@/hooks/useCloseModal";
 import { Colors } from "@/constants/Colors";
 import { CountryCode, Country } from "@/types/country";
+import { UI } from "@/constants/UI";
 
 export const PhoneNumberInput = ({
   countryCode,
@@ -49,19 +50,24 @@ export const PhoneNumberInput = ({
         style={{
           flexDirection: "row",
           position: "relative",
-          borderRadius: 12,
+          borderRadius: UI.input.borderRadius,
           borderColor: error ? Colors.error : focus ? "#416680" : "#ECEFF1",
-          borderWidth: 1.5,
+          borderWidth: UI.input.borderWidth,
           marginTop: 8,
           backgroundColor: "white",
         }}
       >
         <Pressable onPress={() => setModalActive(true)}>
-          <View style={{ borderRightWidth: 1, borderColor: "#ECEFF1" }}>
+          <View
+            style={{
+              borderRightWidth: UI.input.borderWidth,
+              borderColor: "#ECEFF1",
+            }}
+          >
             <View
               style={{
-                paddingVertical: 16,
-                paddingHorizontal: 12,
+                paddingVertical: UI.input.verticalPadding,
+                paddingHorizontal: UI.input.horizontalPadding,
                 flexDirection: "row",
                 gap: 8,
                 alignItems: "center",
@@ -242,7 +248,7 @@ const styles = StyleSheet.create({
   },
   cancelContainer: {
     position: "absolute",
-    top: 18,
+    top: 12,
     width: 20,
     height: 20,
     right: 12,

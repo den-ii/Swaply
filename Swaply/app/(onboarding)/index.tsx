@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
 import { registerUser } from "@/api/authApi";
 import { authStore, toastStore, ToastType } from "@/store";
+import { saveEmail } from "@/utils";
 
 export default function GetStarted() {
   const { trigger, data, isMutating, error } = useSWRMutation(
@@ -45,9 +46,7 @@ export default function GetStarted() {
   });
 
   const handleCreateAccount = ({ emailAddress }: { emailAddress: string }) => {
-    authStore.update((s) => {
-      s.email = emailAddress;
-    });
+    saveEmail(emailAddress);
     trigger({ email: emailAddress, country });
   };
   const handleEmailError = () => {
@@ -81,9 +80,10 @@ export default function GetStarted() {
               style={{
                 flexDirection: "row",
                 backgroundColor: "white",
-                padding: 16,
-                borderRadius: 12,
-                borderWidth: 1,
+                paddingHorizontal: UI.input.horizontalPadding,
+                paddingVertical: UI.input.verticalPadding,
+                borderRadius: UI.input.borderRadius,
+                borderWidth: UI.input.borderWidth,
                 borderColor: "#ECEFF1",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -99,7 +99,7 @@ export default function GetStarted() {
             </View>
           </Pressable>
         </View>
-        <View style={[styles.inputContainer, { marginTop: 16 }]}>
+        <View style={{ marginTop: 24 }}>
           <CustomInput
             label="Email address"
             inputMode="email"
@@ -158,10 +158,15 @@ export default function GetStarted() {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
-              marginTop: 16,
             }}
           >
-            <Text>
+            <Text
+              style={{
+                fontFamily: "Inter_400Regular",
+                color: Colors.light.textDefault,
+                fontSize: 14,
+              }}
+            >
               <Text>Already have an account? </Text>
               <Text
                 style={{

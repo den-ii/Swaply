@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { TextInput, View } from "react-native";
+import { Pressable, TextInput, View } from "react-native";
 
 export default function Otp({
   title,
@@ -16,6 +16,7 @@ export default function Otp({
   title: string;
   email: string;
   action: (val: any) => void;
+  resetAction?: () => void;
   actionText: string;
   loading?: boolean;
 }) {
@@ -50,6 +51,14 @@ export default function Otp({
     }
   }, [time]);
 
+  const resendOTP = () => {
+    setTime(20);
+    const interval = setInterval(() => {
+      setTime((time) => time - 1);
+    }, 1000);
+    handleInterval(interval);
+  };
+
   const handleOtpText = ({ key }: { key: string }) => {
     console.log("key:", key);
     if (otp.length >= 7 && key !== "Backspace") return;
@@ -59,6 +68,15 @@ export default function Otp({
       setOtp((otp) => otp.slice(0, 3));
     else if (key === "Backspace") setOtp((otp) => otp.slice(0, -1));
     else setOtp((otp) => otp + key);
+  };
+
+  const handleVerification = () => {
+    action({
+      code: otp
+        .split("")
+        .filter((v) => v !== "-")
+        .join(""),
+    });
   };
 
   return (
@@ -87,31 +105,29 @@ export default function Otp({
             fontFamily: "Inter_600SemiBold",
           }}
           keyboardType="number-pad"
+          inputMode="numeric"
           onKeyPress={({ nativeEvent }) => handleOtpText(nativeEvent)}
           placeholder="000-000"
           value={otp}
           maxLength={7}
         />
       </View>
-      <FontText
-        style={{ textAlign: "center" }}
-        fontWeight={600}
-        color={Colors.light.textDisabled}
-      >{`Resend OTP (${time}s)`}</FontText>
+      <Pressable>
+        <FontText
+          style={{ textAlign: "center" }}
+          fontWeight={600}
+          color={time > 0 ? Colors.light.textDisabled : Colors.light.text}
+        >
+          {time > 0 ? `Resend OTP (${time}s)` : "Resend OTP"}
+        </FontText>
+      </Pressable>
 
       <View style={{ marginTop: 16 }}>
         <Button
           text="Verify OTP"
           loading={loading}
           disabled={disabled}
-          action={() =>
-            action({
-              code: otp
-                .split("")
-                .filter((v) => v !== "-")
-                .join(""),
-            })
-          }
+          action={handleVerification}
         />
       </View>
     </View>

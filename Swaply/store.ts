@@ -1,4 +1,11 @@
 import { Store } from "pullstate";
+import { StatusBarStyle } from "react-native"; // or the correct module where StatusBarStyle is defined
+
+/*------------------------------------ STATUS BAR STORE ------------------------------------------------*/
+
+export const statusBarStore = new Store<{ barStyle: StatusBarStyle }>({
+  barStyle: "light-content",
+});
 
 /*------------------------------------ TOAST STORE ------------------------------------------------*/
 
@@ -25,13 +32,17 @@ export const toastStore = new Store<Toast>({
 interface Auth {
   isAuthenticated: boolean;
   email: string;
-  regToken: string | null;
+  isFaceIDAuth: boolean;
+  token?: string | null;
+  loginToken?: string | null;
+  isReturningUser?: boolean | null;
+  otp?: string | null;
 }
 
 export const authStore = new Store<Auth>({
   isAuthenticated: false,
   email: "",
-  regToken: null,
+  isFaceIDAuth: false,
 });
 
 /*------------------------------------ ONBOARDING STORE ------------------------------------------------*/
@@ -43,6 +54,7 @@ interface Onboarding {
   phone: string;
   password: string;
   pin: string;
+  token: string | null;
 }
 
 export const onboardingStore = new Store<Onboarding>({
@@ -52,6 +64,7 @@ export const onboardingStore = new Store<Onboarding>({
   phone: "",
   password: "",
   pin: "",
+  token: "",
 });
 
 /*------------------------------------ TRANSFER STORE ------------------------------------------------*/

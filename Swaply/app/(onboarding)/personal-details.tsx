@@ -99,7 +99,7 @@ export default function PersonalDetails() {
           }}
         />
       </View>
-      <View style={{ marginTop: -10 }}>
+      <View style={{ marginTop: -12 }}>
         <CustomInput
           label="Last name"
           inputMode="text"
@@ -116,7 +116,7 @@ export default function PersonalDetails() {
           }}
         />
       </View>
-      <View style={{ marginTop: -10 }}>
+      <View style={{ marginTop: -12 }}>
         <FontText>Phone number</FontText>
         <PhoneNumberInput
           value={phone}
@@ -129,7 +129,7 @@ export default function PersonalDetails() {
           }
         />
       </View>
-      <View style={{ marginTop: 32 }}>
+      <View style={{ marginTop: 16 }}>
         <Button
           text="Create an account"
           action={handleSubmit(onSubmit, handlePhoneError)}

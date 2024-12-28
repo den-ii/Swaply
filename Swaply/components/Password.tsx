@@ -3,6 +3,7 @@ import EyeOpen from "@/assets/images/eye-open.svg";
 import EyeClose from "@/assets/images/eye-slash.svg";
 import { useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
+import { UI } from "@/constants/UI";
 
 export default function Password({
   value,
@@ -14,6 +15,16 @@ export default function Password({
   error?: boolean;
 }) {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [focus, setFocus] = useState(false);
+
+  const handleBlur = () => {
+    setFocus(false);
+  };
+
+  const handleFocus = () => {
+    setFocus(true);
+  };
   return (
     <View style={{ position: "relative" }}>
       <Pressable
@@ -23,7 +34,7 @@ export default function Password({
         <View
           style={{
             position: "absolute",
-            top: 8,
+            top: 6,
             right: 0,
             padding: 16,
           }}
@@ -40,12 +51,16 @@ export default function Password({
         style={{
           fontSize: 14,
           fontFamily: "Inter_400Regular",
-          borderRadius: 12,
-          borderColor: error ? Colors.error : "#ECEFF1",
-          borderWidth: 1,
-          padding: 16,
+          borderRadius: UI.input.borderRadius,
+          borderWidth: UI.input.borderWidth,
+          paddingHorizontal: UI.input.horizontalPadding,
+          paddingVertical: UI.input.verticalPadding,
+          backgroundColor: "white",
           marginTop: 8,
+          borderColor: error ? Colors.error : focus ? "#416680" : "#ECEFF1",
         }}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         secureTextEntry={!showPassword}
         placeholder="********"
       />

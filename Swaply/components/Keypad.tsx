@@ -7,13 +7,16 @@ import * as Haptics from "expo-haptics";
 const NumberButton = ({
   value,
   func,
+  loading,
 }: {
   value: number | string;
   func: (value: string | number) => void;
+  loading?: boolean;
 }) => {
   const [color, setColor] = useState("#ECEFF1");
 
   function handleTouchableFeedback() {
+    if (loading) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     setColor("#e8e8e8");
     func(value);
@@ -62,8 +65,10 @@ const NumberButtonChildren = ({ value }: { value: number | string }) => {
 
 export default function Keypad({
   func,
+  loading,
 }: {
   func: (value: number | string) => void;
+  loading?: boolean;
 }) {
   const [numpad, setNumpad] = useState([
     { id: 1, value: 1 },
@@ -92,7 +97,12 @@ export default function Keypad({
         }}
       >
         {numpad.map((numpad) => (
-          <NumberButton key={numpad.id} value={numpad.value} func={func} />
+          <NumberButton
+            key={numpad.id}
+            value={numpad.value}
+            func={func}
+            loading={loading}
+          />
         ))}
       </View>
     </View>

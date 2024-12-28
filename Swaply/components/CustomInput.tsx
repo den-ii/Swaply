@@ -11,6 +11,7 @@ import { useRef, useState } from "react";
 import { Controller, Control, Noop } from "react-hook-form";
 import type { FieldError, RegisterOptions } from "react-hook-form";
 import { Colors } from "../constants/Colors";
+import { UI } from "@/constants/UI";
 
 export default function CustomInput({
   label,
@@ -93,13 +94,13 @@ export default function CustomInput({
                 onBlur={() => handleBlur(onBlur)}
               />
 
-              {value?.length > 0 && (
+              {value?.length > 0 && focus ? (
                 <Pressable onPress={handleReset} style={styles.cancelContainer}>
                   <View style={styles.cancel}>
                     <Close fill="white" width={12} />
                   </View>
                 </Pressable>
-              )}
+              ) : null}
               <FontText
                 fontSize={12}
                 color={Colors.error}
@@ -117,14 +118,15 @@ export default function CustomInput({
 
 const styles = StyleSheet.create({
   inputContainer: {
-    gap: 8,
     paddingBottom: 16,
+    gap: 8,
   },
   input: {
     backgroundColor: "white",
-    borderRadius: 12,
-    borderWidth: 1.5,
-    padding: 16,
+    borderRadius: UI.input.borderRadius,
+    borderWidth: UI.input.borderWidth,
+    paddingHorizontal: UI.input.horizontalPadding,
+    paddingVertical: UI.input.verticalPadding,
     position: "relative",
     fontSize: 14,
     fontFamily: "Inter_400Regular",
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
   },
   cancelContainer: {
     position: "absolute",
-    top: 18,
+    top: 14,
     width: 20,
     height: 20,
     right: 12,

@@ -195,7 +195,7 @@ export default function Home() {
               style={{
                 ...styles.sendValueContainer,
                 padding: sendInputActive ? 14 : 16,
-                borderWidth: sendInputActive ? 2 : 0,
+                borderWidth: sendInputActive ? 1.5 : 0,
               }}
             >
               <View
@@ -325,7 +325,7 @@ export default function Home() {
                 ...styles.sendValueContainer,
                 padding: receiveInputActive ? 14 : 16,
                 marginTop: 0,
-                borderWidth: receiveInputActive ? 2 : 0,
+                borderWidth: receiveInputActive ? 1.5 : 0,
               }}
             >
               <View
@@ -390,7 +390,7 @@ export default function Home() {
               </Pressable>
             </View>
           </Pressable>
-          <View style={{ marginTop: 16 }}>
+          <View style={{ marginTop: 24 }}>
             <Button text={"Continue"} action={handleContinue} />
           </View>
         </View>

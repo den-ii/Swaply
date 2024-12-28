@@ -1,19 +1,41 @@
+import { onboardUser } from "@/api/authApi";
 import FontText from "@/components/FontText";
 import Keypad from "@/components/Keypad";
 import { PasskeyContainer } from "@/components/Passkey";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import usePasskeys from "@/hooks/usePassKey";
+import { authStore, onboardingStore } from "@/store";
+import useSWRMutation from "swr/mutation";
+import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 
 export default function SecureAccount() {
-  const { passkeys, fill, handleKeyPadPress } = usePasskeys();
+  const { firstName, lastName, password, phone, token, countryCode } =
+    onboardingStore.useState();
+  const { trigger, data, isMutating, error } = useSWRMutation(
+    "user/onboarding",
+    onboardUser,
+    {
+      onSuccess: (data) => {
+        if (data.status) {
+          router.push("/(auth)/sign-in");
+        }
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
+  const { passkeys, fill, handleKeyPadPress } = usePasskeys(next);
   const {
     passkeys: confirmPasskeys,
     fill: confirmFill,
     handleKeyPadPress: confirmHandleKeyPadPress,
-  } = usePasskeys();
+    setError: setConfirmPasskeysError,
+    error: confirmPasskeysError,
+  } = usePasskeys(confirmNext, isMutating);
 
   const [stage, setStage] = useState(0);
   function next() {
@@ -22,8 +44,18 @@ export default function SecureAccount() {
     }
   }
   function confirmNext() {
-    if (stage === 1) {
-      c;
+    if (passkeys.join("") === confirmPasskeys.join("")) {
+      trigger({
+        firstName,
+        lastName,
+        pin: passkeys.join(""),
+        password,
+        token,
+        countryCode,
+        phone,
+      });
+    } else {
+      setConfirmPasskeysError(true);
     }
   }
 
@@ -37,18 +69,30 @@ export default function SecureAccount() {
     >
       <View style={{ paddingBottom: 16 }}>
         <FontText fontFamily="P22" fontWeight={700} fontSize={34}>
-          Secure your account
+          {stage === 0 ? "Secure your account" : "Confirm PIN code"}
         </FontText>
         <FontText color={Colors.light.neutral} style={{ marginTop: 8 }}>
-          Enable a 6-digit code to protect your account against unauthorized
-          access.
+          {stage === 0
+            ? " Enable a 6-digit code to protect your account against unauthorized access."
+            : ""}
         </FontText>
       </View>
-      <PasskeyContainer
-        passkeys={passkeys}
-        fill={fill}
-        handleKeyPadPress={handleKeyPadPress}
-      />
+      {stage === 0 ? (
+        <PasskeyContainer
+          passkeys={passkeys}
+          fill={fill}
+          showFaceId
+          handleKeyPadPress={handleKeyPadPress}
+        />
+      ) : (
+        <PasskeyContainer
+          passkeys={confirmPasskeys}
+          fill={confirmFill}
+          handleKeyPadPress={confirmHandleKeyPadPress}
+          error={confirmPasskeysError}
+          loading={isMutating}
+        />
+      )}
     </View>
   );
 }

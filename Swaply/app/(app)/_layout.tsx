@@ -8,10 +8,10 @@ export const unstable_settings = {
 
 export default function AppLayout() {
   const isAuthenticated = authStore.useState((state) => state.isAuthenticated);
-  const first_time = true;
+  const isReturningUser = authStore.useState((state) => state.isReturningUser);
 
   if (!isAuthenticated) {
-    if (first_time) return <Redirect href={"/(onboarding)/"} />;
+    if (!isReturningUser) return <Redirect href={"/(onboarding)/"} />;
     return <Redirect href={"/(auth)/"} />;
   }
   return (

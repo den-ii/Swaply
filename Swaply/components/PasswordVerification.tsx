@@ -138,7 +138,7 @@ export default function PasswordVerification({
         </FontText>
       </View>
 
-      <View style={{ marginTop: 32 }}>
+      <View style={{ marginTop: 16 }}>
         <Button
           text={buttonText ?? "Continue"}
           action={handleAction}

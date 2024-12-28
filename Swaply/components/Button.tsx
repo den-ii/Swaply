@@ -34,7 +34,7 @@ const Button = ({
       <View
         style={{
           backgroundColor: disabled || loading ? loadingColor : bgColor,
-          paddingVertical: 20,
+          paddingVertical: 18,
           borderRadius: 100,
           alignItems: "center",
           justifyContent: "center",
