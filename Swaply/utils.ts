@@ -13,6 +13,10 @@ export async function saveEmail(email: string) {
   }
 }
 
+export const clearAsyncStorage = async () => {
+  AsyncStorage.clear();
+};
+
 export async function RegisterFaceIDAuth(value: boolean) {
   authStore.update((s) => {
     s.isFaceIDAuth = value;

@@ -1,7 +1,7 @@
 import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChevronDown from "@/assets/images/chevron-down.svg";
 import { Pressable, TextInput, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -32,6 +32,7 @@ export default function GetStarted() {
   );
   const [country, setCountry] = useState<CountryE>(CountryE.NIGERIA);
   const [modalActive, setModalActive] = useState(false);
+  const [disableContinue, setDisableContinue] = useState(true);
   const {
     control,
     handleSubmit,
@@ -49,6 +50,7 @@ export default function GetStarted() {
     saveEmail(emailAddress);
     trigger({ email: emailAddress, country });
   };
+
   const handleEmailError = () => {
     toastStore.update((s) => {
       s.active = true;
@@ -111,6 +113,7 @@ export default function GetStarted() {
             clearErrors={clearErrors}
             isValid={isValid}
             error={errors.emailAddress}
+            setDisableAction={setDisableContinue}
             rules={{
               required: "Email address is required",
               pattern: {
@@ -149,6 +152,7 @@ export default function GetStarted() {
             text="Create an account"
             action={handleSubmit(handleCreateAccount, handleEmailError)}
             loading={isMutating}
+            disabled={disableContinue}
           />
         </View>
         <Pressable onPress={() => router.navigate("/(auth)/sign-in")}>

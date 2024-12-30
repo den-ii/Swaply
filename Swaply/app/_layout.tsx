@@ -12,6 +12,7 @@ import Toast from "@/components/Toast";
 import { authStore, statusBarStore, toastStore } from "@/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "react-native";
+import { clearAsyncStorage } from "@/utils";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
@@ -26,6 +27,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    clearAsyncStorage();
     const instantiate = async () => {
       try {
         const isFaceIDAuth = await AsyncStorage.getItem("isFaceIDAuth");

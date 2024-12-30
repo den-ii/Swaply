@@ -4,11 +4,12 @@ import {
   StyleSheet,
   TextInput,
   InputModeOptions,
+  Dimensions,
 } from "react-native";
 import Close from "@/assets/images/close.svg";
 import FontText from "./FontText";
 import { useRef, useState } from "react";
-import { Controller, Control, Noop } from "react-hook-form";
+import { Controller, Control, Noop, set } from "react-hook-form";
 import type { FieldError, RegisterOptions } from "react-hook-form";
 import { Colors } from "../constants/Colors";
 import { UI } from "@/constants/UI";
@@ -25,6 +26,7 @@ export default function CustomInput({
   isValid,
   clearErrors,
   rules,
+  setDisableAction,
 }: {
   label: string;
   placeholder: string;
@@ -37,8 +39,10 @@ export default function CustomInput({
   control: Control<any>;
   returnKey?: boolean;
   rules?: RegisterOptions<any, string> | undefined;
+  setDisableAction?: Function;
 }) {
   const [focus, setFocus] = useState(false);
+  const inputContainerRef = useRef<View | null>(null);
 
   const handleBlur = (onBlur: Noop) => {
     setFocus(false);
@@ -56,6 +60,14 @@ export default function CustomInput({
     inputRef.current?.focus();
   };
 
+  const handleOnChange = (text: string, onChange: (text: string) => void) => {
+    onChange(text);
+    if (!setDisableAction) return;
+    if (text.length > 0) {
+      setDisableAction(false);
+    } else setDisableAction(true);
+  };
+
   return (
     <View style={styles.inputContainer}>
       <FontText>{label}</FontText>
@@ -69,38 +81,43 @@ export default function CustomInput({
             fieldState: { error },
           }) => (
             <>
-              <TextInput
-                ref={inputRef}
-                style={[
-                  styles.input,
-                  {
-                    borderColor:
-                      !isValid && error
-                        ? Colors.error
-                        : focus
-                        ? "#416680"
-                        : "#ECEFF1",
-                  },
-                ]}
-                placeholder={placeholder}
-                placeholderTextColor="#AEB7BF"
-                inputMode={inputMode}
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType={returnKey ? "done" : undefined}
-                onChangeText={onChange}
-                value={value}
-                onFocus={handleFocus}
-                onBlur={() => handleBlur(onBlur)}
-              />
+              <View>
+                <TextInput
+                  ref={inputRef}
+                  style={[
+                    styles.input,
+                    {
+                      borderColor:
+                        !isValid && error
+                          ? Colors.error
+                          : focus
+                          ? "#416680"
+                          : "#ECEFF1",
+                    },
+                  ]}
+                  placeholder={placeholder}
+                  placeholderTextColor="#AEB7BF"
+                  inputMode={inputMode}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType={returnKey ? "done" : undefined}
+                  onChangeText={(text) => handleOnChange(text, onChange)}
+                  value={value}
+                  onFocus={handleFocus}
+                  onBlur={() => handleBlur(onBlur)}
+                />
 
-              {value?.length > 0 && focus ? (
-                <Pressable onPress={handleReset} style={styles.cancelContainer}>
-                  <View style={styles.cancel}>
-                    <Close fill="white" width={12} />
-                  </View>
-                </Pressable>
-              ) : null}
+                {value?.length > 0 && focus ? (
+                  <Pressable
+                    onPress={handleReset}
+                    style={styles.cancelContainer}
+                  >
+                    <View style={styles.cancel}>
+                      <Close fill="white" width={12} />
+                    </View>
+                  </Pressable>
+                ) : null}
+              </View>
               <FontText
                 fontSize={12}
                 color={Colors.error}
@@ -141,9 +158,10 @@ const styles = StyleSheet.create({
   },
   cancelContainer: {
     position: "absolute",
-    top: 14,
-    width: 20,
-    height: 20,
-    right: 12,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    right: 16,
   },
 });

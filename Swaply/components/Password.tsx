@@ -26,19 +26,21 @@ export default function Password({
     setFocus(true);
   };
   return (
-    <View style={{ position: "relative" }}>
+    <View style={{ position: "relative", marginTop: 8 }}>
       <Pressable
         onPress={() => setShowPassword((showPassword) => !showPassword)}
-        style={{ zIndex: 2 }}
+        style={{
+          zIndex: 1,
+          position: "absolute",
+          justifyContent: "center",
+          top: 0,
+          bottom: 0,
+          right: 16,
+          height: "100%",
+          alignItems: "flex-end",
+        }}
       >
-        <View
-          style={{
-            position: "absolute",
-            top: 6,
-            right: 0,
-            padding: 16,
-          }}
-        >
+        <View style={{}}>
           {showPassword && <EyeOpen />}
           {!showPassword && <EyeClose />}
         </View>
@@ -56,7 +58,6 @@ export default function Password({
           paddingHorizontal: UI.input.horizontalPadding,
           paddingVertical: UI.input.verticalPadding,
           backgroundColor: "white",
-          marginTop: 8,
           borderColor: error ? Colors.error : focus ? "#416680" : "#ECEFF1",
         }}
         onFocus={handleFocus}
