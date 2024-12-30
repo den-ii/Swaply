@@ -65,7 +65,7 @@ export const PasskeyContainer = ({
     const checkAuthType = async () => {
       const authType = await LocalAuthentication.getEnrolledLevelAsync();
       setFaceIdAvailable(
-        authType === LocalAuthentication.SecurityLevel.BIOMETRIC_WEAK
+        authType === LocalAuthentication.SecurityLevel.BIOMETRIC_STRONG
       );
       console.log("authType:", authType);
     };
