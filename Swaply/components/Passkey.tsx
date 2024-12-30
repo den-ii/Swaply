@@ -3,9 +3,10 @@ import Keypad from "@/components/Keypad";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import usePasskeys from "@/hooks/usePassKey";
-import { useLayoutEffect, useState } from "react";
+import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Identity from "@/assets/images/identity.svg";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View, Dimensions } from "react-native";
 import * as LocalAuthentication from "expo-local-authentication";
 import Toggle from "./Toggle";
 
@@ -55,6 +56,11 @@ export const PasskeyContainer = ({
   handleKeyPadPress: (value: number | string) => void;
 }) => {
   const [faceIdAvailable, setFaceIdAvailable] = useState(false);
+  const [faceId, setFaceId] = useState(false);
+  const passKeyFieldOpacity = useSharedValue(1);
+  const loaderOpacity = useSharedValue(0);
+  const faceIdCanShow = showFaceId && faceIdAvailable;
+
   useLayoutEffect(() => {
     const checkAuthType = async () => {
       const authType = await LocalAuthentication.getEnrolledLevelAsync();
@@ -66,8 +72,15 @@ export const PasskeyContainer = ({
     if (showFaceId) checkAuthType();
   }, []);
 
-  const [faceId, setFaceId] = useState(false);
-  const faceIdCanShow = showFaceId && faceIdAvailable;
+  useEffect(() => {
+    if (loading) {
+      loaderOpacity.value = withTiming(1);
+      passKeyFieldOpacity.value = withTiming(0);
+    } else {
+      loaderOpacity.value = withTiming(0);
+      passKeyFieldOpacity.value = withTiming(1);
+    }
+  }, [loading]);
 
   const toggleFaceId = () => setFaceId((faceId) => !faceId);
   return (
@@ -79,11 +92,12 @@ export const PasskeyContainer = ({
         gap: 16,
       }}
     >
-      <View>
-        <View
+      <View style={{ position: "relative" }}>
+        <Animated.View
           style={{
             flexDirection: "row",
             marginTop: 16,
+            opacity: passKeyFieldOpacity,
             justifyContent: "center",
             gap: 16,
           }}
@@ -91,7 +105,20 @@ export const PasskeyContainer = ({
           {passkeys.map((_, index) => (
             <PasskeyField key={index} fill={fill} index={index} error={error} />
           ))}
-        </View>
+        </Animated.View>
+        <Animated.View
+          style={{
+            alignItems: "center",
+            flexDirection: "row",
+            width: "100%",
+            position: "absolute",
+            top: "50%",
+            opacity: loaderOpacity,
+            justifyContent: "center",
+          }}
+        >
+          <ActivityIndicator color={Colors.light.neutral} />
+        </Animated.View>
 
         {error && (
           <FontText
@@ -101,11 +128,6 @@ export const PasskeyContainer = ({
           >
             {errorMsg ?? "Invalid Code, please try again."}
           </FontText>
-        )}
-        {loading && (
-          <View style={{ alignItems: "center", marginTop: 24 }}>
-            <ActivityIndicator color={Colors.light.neutral} />
-          </View>
         )}
       </View>
       <View>
