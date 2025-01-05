@@ -142,7 +142,12 @@ export default function PasswordVerification({
         <Button
           text={buttonText ?? "Continue"}
           action={handleAction}
-          disabled={!valid.length || !valid.lowercase || !valid.uppercase}
+          disabled={
+            !valid.length ||
+            !valid.lowercase ||
+            !valid.uppercase ||
+            confirmPassword.length <= 8
+          }
         />
       </View>
     </View>

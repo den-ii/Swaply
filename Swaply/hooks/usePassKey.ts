@@ -1,6 +1,7 @@
 import { toastStore, ToastType } from "@/store";
 import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
+import * as SecureStore from "expo-secure-store";
+import * as LocalAuthentication from "expo-local-authentication";
 
 export default function usePasskeys(
   doneFunction: () => void,
@@ -26,6 +27,24 @@ export default function usePasskeys(
     }
   }, [error]);
 
+  const fillPasskeysWithFaceID = async () => {
+    const auth = await LocalAuthentication.authenticateAsync({
+      biometricsSecurityLevel: "strong",
+    });
+    if (!auth.success) return;
+    const passkey = await SecureStore.getItemAsync("passkey");
+    if (passkey) {
+      setPasskeys(passkey.split(""));
+      setFill(5);
+    } else {
+      toastStore.update((s) => {
+        s.active = true;
+        s.message = "Face ID not set up, please enter code manually.";
+        s.type = ToastType.ERROR;
+      });
+    }
+  };
+
   const handleKeyPadPress = (value: number | string) => {
     if (error) setError(false);
     if (loading) return;
@@ -34,6 +53,10 @@ export default function usePasskeys(
       const newFill = fill - 1;
       setPasskeys(passkeys.map((key, index) => (index === fill ? "" : key)));
       setFill(newFill);
+      return;
+    }
+    if (value === "*") {
+      fillPasskeysWithFaceID();
       return;
     }
     if (fill === 5) return;

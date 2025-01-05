@@ -9,6 +9,7 @@ import { authStore, onboardingStore } from "@/store";
 import useSWRMutation from "swr/mutation";
 import { router } from "expo-router";
 import { useState } from "react";
+import * as SecureStore from "expo-secure-store";
 import { View } from "react-native";
 
 export default function SecureAccount() {
@@ -36,6 +37,7 @@ export default function SecureAccount() {
     setError: setConfirmPasskeysError,
     error: confirmPasskeysError,
   } = usePasskeys(confirmNext, isMutating);
+  const isFaceIDAuth = authStore.useState((s) => s.isFaceIDAuth);
 
   const [stage, setStage] = useState(0);
   function next() {
@@ -43,12 +45,16 @@ export default function SecureAccount() {
       setStage(1);
     }
   }
-  function confirmNext() {
-    if (passkeys.join("") === confirmPasskeys.join("")) {
+  async function confirmNext() {
+    const joinedPasskeys = passkeys.join("");
+    if (joinedPasskeys === confirmPasskeys.join("")) {
+      if (isFaceIDAuth) {
+        await SecureStore.setItemAsync("passkey", joinedPasskeys);
+      }
       trigger({
         firstName,
         lastName,
-        pin: passkeys.join(""),
+        pin: joinedPasskeys,
         password,
         token,
         countryCode,
@@ -63,6 +69,7 @@ export default function SecureAccount() {
     <View
       style={{
         paddingHorizontal: UI.paddingHorizontal,
+        paddingBottom: 16,
         flex: 1,
         backgroundColor: Colors.light.body,
       }}
@@ -81,7 +88,7 @@ export default function SecureAccount() {
         <PasskeyContainer
           passkeys={passkeys}
           fill={fill}
-          showFaceId
+          showFaceIdToggle
           handleKeyPadPress={handleKeyPadPress}
         />
       ) : (

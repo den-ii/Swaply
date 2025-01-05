@@ -132,6 +132,7 @@ export default function PersonalDetails() {
       <View style={{ marginTop: 16 }}>
         <Button
           text="Create an account"
+          disabled={!isValid}
           action={handleSubmit(onSubmit, handlePhoneError)}
         />
       </View>

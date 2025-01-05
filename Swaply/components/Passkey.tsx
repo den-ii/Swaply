@@ -9,6 +9,8 @@ import Identity from "@/assets/images/identity.svg";
 import { ActivityIndicator, View, Dimensions } from "react-native";
 import * as LocalAuthentication from "expo-local-authentication";
 import Toggle from "./Toggle";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { authStore } from "@/store";
 
 export const PasskeyField = ({
   fill,
@@ -44,6 +46,7 @@ export const PasskeyContainer = ({
   loading,
   handleKeyPadPress,
   showFaceId,
+  showFaceIdToggle,
   error,
   errorMsg,
 }: {
@@ -53,23 +56,29 @@ export const PasskeyContainer = ({
   errorMsg?: string;
   loading?: boolean;
   showFaceId?: boolean;
+  showFaceIdToggle?: boolean;
   handleKeyPadPress: (value: number | string) => void;
 }) => {
   const [faceIdAvailable, setFaceIdAvailable] = useState(false);
   const [faceId, setFaceId] = useState(false);
   const passKeyFieldOpacity = useSharedValue(1);
   const loaderOpacity = useSharedValue(0);
-  const faceIdCanShow = showFaceId && faceIdAvailable;
+  const faceIdCanShow = showFaceIdToggle && faceIdAvailable;
 
   useLayoutEffect(() => {
     const checkAuthType = async () => {
-      const authType = await LocalAuthentication.getEnrolledLevelAsync();
+      const authType = (
+        await LocalAuthentication.supportedAuthenticationTypesAsync()
+      ).includes(2);
+
+      const authLevel = await LocalAuthentication.getEnrolledLevelAsync();
       setFaceIdAvailable(
-        authType === LocalAuthentication.SecurityLevel.BIOMETRIC_STRONG
+        authLevel === LocalAuthentication.SecurityLevel.BIOMETRIC_STRONG &&
+          authType
       );
-      console.log("authType:", authType);
+      console.log("authType:", authLevel);
     };
-    if (showFaceId) checkAuthType();
+    if (showFaceIdToggle) checkAuthType();
   }, []);
 
   useEffect(() => {
@@ -82,13 +91,31 @@ export const PasskeyContainer = ({
     }
   }, [loading]);
 
-  const toggleFaceId = () => setFaceId((faceId) => !faceId);
+  const toggleFaceId = async () => {
+    try {
+      if (faceId) {
+        await AsyncStorage.removeItem("isFaceIDAuth");
+        authStore.update((s) => {
+          s.isFaceIDAuth = false;
+        });
+      } else {
+        await AsyncStorage.setItem("isFaceIDAuth", "true");
+        authStore.update((s) => {
+          s.isFaceIDAuth = true;
+        });
+      }
+    } catch (e) {
+      console.log("Error setting face id", e);
+    }
+
+    setFaceId((faceId) => !faceId);
+  };
   return (
     <View
       style={{
         justifyContent: "space-between",
         flex: 1,
-        paddingBottom: 50,
+        paddingBottom: 32,
         gap: 16,
       }}
     >
@@ -160,7 +187,11 @@ export const PasskeyContainer = ({
             alignItems: "center",
           }}
         >
-          <Keypad func={handleKeyPadPress} loading={loading} />
+          <Keypad
+            func={handleKeyPadPress}
+            loading={loading}
+            showFaceId={showFaceId}
+          />
         </View>
       </View>
     </View>

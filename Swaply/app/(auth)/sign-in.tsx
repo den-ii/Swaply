@@ -177,7 +177,9 @@ export default function SignIn() {
               text={"Log In"}
               action={handleSubmit(login)}
               loading={isMutating}
-              disabled={getValues("emailAddress").length < 1}
+              disabled={
+                getValues("emailAddress").length < 1 || password.length < 1
+              }
             />
           </View>
           <Pressable onPress={() => router.push("/(onboarding)/")}>

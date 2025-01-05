@@ -12,6 +12,7 @@ import { useState } from "react";
 import { set } from "react-hook-form";
 
 export default function EntryPoint() {
+  const isFaceIdAuth = authStore.useState((s) => s.isFaceIDAuth);
   const { trigger, data, isMutating } = useSWRMutation(
     "user/pin/auth",
     pinAuthentication,
@@ -55,7 +56,7 @@ export default function EntryPoint() {
         justifyContent: "center",
       }}
     >
-      <View style={{ height: "80%", minHeight: 500 }}>
+      <View style={{ height: "80%", minHeight: 500, maxHeight: 600 }}>
         <View style={{ paddingBottom: 16 }}>
           <Text
             style={{
@@ -72,6 +73,7 @@ export default function EntryPoint() {
           fill={fill}
           handleKeyPadPress={handleKeyPadPress}
           error={error}
+          showFaceId={isFaceIdAuth}
           loading={isMutating}
           errorMsg="Incorrect code, you have 5 more attempts."
         />

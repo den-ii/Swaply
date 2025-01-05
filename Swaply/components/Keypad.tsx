@@ -3,14 +3,18 @@ import { Pressable, View } from "react-native";
 import FontText from "./FontText";
 import Backspace from "@/assets/images/backspace.svg";
 import * as Haptics from "expo-haptics";
+import Identity from "@/assets/images/identity2.svg";
+import * as SecureStore from "expo-secure-store";
 
 const NumberButton = ({
   value,
   func,
   loading,
+  showFaceId,
 }: {
   value: number | string;
   func: (value: string | number) => void;
+  showFaceId?: boolean;
   loading?: boolean;
 }) => {
   const [color, setColor] = useState("#ECEFF1");
@@ -25,7 +29,7 @@ const NumberButton = ({
     }, 100);
   }
 
-  if (value === "*") {
+  if (value === "*" && !showFaceId) {
     return (
       <View
         style={{
@@ -59,6 +63,8 @@ const NumberButton = ({
 const NumberButtonChildren = ({ value }: { value: number | string }) => {
   if (value === "backspace") {
     return <Backspace />;
+  } else if (value === "*") {
+    return <Identity />;
   }
   return <FontText fontSize={24} fontWeight={600}>{`${value}`}</FontText>;
 };
@@ -66,10 +72,13 @@ const NumberButtonChildren = ({ value }: { value: number | string }) => {
 export default function Keypad({
   func,
   loading,
+  showFaceId,
 }: {
   func: (value: number | string) => void;
   loading?: boolean;
+  showFaceId?: boolean;
 }) {
+  console.log("showFaceId", showFaceId);
   const [numpad, setNumpad] = useState([
     { id: 1, value: 1 },
     { id: 2, value: 2 },
@@ -99,6 +108,7 @@ export default function Keypad({
         {numpad.map((numpad) => (
           <NumberButton
             key={numpad.id}
+            showFaceId={showFaceId}
             value={numpad.value}
             func={func}
             loading={loading}
