@@ -60,7 +60,7 @@ export default function More() {
           </Pressable>
         </View>
         <ScrollView
-          style={{ paddingBottom: 20 }}
+          style={{ marginBottom: 3 }}
           showsVerticalScrollIndicator={false}
         >
           <Pressable onPress={() => router.push("/account-limit")}>

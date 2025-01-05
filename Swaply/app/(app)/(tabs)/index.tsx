@@ -12,7 +12,7 @@ import { useRouter, useFocusEffect } from "expo-router";
 import Close from "@/assets/images/close.svg";
 import { Colors } from "@/constants/Colors";
 import FontText from "@/components/FontText";
-
+import useSWRMutation from "swr/mutation";
 import { UI } from "@/constants/UI";
 import { GetCountrySVG } from "@/components/GetCountrySVG";
 import Button from "@/components/Button";
@@ -26,6 +26,9 @@ import { transferStore, transferStoreDefaultValue } from "@/store";
 import CustomModal from "@/components/modals/CustomModal";
 import Currency from "@/components/modals/Currency";
 import { Country } from "@/types/country";
+import { set } from "react-hook-form";
+import convertCurrency from "@/api/paymentAPI";
+import useDebounce from "@/hooks/useDebounce";
 
 export const CountryRate = {
   CFA: {
@@ -46,43 +49,85 @@ export const CountryFee = {
 };
 
 export default function Home() {
+  const debounceFunc = useDebounce();
   const [sendCountry, setSendCountry] = useState<Country>(Country.BENIN);
   const [sendValue, setSendValue] = useState("");
   const [receiveValue, setReceiveValue] = useState("");
   const [receiveCountry, setReceiveCountry] = useState(Country.NIGERIA);
-  const [totalAmount, setTotalAmount] = useState("0.00");
+  const [totalAmount, setTotalAmount] = useState("...");
+  const [disableContinue, setDisableContinue] = useState(true);
   const [sendInputActive, setSendInputActive] = useState(false);
   const [receiveInputActive, setReceiveInputActive] = useState(false);
   const [sendIsCFA, setSendIsCFA] = useState(true);
   const [sendIsNGN, setSendIsNGN] = useState(false);
-  const [fee, setFee] = useState(CountryFee.CFA.NGN);
-  const [sendRate, setSendRate] = useState(160);
+  const [fee, setFee] = useState("...");
+  const [rate, setRate] = useState("...");
   const sendInputRef = useRef<any | null>(null);
   const receiveInputRef = useRef<any | null>(null);
   const [modalActive, setModalActive] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const { trigger, data, isMutating, error } = useSWRMutation(
+    "conversion/convert",
+    convertCurrency,
+    {
+      onSuccess: (data) => {
+        if (!data.status) {
+          reset();
+          setReceiveValue("");
+          return;
+        }
+        const fees = data.data.fees;
+        const totalAmount = formatNumber(fees?.totatAmountSending);
+        setFee(fees?.fee);
+        setRate(fees?.rate);
+        setTotalAmount(totalAmount);
+        setReceiveValue(String(data.data.conversion.toFixed(2)));
+      },
+      onError: (error) => {
+        console.error("Error converting currency: ", error);
+      },
+    }
+  );
+
+  function triggerConversion(value: string) {
+    debounceFunc(() =>
+      trigger({
+        sourceCurrency: sendCountry,
+        destinationCurrency: receiveCountry,
+        amount: Number(value),
+      })
+    );
+  }
+
+  function reset() {
+    setFee("...");
+    setRate("...");
+    setTotalAmount("...");
+  }
 
   useFocusEffect(
     useCallback(() => {
       setSendValue("");
       setReceiveValue("");
-      setTotalAmount("0.00");
+      reset();
       transferStore.update((store) => transferStoreDefaultValue);
     }, [])
   );
 
   useEffect(() => {
+    checkDisabled();
+  }, [sendValue, receiveValue]);
+
+  useEffect(() => {
     if (sendCountry === Country.BENIN) {
       setSendIsCFA(true);
       setSendIsNGN(false);
-      setSendRate(CountryRate.CFA.NGN);
-      setFee(CountryFee.CFA.NGN);
       handleConversion(sendValue, true);
     } else {
       setSendIsCFA(false);
       setSendIsNGN(true);
-      setSendRate(CountryRate.NGN.CFA);
-      setFee(CountryFee.NGN.CFA);
       handleConversion(sendValue, true);
     }
   }, [sendCountry]);
@@ -103,14 +148,23 @@ export default function Home() {
     }
   };
 
+  const checkDisabled = () => {
+    console.log(sendValue, receiveValue);
+    if (Number(sendValue) <= 0 || sendValue.trim() === "") {
+      setDisableContinue(true);
+    } else {
+      setDisableContinue(false);
+    }
+  };
+
   const handleContinue = () => {
     transferStore.update((state) => {
       state.cfaAmount =
         sendCountry === Country.BENIN ? sendValue : receiveValue;
       state.ngnAmount = sendCountry === "NGN" ? sendValue : receiveValue;
       state.sendingIsCFA = sendCountry === "CFA";
-      state.rate = sendRate;
-      state.transactionFee = fee;
+      // state.rate = rate;
+      // state.transactionFee = fee;
     });
     router.push("/(app)/choose_recipient");
   };
@@ -125,36 +179,50 @@ export default function Home() {
   };
 
   const handleConversion = (value: string, sending: boolean) => {
-    // if (value.trim() === "") {
-    //   console.error("Empty input");
-    //   return;
-    // }
+    console.log("value: conv");
+    setLoading(true);
 
-    const cleanedValue = value.replace(/,/g, ""); // Remove commas from the string
-    const numericValue = Number(cleanedValue);
-
-    if (isNaN(numericValue)) {
-      console.error("Invalid number input");
+    if (value.trim() === "") {
+      setSendValue("");
+      setReceiveValue("");
+      reset();
+      setLoading(false);
       return;
     }
 
-    const rate = CountryRate[sendCountry as keyof typeof CountryRate];
-    const conversionRate = rate[receiveCountry as keyof typeof rate];
+    const cleanedValue = value.replace(/,/g, ""); // Remove commas from the string
+    console.log("cleanedValue:", cleanedValue);
+    const numericValue = parseInt(cleanedValue);
+    console.log("numericValue:", numericValue);
 
-    const formattedSendValue = formatNumber(numericValue);
-    const formattedReceiveValue = formatNumber(
-      (numericValue * conversionRate).toFixed(2)
-    );
-
-    if (sending) {
-      setSendValue(formattedSendValue);
-      setReceiveValue(formattedReceiveValue);
-    } else {
-      setReceiveValue(formatNumber(numericValue));
-      setSendValue(formatNumber(numericValue / conversionRate));
+    if (isNaN(numericValue)) {
+      console.error("Invalid number input");
+      setLoading(false);
+      return;
     }
+    if (sending) {
+      setSendValue(formatNumber(cleanedValue));
+      triggerConversion(cleanedValue);
+    }
+    setLoading(false);
 
-    setTotalAmount(formatNumber(numericValue + fee));
+    // const rate = CountryRate[sendCountry as keyof typeof CountryRate];
+    // const conversionRate = rate[receiveCountry as keyof typeof rate];
+
+    // const formattedSendValue = formatNumber(numericValue);
+    // const formattedReceiveValue = formatNumber(
+    //   (numericValue * conversionRate).toFixed(2)
+    // );
+
+    // if (sending) {
+    //   setSendValue(formattedSendValue);
+    //   setReceiveValue(formattedReceiveValue);
+    // } else {
+    //   setReceiveValue(formatNumber(numericValue));
+    //   setSendValue(formatNumber(numericValue / conversionRate));
+    // }
+
+    // setTotalAmount(formatNumber(numericValue + fee));
   };
 
   const handleRecieveInputActive = () => {
@@ -162,6 +230,11 @@ export default function Home() {
       receiveInputRef.current.focus();
     }
   };
+
+  const showRate = rate !== "...";
+  const showFee = fee !== "...";
+  const showTotalAmont = totalAmount !== "...";
+
   return (
     <>
       <StatusBar barStyle={"light-content"} />
@@ -222,9 +295,9 @@ export default function Home() {
                   cursorColor={Colors.light.textDefault}
                   selectionColor={Colors.light.textDefault}
                   placeholderTextColor={Colors.light.textDisabled}
-                  maxLength={15}
-                  inputMode="decimal"
-                  keyboardType="decimal-pad"
+                  maxLength={10}
+                  inputMode="numeric"
+                  keyboardType="number-pad"
                   returnKeyType="done"
                   onChangeText={(value) => handleConversion(value, true)}
                   value={sendValue}
@@ -271,31 +344,37 @@ export default function Home() {
                   fontSize={14}
                 >
                   {`${fee} ${
-                    sendCountry === Country.BENIN
+                    !showFee
+                      ? ""
+                      : sendCountry === Country.BENIN
                       ? Country.BENIN
                       : Country.NIGERIA
                   } `}
                 </FontText>
-                <FontText
-                  style={{ marginTop: 32 }}
-                  fontWeight={500}
-                  fontSize={14}
-                  color={Colors.light.textPrimary}
-                >
-                  Fee
-                </FontText>
+                {showFee && (
+                  <FontText
+                    style={{ marginTop: 32 }}
+                    fontWeight={500}
+                    fontSize={14}
+                    color={Colors.light.textPrimary}
+                  >
+                    Fee
+                  </FontText>
+                )}
               </View>
               <View style={{ flexDirection: "row", gap: 6, marginTop: 17.75 }}>
                 <FontText fontSize={14} fontWeight={600}>
-                  {`1 ${sendCountry} = ${sendRate}`}
+                  {rate}
                 </FontText>
-                <FontText
-                  fontSize={14}
-                  fontWeight={500}
-                  color={Colors.light.neutral}
-                >
-                  Rate
-                </FontText>
+                {showRate && (
+                  <FontText
+                    fontSize={14}
+                    fontWeight={500}
+                    color={Colors.light.neutral}
+                  >
+                    Rate
+                  </FontText>
+                )}
               </View>
               <View style={{ flexDirection: "row", gap: 6, marginTop: 17.75 }}>
                 <FontText
@@ -303,19 +382,23 @@ export default function Home() {
                   fontWeight={600}
                   style={{ maxWidth: 200 }}
                 >
-                  {`${formatNumber(
-                    Number(totalAmount.replace(/,/g, ""))
-                      .toFixed(2)
-                      .toLocaleString()
-                  )} ${sendCountry}`}
+                  {`${totalAmount} ${
+                    !showTotalAmont
+                      ? ""
+                      : sendCountry === Country.BENIN
+                      ? Country.BENIN
+                      : Country.NIGERIA
+                  }`}
                 </FontText>
-                <FontText
-                  fontSize={14}
-                  fontWeight={500}
-                  color={Colors.light.neutral}
-                >
-                  Total Amount
-                </FontText>
+                {showTotalAmont && (
+                  <FontText
+                    fontSize={14}
+                    fontWeight={500}
+                    color={Colors.light.neutral}
+                  >
+                    Total Amount
+                  </FontText>
+                )}
               </View>
             </View>
           </View>
@@ -355,11 +438,11 @@ export default function Home() {
                   placeholderTextColor={Colors.light.textDisabled}
                   inputMode="decimal"
                   keyboardType="decimal-pad"
-                  maxLength={15}
+                  maxLength={10}
                   autoCorrect={false}
                   autoComplete="off"
                   returnKeyType="done"
-                  onChangeText={(value) => handleConversion(value, false)}
+                  // onChangeText={(value) => handleConversion(value, false)}
                   value={receiveValue}
                   blurOnSubmit={true}
                   onFocus={() => setReceiveInputActive(true)}
@@ -391,7 +474,12 @@ export default function Home() {
             </View>
           </Pressable>
           <View style={{ marginTop: 24 }}>
-            <Button text={"Continue"} action={handleContinue} />
+            <Button
+              text={"Continue"}
+              loading={loading || isMutating}
+              action={handleContinue}
+              disabled={disableContinue}
+            />
           </View>
         </View>
       </View>

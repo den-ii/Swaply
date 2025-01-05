@@ -27,7 +27,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    clearAsyncStorage();
+    // clearAsyncStorage();
     const instantiate = async () => {
       try {
         const isFaceIDAuth = await AsyncStorage.getItem("isFaceIDAuth");
