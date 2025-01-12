@@ -5,6 +5,7 @@ import {
   TextInput,
   Pressable,
   Text,
+  Keyboard,
 } from "react-native";
 import HomeHeaderBanner from "@/assets/images/home_header.svg";
 import FontText from "@/components/FontText";
@@ -20,6 +21,7 @@ import { authStore, statusBarStore, toastStore, ToastType } from "@/store";
 import { loginUser, forgotPassword } from "@/api/authApi";
 import useSWRMutation from "swr/mutation";
 import { saveEmail } from "@/utils";
+import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function SignIn() {
   const [passwordError, setPasswordError] = useState(false);
@@ -98,7 +100,7 @@ export default function SignIn() {
   };
   return (
     // <View>
-    <>
+    <DismissKeyboard>
       <View
         style={{
           flex: 1,
@@ -214,7 +216,7 @@ export default function SignIn() {
           </Pressable>
         </View>
       </View>
-    </>
+    </DismissKeyboard>
     // </SafeAreaView>
   );
 }

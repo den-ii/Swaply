@@ -18,9 +18,23 @@ import NGNRecepientDetails from "@/components/recepient-details/NGN";
 import CFARecepientDetails from "@/components/recepient-details/CFA";
 import Sent from "@/components/modals/Sent";
 import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
+import useInputControl from "@/hooks/useInputControl";
 
 export default function RecipientDetails() {
   const router = useRouter();
+  const {
+    control,
+    handleSubmit,
+    resetField,
+    getValues,
+    clearErrors,
+    isValid,
+    errors,
+  } = useInputControl({
+    accountNo: "",
+    email: "",
+    narration: "",
+  });
 
   const [selectBankModal, setSelectBankModal] = useState(false);
   // const [sendingModal, setSendingModal] = useState(false);
@@ -79,14 +93,21 @@ export default function RecipientDetails() {
         </FontText>
       </View>
       <View style={{ marginTop: 16 }}>
-        {sendingIsCFA && (
+        {!sendingIsCFA && (
           <NGNRecepientDetails
             form={NGNForm}
             handleForm={handleNGNForm}
             setSelectBankModal={setSelectBankModal}
+            control={control}
+            handleSubmit={handleSubmit}
+            resetField={resetField}
+            getValues={getValues}
+            clearErrors={clearErrors}
+            errors={errors}
+            isValid={isValid}
           />
         )}
-        {!sendingIsCFA && (
+        {sendingIsCFA && (
           <CFARecepientDetails form={CFAForm} handleForm={handleCFAForm} />
         )}
       </View>
@@ -147,7 +168,7 @@ export default function RecipientDetails() {
               Continue
             </FontText>
           </Link> */}
-          <Button text={"Continue"} action={handleContinue} />
+          <Button text={"Continue"} action={handleSubmit(handleContinue)} />
         </View>
       </View>
       <SelectBank
@@ -189,7 +210,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#AEB7BF",
   },
 });
-
-function useLayoutEffect(arg0: () => void, arg1: any[]) {
-  throw new Error("Function not implemented.");
-}

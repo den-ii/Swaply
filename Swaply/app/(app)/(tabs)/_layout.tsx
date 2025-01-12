@@ -6,6 +6,36 @@ import TabBeneficiary from "@/components/TabBeneficiary";
 import TabHistory from "@/components/TabHistory";
 import { Redirect } from "expo-router";
 import { useEffect } from "react";
+import { Platform } from "react-native";
+
+const tabBarStyleIOS = {
+  paddingTop: 8,
+  height: 86,
+  backgroundColor: "#fff",
+  borderTopWidth: 1,
+  padding: 0,
+  borderTopColor: "#F2F6F6",
+};
+
+const tabBarStyleAndroid = {
+  paddingTop: 8,
+  backgroundColor: "#fff",
+  borderTopWidth: 1,
+  padding: 0,
+  height: 80,
+  borderTopColor: "#F2F6F6",
+};
+
+const tabBarLabelStyleIOS = {
+  fontSize: 12,
+  fontFamily: "Inter_600SemiBold",
+};
+
+const tabBarLabelStyleAndroid = {
+  fontSize: 12,
+  fontFamily: "Inter_600SemiBold",
+  height: 35,
+};
 
 export default function TabLayout() {
   return (
@@ -15,18 +45,11 @@ export default function TabLayout() {
         tabBarShowLabel: true,
         tabBarActiveTintColor: Colors.light.text,
         tabBarInactiveTintColor: Colors.light.tabIconDefault,
-        tabBarStyle: {
-          paddingTop: 16,
-          paddingBottom: 24,
-          backgroundColor: "#fff",
-          borderTopWidth: 1,
-          borderTopColor: "#F2F6F6",
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          marginTop: 4,
-          fontFamily: "Inter_600SemiBold",
-        },
+
+        tabBarStyle:
+          Platform.OS === "ios" ? tabBarStyleIOS : tabBarStyleAndroid,
+        tabBarLabelStyle:
+          Platform.OS === "ios" ? tabBarLabelStyleIOS : tabBarLabelStyleAndroid,
       }}
     >
       <Tabs.Screen
@@ -78,6 +101,7 @@ export default function TabLayout() {
         name="more"
         options={{
           tabBarLabel: "More",
+
           tabBarIcon: ({ focused }) => (
             <More
               fill={

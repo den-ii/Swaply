@@ -1,4 +1,4 @@
-import { Pressable, SafeAreaView, View } from "react-native";
+import { Platform, Pressable, SafeAreaView, View } from "react-native";
 import Back from "@/assets/images/back.svg";
 import { useRouter } from "expo-router";
 import { Svg, G, Path, Defs, ClipPath, Rect } from "react-native-svg";
@@ -13,7 +13,7 @@ export default function NavBack() {
         justifyContent: "center",
         backgroundColor: "#fff",
         paddingHorizontal: UI.paddingHorizontal,
-        paddingTop: 60,
+        paddingTop: Platform.OS === "ios" ? 60 : 30,
         paddingBottom: 16,
       }}
     >

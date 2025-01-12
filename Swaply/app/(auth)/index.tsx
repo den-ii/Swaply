@@ -18,8 +18,9 @@ export default function EntryPoint() {
     pinAuthentication,
     {
       onSuccess: (data) => {
+        console.log("data from entry point:", data);
         if (data.status) {
-          router.push("/(app)/(tabs)/");
+          router.push("/(app)/(tabs)");
         }
         if (data.errorCode === "INVALID_AUTH_CREDENTIALS") {
           toastStore.update((s) => {
@@ -33,7 +34,7 @@ export default function EntryPoint() {
         }
       },
       onError: (error) => {
-        console.log(error);
+        console.error(error);
       },
     }
   );

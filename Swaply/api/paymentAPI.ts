@@ -17,14 +17,11 @@ export default async function convertCurrency(
   console.log("convert currency called:");
   const { sourceCurrency, destinationCurrency, amount } = arg;
   const apiUrl = baseUrl + url;
-  console.log(apiUrl);
   console.log(sourceCurrency, destinationCurrency, amount);
   const res = await fetch(apiUrl, {
     method: "POST",
     body: JSON.stringify({
-      sourceCurrency,
-      destinationCurrency,
-      amount,
+      ...arg,
     }),
     headers: {
       "Content-Type": "application/json",

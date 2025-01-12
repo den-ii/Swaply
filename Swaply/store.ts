@@ -1,5 +1,6 @@
 import { Store } from "pullstate";
 import { StatusBarStyle } from "react-native"; // or the correct module where StatusBarStyle is defined
+import { Country } from "./types/country";
 
 /*------------------------------------ STATUS BAR STORE ------------------------------------------------*/
 
@@ -32,17 +33,19 @@ export const toastStore = new Store<Toast>({
 interface Auth {
   isAuthenticated: boolean;
   email: string;
-  isFaceIDAuth: boolean;
+  isFaceIDAuth?: boolean;
   token?: string | null;
   loginToken?: string | null;
   isReturningUser?: boolean | null;
   otp?: string | null;
+  country?: string;
+  fullName?: string;
+  profileImage?: string;
 }
 
 export const authStore = new Store<Auth>({
   isAuthenticated: false,
   email: "",
-  isFaceIDAuth: false,
 });
 
 /*------------------------------------ ONBOARDING STORE ------------------------------------------------*/
@@ -70,11 +73,13 @@ export const onboardingStore = new Store<Onboarding>({
 /*------------------------------------ TRANSFER STORE ------------------------------------------------*/
 
 interface TransferStore {
-  cfaAmount: string;
-  ngnAmount: string;
+  sendAmount?: string;
+  receiveAmount?: string;
+  totalAmount?: string;
+  sendingCurrency?: Country;
   sendingIsCFA?: boolean;
-  transactionFee: number;
-  rate: number;
+  fee?: string;
+  rate?: string;
   recepientNGN?: {
     bank: string;
     accountNumber: string;
@@ -92,8 +97,7 @@ export const transferStoreDefaultValue = {
   cfaAmount: "0.00",
   ngnAmount: "0.00",
   sendingIsCFA: true,
-  transactionFee: 2,
-  rate: 160,
+  rate: "",
   recepientNGN: null,
   recepientCFA: null,
 };

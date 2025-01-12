@@ -9,15 +9,32 @@ import {
 import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
 import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
+import CustomInput from "../CustomInput";
+import { useForm } from "react-hook-form";
+import { UI } from "@/constants/UI";
 
 export default function NGNRecepientDetails({
   form,
   handleForm,
   setSelectBankModal,
+  control,
+  handleSubmit,
+  resetField,
+  getValues,
+  clearErrors,
+  errors,
+  isValid,
 }: {
   form: recepientDetailsNGN;
   handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
   setSelectBankModal: Function;
+  control: any;
+  handleSubmit: Function;
+  resetField: Function;
+  getValues: Function;
+  clearErrors: Function;
+  errors: any;
+  isValid: boolean;
 }) {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -28,7 +45,8 @@ export default function NGNRecepientDetails({
             style={{
               flexDirection: "row",
               backgroundColor: "white",
-              padding: 16,
+              paddingHorizontal: UI.input.horizontalPadding,
+              paddingVertical: UI.input.verticalPadding,
               borderRadius: 12,
               borderWidth: 1,
               borderColor: "#ECEFF1",
@@ -42,77 +60,65 @@ export default function NGNRecepientDetails({
           </View>
         </View>
       </Pressable>
-      <View style={styles.inputContainer}>
-        <FontText>Account number</FontText>
-        <View>
-          <TextInput
-            maxLength={13}
-            style={styles.input}
-            placeholder="0732934459"
-            placeholderTextColor="#AEB7BF"
-            inputMode="numeric"
-            keyboardType="number-pad"
-            autoCorrect={false}
-            returnKeyType="done"
-            onChangeText={(value) => handleForm("accountNumber", value)}
-            value={form.accountNumber}
-          />
-          {form.accountNumber && (
-            <View style={styles.cancelContainer}>
-              <Pressable onPress={() => handleForm("accountNumber", "")}>
-                <View style={styles.cancel}>
-                  <Close fill="white" width={12} />
-                </View>
-              </Pressable>
-            </View>
-          )}
-        </View>
+      <View>
+        <CustomInput
+          placeholder="0732934459"
+          inputMode="numeric"
+          control={control}
+          clearErrors={clearErrors}
+          isValid={isValid}
+          error={errors.accountNo}
+          rules={{
+            required: "Account number is required, please try again",
+            maxLength: {
+              value: 13,
+              message: "Invalid account number",
+            },
+          }}
+          label="Account number"
+          name="accountNo"
+          resetField={resetField}
+          // keyboardType="number-pad"
+          autoCorrect={false}
+        />
       </View>
-      <View style={styles.inputContainer}>
-        <FontText>Email address</FontText>
-        <View>
-          <TextInput
-            placeholder="johndoe@gmail.com"
-            returnKeyType="done"
-            style={styles.input}
-            inputMode="email"
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholderTextColor="#AEB7BF"
-            onChangeText={(value) => handleForm("emailAddress", value)}
-            value={form.emailAddress}
-          />
-          {form.emailAddress && (
-            <View style={styles.cancelContainer}>
-              <Pressable onPress={() => handleForm("emailAddress", "")}>
-                <View style={styles.cancel}>
-                  <Close fill="white" width={12} />
-                </View>
-              </Pressable>
-            </View>
-          )}
-        </View>
+      <View style={{ marginTop: -14 }}>
+        <CustomInput
+          placeholder="johndoe@gmail.com"
+          inputMode="email"
+          control={control}
+          clearErrors={clearErrors}
+          isValid={isValid}
+          error={errors.email}
+          rules={{
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Invalid email address, please try again.",
+            },
+          }}
+          label="Email address"
+          name="email"
+          resetField={resetField}
+          autoCapitalize="none"
+          // keyboardType="number-pad"
+          autoCorrect={false}
+        />
       </View>
-      <View style={styles.inputContainer}>
-        <FontText>Narration (Optional)</FontText>
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholderTextColor="#AEB7BF"
-            placeholder="Sent with love"
-            onChangeText={(value) => handleForm("narration", value)}
-            value={form.narration}
-          />
-          {form.narration && (
-            <View style={styles.cancelContainer}>
-              <Pressable onPress={() => handleForm("narration", "")}>
-                <View style={styles.cancel}>
-                  <Close fill="white" width={12} />
-                </View>
-              </Pressable>
-            </View>
-          )}
-        </View>
+      <View style={{ marginTop: -14 }}>
+        <CustomInput
+          placeholder="Sent with love"
+          inputMode="none"
+          control={control}
+          clearErrors={clearErrors}
+          isValid={isValid}
+          error={errors.narration}
+          label="Narration (Optional)"
+          name="email"
+          resetField={resetField}
+          autoCapitalize="none"
+          // keyboardType="number-pad"
+          autoCorrect={false}
+        />
       </View>
     </ScrollView>
   );
@@ -121,7 +127,7 @@ export default function NGNRecepientDetails({
 export const styles = StyleSheet.create({
   inputContainer: {
     gap: 8,
-    paddingBottom: 16,
+    paddingBottom: 18,
   },
   input: {
     backgroundColor: "white",

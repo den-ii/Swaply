@@ -178,7 +178,7 @@ export async function pinAuthentication(
   }
 ) {
   const { pin } = arg;
-  console.log("args: ", pin);
+  console.log("args: ", arg.token);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -191,14 +191,21 @@ export async function pinAuthentication(
     },
   });
   const data = await res.json();
-  console.log(data);
+  console.log("pin:", data);
   if (data.status) {
-    const token = data.data.token;
+    const dataRes = data.data.token;
+    console.log("dataRes:", dataRes);
+    const token = dataRes.token;
+    const name = dataRes.fullName.split(" ");
     await AsyncStorage.setItem("token", token);
     authStore.update((s) => {
       s.token = token;
       s.isAuthenticated = true;
       s.isReturningUser = true;
+      s.country = dataRes.country;
+      s.fullName = dataRes.fullName;
+      s.profileImage =
+        name[0].charAt(0).toUpperCase() + name[1].charAt(0).toUpperCase();
     });
   } else {
     toastStore.update((s) => {

@@ -5,6 +5,8 @@ import {
   TextInput,
   InputModeOptions,
   Dimensions,
+  Keyboard,
+  TextInputProps,
 } from "react-native";
 import Close from "@/assets/images/close.svg";
 import FontText from "./FontText";
@@ -27,6 +29,7 @@ export default function CustomInput({
   clearErrors,
   rules,
   setDisableAction,
+  ...props
 }: {
   label: string;
   placeholder: string;
@@ -40,7 +43,7 @@ export default function CustomInput({
   returnKey?: boolean;
   rules?: RegisterOptions<any, string> | undefined;
   setDisableAction?: Function;
-}) {
+} & TextInputProps) {
   const [focus, setFocus] = useState(false);
   const inputContainerRef = useRef<View | null>(null);
 
@@ -105,6 +108,7 @@ export default function CustomInput({
                   value={value}
                   onFocus={handleFocus}
                   onBlur={() => handleBlur(onBlur)}
+                  {...props}
                 />
 
                 {value?.length > 0 && focus ? (
@@ -121,7 +125,7 @@ export default function CustomInput({
               <FontText
                 fontSize={12}
                 color={Colors.error}
-                style={{ marginTop: 8, opacity: !isValid && error ? 1 : 0 }}
+                style={{ marginTop: 4, opacity: !isValid && error ? 1 : 0 }}
               >
                 {!isValid && error ? error.message : "empyy"}
               </FontText>
@@ -133,7 +137,7 @@ export default function CustomInput({
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   inputContainer: {
     paddingBottom: 16,
     gap: 8,

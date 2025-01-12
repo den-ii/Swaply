@@ -4,14 +4,15 @@ import { UI } from "@/constants/UI";
 import { Pressable, TextInput, View } from "react-native";
 import Add from "@/assets/images/add.svg";
 import ChevronRight from "@/assets/images/chevron-right.svg";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { useState } from "react";
 import { transferStore } from "@/store";
 import Search from "@/components/Search";
 
 export default function ChooseRecipient() {
-  const router = useRouter();
+  const [searchValue, setSearchValue] = useState("");
   const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
+  console.log("sendingisCFA:", sendingIsCFA);
 
   return (
     <View
@@ -24,11 +25,11 @@ export default function ChooseRecipient() {
       <View style={{ paddingBottom: 16 }}>
         <FontText fontSize={34} fontWeight={700} fontFamily="P22">
           {sendingIsCFA
-            ? "Send to a bank account"
-            : "Send to a mobile money account"}
+            ? "Send to a mobile money account"
+            : "Send to a bank account"}
         </FontText>
       </View>
-      <Search value={""} setValue={() => {}} />
+      <Search value={searchValue} setValue={setSearchValue} />
       <View>
         <Pressable onPress={() => router.push("/receipient_details")}>
           <View

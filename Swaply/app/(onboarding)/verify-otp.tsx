@@ -3,6 +3,7 @@ import useSWRMutation from "swr/mutation";
 import Otp from "@/components/Otp";
 import { codeActivation } from "@/api/authApi";
 import { authStore, toastStore, ToastType } from "@/store";
+import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function VerifyOtp() {
   const email = authStore.useState((s) => s.email);
@@ -16,7 +17,7 @@ export default function VerifyOtp() {
     }
   );
   return (
-    <>
+    <DismissKeyboard>
       <Otp
         title="Verify OTP"
         email={email}
@@ -24,6 +25,6 @@ export default function VerifyOtp() {
         actionText={"Verify OTP"}
         loading={isMutating}
       />
-    </>
+    </DismissKeyboard>
   );
 }

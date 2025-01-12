@@ -26,10 +26,10 @@ export default function Search({
             paddingVertical: 16,
             backgroundColor: !showBorder ? "#ECEFF1" : "#fff",
             borderRadius: 100,
-            borderWidth: showBorder ? 1 : 0,
-            borderColor: "#416680",
+            borderWidth: 1,
+            borderColor: showBorder ? "#416680" : "#ECEFF1",
             fontSize: 14,
-            fontFamily: "Inter_600SemiBold",
+            fontFamily: "Inter_500Medium",
             color: Colors.light.textDefault,
           }}
           onFocus={() => setShowBorder(true)}
@@ -52,7 +52,7 @@ export default function Search({
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   cancel: {
     width: 16,
     height: 16,
@@ -63,7 +63,10 @@ const styles = StyleSheet.create({
   },
   cancelContainer: {
     position: "absolute",
-    top: 18,
+    width: 16,
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "flex-end",
     right: 16,
   },
 });

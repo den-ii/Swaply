@@ -10,7 +10,6 @@ export default function usePasskeys(
   const [passkeys, setPasskeys] = useState(new Array(6).fill(""));
   const [error, setError] = useState(false);
   const [fill, setFill] = useState(-1);
-
   useEffect(() => {
     if (fill === 5) doneFunction();
   }, [fill]);

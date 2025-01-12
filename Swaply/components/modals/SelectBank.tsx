@@ -11,7 +11,7 @@ import {
   TextInput,
   // Image,
 } from "react-native";
-import Search from "@/assets/images/search.svg";
+import Search from "@/components/Search";
 import CustomModal from "./CustomModal";
 import { BankSVG } from "../BankSVG";
 import bankList from "@/constants/bankList";
@@ -29,10 +29,19 @@ export default function SelectBank({
   handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
 }) {
   const [banks, setBanks] = useState(bankList);
+  const [searchValue, setSearchValue] = useState("");
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
 
-  const handleSearchForBank = (search: string) => {
-    setBanks(bankList.filter((bank) => bank.name.includes(search)));
+  useEffect(() => {
+    handleSearchForBank();
+  }, [searchValue]);
+
+  const handleSearchForBank = () => {
+    setBanks(
+      bankList.filter((bank) =>
+        bank.name.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    );
   };
 
   const handleSetBank = (bankName: string) => {
@@ -74,26 +83,7 @@ export default function SelectBank({
           </FontText>
         </View>
         <View style={{ marginTop: 16, marginBottom: 10, position: "relative" }}>
-          <View style={{ position: "absolute", top: 11, left: 12, zIndex: 2 }}>
-            <Search />
-          </View>
-          <TextInput
-            placeholder="Search for bank"
-            style={{
-              paddingVertical: 10,
-              paddingLeft: 35,
-              paddingRight: 12,
-              backgroundColor: "#ECEFF1",
-              borderRadius: 100,
-              fontSize: 14,
-              fontFamily: "Inter_500Medium",
-              color: Colors.light.textDefault,
-            }}
-            onChangeText={handleSearchForBank}
-            cursorColor={Colors.light.textDefault}
-            selectionColor={Colors.light.textDefault}
-            placeholderTextColor={Colors.light.textDisabled}
-          />
+          <Search value={searchValue} setValue={setSearchValue} />
         </View>
         <ScrollView
           style={{ marginTop: 16 }}

@@ -11,6 +11,7 @@ import { set, useForm } from "react-hook-form";
 import { useState } from "react";
 import { CountryCode } from "@/types/country";
 import { onboardingStore } from "@/store";
+import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function PersonalDetails() {
   const {
@@ -69,74 +70,76 @@ export default function PersonalDetails() {
   };
 
   return (
-    <View
-      style={{
-        paddingHorizontal: UI.paddingHorizontal,
-        flex: 1,
-        backgroundColor: Colors.light.body,
-      }}
-    >
-      <View style={{ paddingBottom: 16 }}>
-        <FontText fontFamily="P22" fontWeight={700} fontSize={34}>
-          Personal details
-        </FontText>
-      </View>
+    <DismissKeyboard>
+      <View
+        style={{
+          paddingHorizontal: UI.paddingHorizontal,
+          flex: 1,
+          backgroundColor: Colors.light.body,
+        }}
+      >
+        <View style={{ paddingBottom: 16 }}>
+          <FontText fontFamily="P22" fontWeight={700} fontSize={34}>
+            Personal details
+          </FontText>
+        </View>
 
-      <View style={{ marginTop: 16 }}>
-        <CustomInput
-          label="First name"
-          inputMode="text"
-          returnKey={true}
-          resetField={resetField}
-          name="firstName"
-          placeholder="John"
-          control={control}
-          clearErrors={clearErrors}
-          isValid={isValid}
-          error={errors.firstName}
-          rules={{
-            required: "First name is required, please try again",
-          }}
-        />
+        <View style={{ marginTop: 16 }}>
+          <CustomInput
+            label="First name"
+            inputMode="text"
+            returnKey={true}
+            resetField={resetField}
+            name="firstName"
+            placeholder="John"
+            control={control}
+            clearErrors={clearErrors}
+            isValid={isValid}
+            error={errors.firstName}
+            rules={{
+              required: "First name is required, please try again",
+            }}
+          />
+        </View>
+        <View style={{ marginTop: -12 }}>
+          <CustomInput
+            label="Last name"
+            inputMode="text"
+            returnKey={true}
+            resetField={resetField}
+            name="lastName"
+            placeholder="Doe"
+            control={control}
+            clearErrors={clearErrors}
+            isValid={isValid}
+            error={errors.lastName}
+            rules={{
+              required: "Last name is required, please try again",
+            }}
+          />
+        </View>
+        <View style={{ marginTop: -12 }}>
+          <FontText>Phone number</FontText>
+          <PhoneNumberInput
+            value={phone}
+            handleValueChange={handlePhoneNumberChange}
+            error={phoneError && showPhoneError}
+            showError={showPhoneError}
+            countryCode={countryCode}
+            switchCountryCode={(countryCode: CountryCode) =>
+              setCountryCode(countryCode)
+            }
+          />
+        </View>
+        <View style={{ marginTop: 16 }}>
+          <Button
+            text="Create an account"
+            disabled={!isValid}
+            action={handleSubmit(onSubmit, handlePhoneError)}
+          />
+        </View>
       </View>
-      <View style={{ marginTop: -12 }}>
-        <CustomInput
-          label="Last name"
-          inputMode="text"
-          returnKey={true}
-          resetField={resetField}
-          name="lastName"
-          placeholder="Doe"
-          control={control}
-          clearErrors={clearErrors}
-          isValid={isValid}
-          error={errors.lastName}
-          rules={{
-            required: "Last name is required, please try again",
-          }}
-        />
-      </View>
-      <View style={{ marginTop: -12 }}>
-        <FontText>Phone number</FontText>
-        <PhoneNumberInput
-          value={phone}
-          handleValueChange={handlePhoneNumberChange}
-          error={phoneError && showPhoneError}
-          showError={showPhoneError}
-          countryCode={countryCode}
-          switchCountryCode={(countryCode: CountryCode) =>
-            setCountryCode(countryCode)
-          }
-        />
-      </View>
-      <View style={{ marginTop: 16 }}>
-        <Button
-          text="Create an account"
-          disabled={!isValid}
-          action={handleSubmit(onSubmit, handlePhoneError)}
-        />
-      </View>
-    </View>
+    </DismissKeyboard>
   );
 }
 

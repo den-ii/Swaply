@@ -106,6 +106,7 @@ export default function Otp({
           }}
           keyboardType="number-pad"
           inputMode="numeric"
+          returnKeyType="done"
           onKeyPress={({ nativeEvent }) => handleOtpText(nativeEvent)}
           placeholder="000-000"
           value={otp}
