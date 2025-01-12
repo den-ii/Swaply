@@ -87,13 +87,13 @@ export default function RecipientDetails() {
         backgroundColor: Colors.light.body,
       }}
     >
-      <View style={{ paddingBottom: 16 }}>
+      <View style={{ paddingBottom: 16, paddingTop: 8 }}>
         <FontText fontSize={34} fontWeight={700} fontFamily="P22">
           Enter recipient’s details
         </FontText>
       </View>
       <View style={{ marginTop: 16 }}>
-        {!sendingIsCFA && (
+        {sendingIsCFA && (
           <NGNRecepientDetails
             form={NGNForm}
             handleForm={handleNGNForm}
@@ -107,7 +107,7 @@ export default function RecipientDetails() {
             isValid={isValid}
           />
         )}
-        {sendingIsCFA && (
+        {!sendingIsCFA && (
           <CFARecepientDetails form={CFAForm} handleForm={handleCFAForm} />
         )}
       </View>

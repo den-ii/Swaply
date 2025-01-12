@@ -290,343 +290,340 @@ export default function Home() {
               </FontText>
             </View>
           </View>
-          <KeyboardAvoidingView
+          {/* <KeyboardAvoidingView
             keyboardVerticalOffset={47}
             behavior={Platform.OS === "ios" ? "padding" : undefined}
             style={{ flex: 1 }}
+          > */}
+          <View
+            style={{
+              paddingHorizontal: UI.paddingHorizontal,
+              paddingTop: 16,
+              flex: 1,
+              backgroundColor: Colors.light.body,
+            }}
           >
-            <View
-              style={{
-                paddingHorizontal: UI.paddingHorizontal,
-                paddingTop: 16,
-                flex: 1,
-                backgroundColor: Colors.light.body,
-              }}
-            >
-              <FontText fontSize={34} fontWeight={700} fontFamily="P22">
-                Send Money
-              </FontText>
+            <FontText fontSize={34} fontWeight={700} fontFamily="P22">
+              Send Money
+            </FontText>
 
-              <FontText color={Colors.light.neutral} style={{ marginTop: 10 }}>
-                Enter the amount and select the currency you want to send money
-                to
-              </FontText>
+            <FontText color={Colors.light.neutral} style={{ marginTop: 10 }}>
+              Enter the amount and select the currency you want to send money to
+            </FontText>
 
-              <Pressable onPress={handleSendInputActive}>
+            <Pressable onPress={handleSendInputActive}>
+              <View
+                style={{
+                  ...styles.valueContainer,
+                  borderColor: sendInputActive ? "#416680" : "#fff",
+                  borderWidth: 1.5,
+                  padding: 14,
+                }}
+              >
                 <View
                   style={{
-                    ...styles.valueContainer,
-                    borderColor: sendInputActive ? "#416680" : "#fff",
-                    borderWidth: 1.5,
-                    padding: 14,
+                    gap: 8,
                   }}
+                >
+                  <FontText
+                    color={Colors.light.neutral}
+                    fontSize={12}
+                    fontWeight={600}
+                  >
+                    YOU SEND
+                  </FontText>
+                  <TextInput
+                    ref={sendInputRef}
+                    style={{
+                      fontSize: 24,
+                      fontFamily: "P22Mackinac_Bold",
+                      color: Colors.light.textDefault,
+                      width: 170,
+                    }}
+                    placeholder="0.00"
+                    cursorColor={Colors.light.textDefault}
+                    selectionColor={Colors.light.textDefault}
+                    placeholderTextColor={Colors.light.textDisabled}
+                    maxLength={10}
+                    inputMode="numeric"
+                    keyboardType="number-pad"
+                    // returnKeyType="done"
+                    onChangeText={(value) => handleConversion(value, true)}
+                    value={sendValue}
+                    blurOnSubmit={true}
+                    onFocus={() => setSendInputActive(true)}
+                    onBlur={() => setSendInputActive(false)}
+                  />
+                </View>
+                <Pressable
+                  onPress={() => setModalActive((modalActive) => !modalActive)}
                 >
                   <View
                     style={{
+                      width: 100,
+                      padding: 12,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      backgroundColor: "#F5F7F8",
+                      borderRadius: 100,
                       gap: 8,
                     }}
                   >
-                    <FontText
-                      color={Colors.light.neutral}
-                      fontSize={12}
-                      fontWeight={600}
-                    >
-                      YOU SEND
+                    <View>
+                      <GetCountrySVG country={sendCountry} />
+                    </View>
+                    <FontText fontWeight={600} fontSize={16}>
+                      {sendCountry}
                     </FontText>
-                    <TextInput
-                      ref={sendInputRef}
-                      style={{
-                        fontSize: 24,
-                        fontFamily: "P22Mackinac_Bold",
-                        color: Colors.light.textDefault,
-                        width: 220,
-                      }}
-                      placeholder="0.00"
-                      cursorColor={Colors.light.textDefault}
-                      selectionColor={Colors.light.textDefault}
-                      placeholderTextColor={Colors.light.textDisabled}
-                      maxLength={10}
-                      inputMode="numeric"
-                      keyboardType="number-pad"
-                      // returnKeyType="done"
-                      onChangeText={(value) => handleConversion(value, true)}
-                      value={sendValue}
-                      blurOnSubmit={true}
-                      onFocus={() => setSendInputActive(true)}
-                      onBlur={() => setSendInputActive(false)}
-                    />
+                    <ArrowDown />
                   </View>
-                  <Pressable
-                    onPress={() =>
-                      setModalActive((modalActive) => !modalActive)
-                    }
-                  >
-                    <View
-                      style={{
-                        width: 100,
-                        padding: 12,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        backgroundColor: "#F5F7F8",
-                        borderRadius: 100,
-                        gap: 8,
-                      }}
-                    >
-                      <View>
-                        <GetCountrySVG country={sendCountry} />
-                      </View>
-                      <FontText fontWeight={600} fontSize={16}>
-                        {sendCountry}
-                      </FontText>
-                      <ArrowDown />
-                    </View>
-                  </Pressable>
-                </View>
-              </Pressable>
-              <View style={{ paddingLeft: 16 }}>
-                <View
-                  style={{
-                    borderLeftWidth: 1,
-                    borderColor: "#8BD1FF",
-                    height: 150,
-                    position: "relative",
-                  }}
-                >
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: -10,
-                      bottom: 0,
-                      zIndex: 2,
-                      height: 150,
-                      gap: 15,
-                      right: 0,
-                      // transform: [{ translateY: 75 }],
-                      justifyContent: "center",
-                      // alignItems: "center",
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        gap: 24,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Minus />
-
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        {fee && (
-                          <Text style={{}}>
-                            <Text
-                              style={{
-                                fontFamily: "Inter_600SemiBold",
-                                color: Colors.light.textDefault,
-                              }}
-                            >
-                              {`${fee} ${
-                                sendCountry === Country.BENIN
-                                  ? Country.BENIN
-                                  : Country.NIGERIA
-                              }  `}
-                            </Text>
-                            <Text
-                              style={{
-                                marginTop: 32,
-                                fontFamily: "Inter_500Medium",
-                                color: Colors.light.textPrimary,
-                              }}
-                            >
-                              Fee
-                            </Text>
-                          </Text>
-                        )}
-                        {!fee && (
-                          <Entypo
-                            name="dots-three-horizontal"
-                            size={12}
-                            color={Colors.light.textDefault}
-                          />
-                        )}
-                      </View>
-                    </View>
-
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        gap: 24,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Times />
-
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        {fee && (
-                          <Text style={{}}>
-                            <Text
-                              style={{
-                                fontFamily: "Inter_600SemiBold",
-                                color: Colors.light.textDefault,
-                              }}
-                            >
-                              {rate}
-                            </Text>
-                            <Text
-                              style={{
-                                marginTop: 32,
-                                fontFamily: "Inter_500Medium",
-                                color: Colors.light.neutral,
-                              }}
-                            >
-                              {"  "}
-                              Rate
-                            </Text>
-                          </Text>
-                        )}
-                        {!fee && (
-                          <Entypo
-                            name="dots-three-horizontal"
-                            size={12}
-                            color={Colors.light.textDefault}
-                          />
-                        )}
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        gap: 24,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Equals />
-
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        {fee && (
-                          <Text style={{}}>
-                            <Text
-                              style={{
-                                fontFamily: "Inter_600SemiBold",
-                                color: Colors.light.textDefault,
-                              }}
-                            >
-                              {totalAmount}
-                            </Text>
-                            <Text
-                              style={{
-                                marginTop: 32,
-                                fontFamily: "Inter_500Medium",
-                                color: Colors.light.neutral,
-                              }}
-                            >
-                              {"  "}
-                              Total Amount
-                            </Text>
-                          </Text>
-                        )}
-                        {!fee && (
-                          <Entypo
-                            name="dots-three-horizontal"
-                            size={12}
-                            color={Colors.light.textDefault}
-                          />
-                        )}
-                      </View>
-                    </View>
-                  </View>
-                </View>
+                </Pressable>
               </View>
-
-              <Pressable onPress={handleRecieveInputActive}>
+            </Pressable>
+            <View style={{ paddingLeft: 16 }}>
+              <View
+                style={{
+                  borderLeftWidth: 1,
+                  borderColor: "#8BD1FF",
+                  height: 150,
+                  position: "relative",
+                }}
+              >
                 <View
                   style={{
-                    ...styles.valueContainer,
-                    padding: 14,
-                    marginTop: 0,
-                    borderWidth: 1.5,
-                    borderColor: receiveInputActive ? "#416680" : "#fff",
+                    position: "absolute",
+                    top: 0,
+                    left: -10,
+                    bottom: 0,
+                    zIndex: 2,
+                    height: 150,
+                    gap: 15,
+                    right: 0,
+                    // transform: [{ translateY: 75 }],
+                    justifyContent: "center",
+                    // alignItems: "center",
                   }}
                 >
                   <View
                     style={{
-                      gap: 8,
+                      flexDirection: "row",
+                      gap: 24,
+                      alignItems: "center",
                     }}
                   >
-                    <FontText
-                      color={Colors.light.neutral}
-                      fontSize={12}
-                      fontWeight={600}
-                    >
-                      RECEIVER GETS
-                    </FontText>
+                    <Minus />
 
-                    <TextInput
-                      style={{
-                        fontSize: 24,
-                        fontFamily: "P22Mackinac_Bold",
-                        color: Colors.light.textDefault,
-                        width: 220,
-                      }}
-                      ref={receiveInputRef}
-                      placeholder="0.00"
-                      cursorColor={Colors.light.textDefault}
-                      selectionColor={Colors.light.textDefault}
-                      placeholderTextColor={Colors.light.textDisabled}
-                      inputMode="decimal"
-                      keyboardType="decimal-pad"
-                      maxLength={10}
-                      autoCorrect={false}
-                      autoComplete="off"
-                      // returnKeyType="done"
-                      onChangeText={(value) => handleConversion(value, false)}
-                      value={receiveValue}
-                      blurOnSubmit={true}
-                      onFocus={() => setReceiveInputActive(true)}
-                      onBlur={() => setReceiveInputActive(false)}
-                    />
-                  </View>
-                  <Pressable onPress={() => setModalActive(true)}>
                     <View
-                      style={{
-                        width: 100,
-                        padding: 12,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        backgroundColor: "#F5F7F8",
-                        gap: 8,
-                        borderRadius: 100,
-                      }}
+                      style={{ flexDirection: "row", alignItems: "center" }}
                     >
-                      <View>
-                        <GetCountrySVG country={receiveCountry} />
-                      </View>
-                      <FontText fontWeight={600} fontSize={16}>
-                        {receiveCountry}
-                      </FontText>
-                      <ArrowDown />
+                      {fee && (
+                        <Text style={{}}>
+                          <Text
+                            style={{
+                              fontFamily: "Inter_600SemiBold",
+                              color: Colors.light.textDefault,
+                            }}
+                          >
+                            {`${fee} ${
+                              sendCountry === Country.BENIN
+                                ? Country.BENIN
+                                : Country.NIGERIA
+                            }  `}
+                          </Text>
+                          <Text
+                            style={{
+                              marginTop: 32,
+                              fontFamily: "Inter_500Medium",
+                              color: Colors.light.textPrimary,
+                            }}
+                          >
+                            Fee
+                          </Text>
+                        </Text>
+                      )}
+                      {!fee && (
+                        <Entypo
+                          name="dots-three-horizontal"
+                          size={12}
+                          color={Colors.light.textDefault}
+                        />
+                      )}
                     </View>
-                  </Pressable>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 24,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Times />
+
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      {fee && (
+                        <Text style={{}}>
+                          <Text
+                            style={{
+                              fontFamily: "Inter_600SemiBold",
+                              color: Colors.light.textDefault,
+                            }}
+                          >
+                            {rate}
+                          </Text>
+                          <Text
+                            style={{
+                              marginTop: 32,
+                              fontFamily: "Inter_500Medium",
+                              color: Colors.light.neutral,
+                            }}
+                          >
+                            {"  "}
+                            Rate
+                          </Text>
+                        </Text>
+                      )}
+                      {!fee && (
+                        <Entypo
+                          name="dots-three-horizontal"
+                          size={12}
+                          color={Colors.light.textDefault}
+                        />
+                      )}
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 24,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Equals />
+
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      {fee && (
+                        <Text style={{}}>
+                          <Text
+                            style={{
+                              fontFamily: "Inter_600SemiBold",
+                              color: Colors.light.textDefault,
+                            }}
+                          >
+                            {totalAmount}
+                          </Text>
+                          <Text
+                            style={{
+                              marginTop: 32,
+                              fontFamily: "Inter_500Medium",
+                              color: Colors.light.neutral,
+                            }}
+                          >
+                            {"  "}
+                            Total Amount
+                          </Text>
+                        </Text>
+                      )}
+                      {!fee && (
+                        <Entypo
+                          name="dots-three-horizontal"
+                          size={12}
+                          color={Colors.light.textDefault}
+                        />
+                      )}
+                    </View>
+                  </View>
                 </View>
-              </Pressable>
-              <View style={{ marginTop: 24 }}>
-                <Button
-                  text={"Continue"}
-                  loading={loading || isMutating}
-                  action={handleContinue}
-                  disabled={disableContinue}
-                />
               </View>
             </View>
-          </KeyboardAvoidingView>
+
+            <Pressable onPress={handleRecieveInputActive}>
+              <View
+                style={{
+                  ...styles.valueContainer,
+                  padding: 14,
+                  marginTop: 0,
+                  borderWidth: 1.5,
+                  borderColor: receiveInputActive ? "#416680" : "#fff",
+                }}
+              >
+                <View
+                  style={{
+                    gap: 8,
+                  }}
+                >
+                  <FontText
+                    color={Colors.light.neutral}
+                    fontSize={12}
+                    fontWeight={600}
+                  >
+                    RECEIVER GETS
+                  </FontText>
+
+                  <TextInput
+                    style={{
+                      fontSize: 24,
+                      fontFamily: "P22Mackinac_Bold",
+                      color: Colors.light.textDefault,
+                      width: 170,
+                    }}
+                    ref={receiveInputRef}
+                    placeholder="0.00"
+                    cursorColor={Colors.light.textDefault}
+                    selectionColor={Colors.light.textDefault}
+                    placeholderTextColor={Colors.light.textDisabled}
+                    inputMode="decimal"
+                    keyboardType="decimal-pad"
+                    maxLength={10}
+                    autoCorrect={false}
+                    autoComplete="off"
+                    // returnKeyType="done"
+                    onChangeText={(value) => handleConversion(value, false)}
+                    value={receiveValue}
+                    blurOnSubmit={true}
+                    onFocus={() => setReceiveInputActive(true)}
+                    onBlur={() => setReceiveInputActive(false)}
+                  />
+                </View>
+                <Pressable onPress={() => setModalActive(true)}>
+                  <View
+                    style={{
+                      width: 100,
+                      padding: 12,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      backgroundColor: "#F5F7F8",
+                      gap: 8,
+                      borderRadius: 100,
+                    }}
+                  >
+                    <View>
+                      <GetCountrySVG country={receiveCountry} />
+                    </View>
+                    <FontText fontWeight={600} fontSize={16}>
+                      {receiveCountry}
+                    </FontText>
+                    <ArrowDown />
+                  </View>
+                </Pressable>
+              </View>
+            </Pressable>
+            <View style={{ marginTop: 24 }}>
+              <Button
+                text={"Continue"}
+                loading={loading || isMutating}
+                action={handleContinue}
+                disabled={disableContinue}
+              />
+            </View>
+          </View>
+          {/* </KeyboardAvoidingView> */}
         </View>
       </DismissKeyboard>
       <Currency
