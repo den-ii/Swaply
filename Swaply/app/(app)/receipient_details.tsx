@@ -11,36 +11,84 @@ import {
 import Checkbox from "@/assets/images/checkbox.svg";
 import { useRouter } from "expo-router";
 import Button from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectBank from "@/components/modals/SelectBank";
 import { transferStore } from "@/store";
 import NGNRecepientDetails from "@/components/recepient-details/NGN";
 import CFARecepientDetails from "@/components/recepient-details/CFA";
 import Sent from "@/components/modals/Sent";
-import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
+import {
+  recepientDetailsNGN,
+  recepientDetailsCFA,
+  recepientNGN,
+} from "@/types/recepient";
 import useInputControl from "@/hooks/useInputControl";
+import { Country } from "@/types/country";
+import { errorResult } from "pullstate";
+
+const ngnForm = {
+  accountNumber: "",
+  emailAddress: "",
+  narration: "",
+};
 
 export default function RecipientDetails() {
   const router = useRouter();
+  const ngnBank = transferStore.useState((s) => s.recepientNGN.bank);
+
   const {
     control,
     handleSubmit,
     resetField,
     getValues,
     clearErrors,
+    watching,
     isValid,
     errors,
   } = useInputControl({
     accountNo: "",
-    email: "",
+    emailAddress: "",
     narration: "",
   });
-
-  const [sentModal, setSentModal] = useState(false);
-  const { sendingIsCFA } = transferStore.useState((store) => store);
   const [checked, setChecked] = useState(false);
+  const [sentModal, setSentModal] = useState(false);
+  const [proceed, setProceed] = useState(false);
+  const { sendingIsCFA, sendingCurrency, receivingCurrency } =
+    transferStore.useState((store) => store);
+
+  // const checkNGNProceed = () => {
+  //   let proceed = [];
+  //   if (isValid) {
+  //     se
+  //   }
+
+  // };
+
+  useEffect(() => {
+    console.log("errors", errors);
+    console.log("Obj", Object.keys(errors));
+    if (!checked) {
+      setProceed(false);
+      return;
+    }
+
+    if (receivingCurrency === Country.NIGERIA) {
+      const hasErrors = Object.keys(errors).length > 0 || !isValid || !ngnBank;
+      setProceed(!hasErrors);
+    }
+  }, [checked, receivingCurrency, Object.keys(errors).length, ngnBank]);
 
   const handleContinue = () => {
+    if (receivingCurrency === Country.NIGERIA) {
+      transferStore.update((s) => {
+        s.recepientNGN = {
+          ...s.recepientNGN,
+          accountNumber: getValues("accountNo"),
+          emailAddress: getValues("emailAddress"),
+          narration: getValues("narration"),
+        };
+      });
+    }
     router.navigate("/sending");
   };
 
@@ -86,7 +134,6 @@ export default function RecipientDetails() {
               marginTop: 16,
             }}
           >
-            {/* <Pressable onPress={() => setChecked((checked) => !checked)}> */}
             <View
               style={{
                 width: 16,
@@ -97,7 +144,6 @@ export default function RecipientDetails() {
             >
               {checked && <Checkbox fill="#FE6C02" />}
             </View>
-            {/* </Pressable> */}
             <View style={{ flex: 1 }}>
               <FontText fontSize={12}>
                 By continuing with this payment you’re confirming that the
@@ -114,7 +160,11 @@ export default function RecipientDetails() {
             // backgroundColor: Colors.light.text,
           }}
         >
-          <Button text={"Continue"} action={handleSubmit(handleContinue)} />
+          <Button
+            text={"Continue"}
+            action={handleSubmit(handleContinue)}
+            disabled={!proceed}
+          />
         </View>
       </View>
 

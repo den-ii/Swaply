@@ -20,3 +20,9 @@ export interface Bank {
   createdAt: Date | string;
   updatedAt: Date | string;
 }
+
+export interface recipientNGN {
+  accountNo: string;
+  email: string;
+  narration: string;
+}

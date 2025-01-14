@@ -74,6 +74,10 @@ export default function NGNRecepientDetails({
           error={errors.accountNo}
           rules={{
             required: "Account number is required, please try again",
+            minLength: {
+              value: 13,
+              message: "Invalid account number",
+            },
             maxLength: {
               value: 13,
               message: "Invalid account number",
@@ -120,7 +124,7 @@ export default function NGNRecepientDetails({
           error={errors.narration}
           label="Narration (Optional)"
           rules={undefined}
-          name="email"
+          name="narration"
           resetField={resetField}
           autoCapitalize="none"
           // keyboardType="number-pad"

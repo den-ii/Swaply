@@ -48,54 +48,41 @@ export default function Sending() {
   const [descriptionNGN, setDescriptionNGN] = useState<InfoTuple>([]);
   const [descriptionCFA, setDescriptionCFA] = useState<InfoTuple>([]);
   useEffect(() => {
-    let transactionFeeValue = "";
-    let rateValue = "";
-    let totalAmountValue = "";
-    if (tStoreValue.sendingIsCFA) {
-      rateValue = `1 CFA = ${tStoreValue.rate} NGN`;
-      transactionFeeValue = `${tStoreValue.transactionFee} CFA`;
-      totalAmountValue = `${(
-        Number(tStoreValue.cfaAmount) + tStoreValue.transactionFee
-      ).toFixed(2)} CFA`;
-    } else {
-      rateValue = `1 NGN = ${tStoreValue.rate} CFA`;
-      transactionFeeValue = `${tStoreValue.transactionFee} NGN`;
-      totalAmountValue = `${(
-        Number(tStoreValue.ngnAmount) + tStoreValue.transactionFee
-      ).toFixed(2)} NGN`;
-    }
+    let rate = tStoreValue.rate ?? "0.00";
+    let fee = tStoreValue.fee;
+    let totalAmount = tStoreValue.totalAmount;
     if (tStoreValue.sendingIsCFA) {
       setDescriptionNGN([
         ["Bank name", tStoreValue.recepientNGN?.bank],
         ["Account number", tStoreValue.recepientNGN?.accountNumber],
         ["Email address", tStoreValue.recepientNGN?.emailAddress],
         ["Account name", tStoreValue.recepientNGN?.accountName],
-        ["Transaction fee", transactionFeeValue],
-        ["Rate", rateValue],
-        ["Total amount", totalAmountValue],
+        ["Rate", rate],
+        ["Transaction fee", fee + " CFA"],
+        ["Total amount", totalAmount + " CFA"],
       ]);
     } else {
       setDescriptionCFA([
         ["Momo number", tStoreValue.recepientCFA?.momoNumber],
         ["Mobile money operator", tStoreValue.recepientCFA?.momoOperator],
         ["Full name", tStoreValue.recepientCFA?.fullName],
-        ["Transaction fee", transactionFeeValue],
-        ["Rate", rateValue],
-        ["Total amount", totalAmountValue],
+        ["Transaction fee", fee],
+        ["Rate", rate],
+        ["Total amount", totalAmount],
       ]);
     }
   }, [tStoreValue.recepientNGN, tStoreValue.recepientCFA]);
 
   const getSentAmount = () => {
     return tStoreValue.sendingIsCFA
-      ? tStoreValue.cfaAmount + " CFA"
-      : tStoreValue.ngnAmount + " NGN";
+      ? tStoreValue.sendAmount + " CFA"
+      : tStoreValue.sendAmount + " NGN";
   };
 
   const getReceiveAmount = () => {
     return !tStoreValue.sendingIsCFA
-      ? tStoreValue.cfaAmount + " CFA"
-      : tStoreValue.ngnAmount + " NGN";
+      ? tStoreValue.receiveAmount + " CFA"
+      : tStoreValue.receiveAmount + " NGN";
   };
 
   const handleContinue = () => {
@@ -204,6 +191,7 @@ export default function Sending() {
         >
           {tStoreValue.sendingIsCFA &&
             descriptionNGN.map(([key, value]) => {
+              if (!value) return;
               return <Description key={key} k={key} v={value} />;
             })}
           {!tStoreValue.sendingIsCFA &&

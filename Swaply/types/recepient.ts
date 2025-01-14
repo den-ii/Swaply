@@ -5,6 +5,12 @@ export interface recepientDetailsNGN {
   narration: string;
 }
 
+export interface recepientNGN {
+  accountNo: string;
+  email: string;
+  narration: string;
+}
+
 export interface recepientDetailsCFA {
   momoNumber: string;
   fullName: string;

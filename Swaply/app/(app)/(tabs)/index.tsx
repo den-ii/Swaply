@@ -182,6 +182,7 @@ export default function Home() {
       state.receiveAmount = receiveValue;
       state.sendingIsCFA = sendCountry === Country.BENIN;
       state.sendingCurrency = sendCountry;
+      state.receivingCurrency = receiveCountry;
       state.rate = rate || "0.00";
       state.totalAmount = totalAmount || "0.00";
       state.fee = fee || "0.00";

@@ -77,6 +77,7 @@ interface TransferStore {
   receiveAmount?: string;
   totalAmount?: string;
   sendingCurrency?: Country;
+  receivingCurrency?: Country;
   sendingIsCFA?: boolean;
   fee?: string;
   rate?: string;
