@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Colors";
-import { Pressable, TextInput, View, StyleSheet } from "react-native";
+import { Pressable, TextInput, View, StyleSheet, Platform } from "react-native";
 import SearchIcon from "@/assets/images/search.svg";
 import Close from "@/assets/images/close.svg";
 import { useState } from "react";
@@ -14,7 +14,14 @@ export default function Search({
   const [showBorder, setShowBorder] = useState(false);
   return (
     <View style={{ position: "relative" }}>
-      <View style={{ position: "absolute", top: 16, left: 12, zIndex: 2 }}>
+      <View
+        style={{
+          position: "absolute",
+          top: Platform.OS === "ios" ? 16 : 17,
+          left: 12,
+          zIndex: 2,
+        }}
+      >
         <SearchIcon />
       </View>
       <View style={{ height: 50 }}>
@@ -23,7 +30,7 @@ export default function Search({
           style={{
             paddingLeft: 32,
             paddingRight: 16,
-            paddingVertical: 16,
+            paddingVertical: Platform.OS === "ios" ? 16 : 13,
             backgroundColor: !showBorder ? "#ECEFF1" : "#fff",
             borderRadius: 100,
             borderWidth: 1,

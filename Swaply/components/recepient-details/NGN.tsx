@@ -5,6 +5,7 @@ import {
   TextInput,
   View,
   StyleSheet,
+  Platform,
 } from "react-native";
 import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
@@ -12,11 +13,11 @@ import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 import CustomInput from "../CustomInput";
 import { useForm } from "react-hook-form";
 import { UI } from "@/constants/UI";
+import SelectBank from "../modals/SelectBank";
+import { useState } from "react";
+import { transferStore } from "@/store";
 
 export default function NGNRecepientDetails({
-  form,
-  handleForm,
-  setSelectBankModal,
   control,
   handleSubmit,
   resetField,
@@ -25,9 +26,6 @@ export default function NGNRecepientDetails({
   errors,
   isValid,
 }: {
-  form: recepientDetailsNGN;
-  handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
-  setSelectBankModal: Function;
   control: any;
   handleSubmit: Function;
   resetField: Function;
@@ -36,6 +34,10 @@ export default function NGNRecepientDetails({
   errors: any;
   isValid: boolean;
 }) {
+  const [selectBankModal, setSelectBankModal] = useState(false);
+  const bank = transferStore.useState((store) => store.recepientNGN?.bank);
+  const errorSize = 10;
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Pressable onPress={() => setSelectBankModal(true)}>
@@ -46,7 +48,8 @@ export default function NGNRecepientDetails({
               flexDirection: "row",
               backgroundColor: "white",
               paddingHorizontal: UI.input.horizontalPadding,
-              paddingVertical: UI.input.verticalPadding,
+              paddingVertical:
+                Platform.OS === "ios" ? UI.input.verticalPadding : 13,
               borderRadius: 12,
               borderWidth: 1,
               borderColor: "#ECEFF1",
@@ -54,8 +57,8 @@ export default function NGNRecepientDetails({
               justifyContent: "space-between",
             }}
           >
-            {!form.bank && <FontText color="#AEB7BF">Access Bank</FontText>}
-            {form.bank && <FontText>{form.bank}</FontText>}
+            {!bank && <FontText color="#AEB7BF">Access Bank</FontText>}
+            {bank && <FontText>{bank}</FontText>}
             <ChevronDown fill="#AEB7BF" />
           </View>
         </View>
@@ -63,6 +66,7 @@ export default function NGNRecepientDetails({
       <View>
         <CustomInput
           placeholder="0732934459"
+          errorSize={errorSize}
           inputMode="numeric"
           control={control}
           clearErrors={clearErrors}
@@ -86,6 +90,7 @@ export default function NGNRecepientDetails({
         <CustomInput
           placeholder="johndoe@gmail.com"
           inputMode="email"
+          errorSize={errorSize}
           control={control}
           clearErrors={clearErrors}
           isValid={isValid}
@@ -111,8 +116,10 @@ export default function NGNRecepientDetails({
           control={control}
           clearErrors={clearErrors}
           isValid={isValid}
+          errorSize={errorSize}
           error={errors.narration}
           label="Narration (Optional)"
+          rules={undefined}
           name="email"
           resetField={resetField}
           autoCapitalize="none"
@@ -120,6 +127,10 @@ export default function NGNRecepientDetails({
           autoCorrect={false}
         />
       </View>
+      <SelectBank
+        modalActive={selectBankModal}
+        setModalActive={setSelectBankModal}
+      />
     </ScrollView>
   );
 }

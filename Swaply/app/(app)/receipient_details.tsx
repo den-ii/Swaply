@@ -36,46 +36,11 @@ export default function RecipientDetails() {
     narration: "",
   });
 
-  const [selectBankModal, setSelectBankModal] = useState(false);
-  // const [sendingModal, setSendingModal] = useState(false);
   const [sentModal, setSentModal] = useState(false);
-
   const { sendingIsCFA } = transferStore.useState((store) => store);
-
   const [checked, setChecked] = useState(false);
 
-  const [NGNForm, setNGNForm] = useState({
-    bank: "",
-    accountNumber: "",
-    emailAddress: "",
-    narration: "",
-    accountName: "",
-  });
-
-  const [CFAForm, setCFAForm] = useState({
-    momoNumber: "",
-    fullName: "",
-    momoOperator: "",
-  });
-
-  const handleNGNForm = (key: keyof recepientDetailsNGN, value: string) => {
-    setNGNForm((form) => ({ ...form, [key]: value }));
-  };
-
-  const handleCFAForm = (key: keyof recepientDetailsCFA, value: string) => {
-    setCFAForm((form) => ({ ...form, [key]: value }));
-  };
-
   const handleContinue = () => {
-    if (sendingIsCFA) {
-      transferStore.update((store) => {
-        store.recepientNGN = NGNForm;
-      });
-    } else {
-      transferStore.update((store) => {
-        store.recepientCFA = CFAForm;
-      });
-    }
     router.navigate("/sending");
   };
 
@@ -95,9 +60,6 @@ export default function RecipientDetails() {
       <View style={{ marginTop: 16 }}>
         {sendingIsCFA && (
           <NGNRecepientDetails
-            form={NGNForm}
-            handleForm={handleNGNForm}
-            setSelectBankModal={setSelectBankModal}
             control={control}
             handleSubmit={handleSubmit}
             resetField={resetField}
@@ -107,9 +69,9 @@ export default function RecipientDetails() {
             isValid={isValid}
           />
         )}
-        {!sendingIsCFA && (
+        {/* {!sendingIsCFA && (
           <CFARecepientDetails form={CFAForm} handleForm={handleCFAForm} />
-        )}
+        )} */}
       </View>
       <View style={{ flex: 1, paddingBottom: 30, justifyContent: "flex-end" }}>
         <Pressable onPress={() => setChecked((checked) => !checked)}>
@@ -152,35 +114,10 @@ export default function RecipientDetails() {
             // backgroundColor: Colors.light.text,
           }}
         >
-          {/* <Link
-            href="/home/sending"
-            style={{
-              width: "100%",
-              paddingVertical: 20,
-            }}
-          >
-            <FontText
-              color="white"
-              fontWeight={600}
-              fontSize={16}
-              style={{ textAlign: "center" }}
-            >
-              Continue
-            </FontText>
-          </Link> */}
           <Button text={"Continue"} action={handleSubmit(handleContinue)} />
         </View>
       </View>
-      <SelectBank
-        modalActive={selectBankModal}
-        setModalActive={setSelectBankModal}
-        handleForm={handleNGNForm}
-      />
-      {/* <Sending
-        modalActive={sendingModal}
-        setModalActive={setSendingModal}
-        setSentModalActive={setSentModal}
-      /> */}
+
       <Sent modalActive={sentModal} setModalActive={setSentModal} />
     </View>
   );

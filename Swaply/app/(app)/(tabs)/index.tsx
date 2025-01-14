@@ -29,7 +29,7 @@ import { authStore, transferStore, transferStoreDefaultValue } from "@/store";
 import CustomModal from "@/components/modals/CustomModal";
 import Currency from "@/components/modals/Currency";
 import { Country } from "@/types/country";
-import convertCurrency from "@/api/paymentAPI";
+import { convertCurrency } from "@/api/paymentAPI";
 import useDebounce from "@/hooks/useDebounce";
 import Minus from "@/assets/images/minus.svg";
 import Times from "@/assets/images/times.svg";
@@ -339,6 +339,7 @@ export default function Home() {
                       fontFamily: "P22Mackinac_Bold",
                       color: Colors.light.textDefault,
                       width: 170,
+                      paddingVertical: 0,
                     }}
                     placeholder="0.00"
                     cursorColor={Colors.light.textDefault}
@@ -357,6 +358,7 @@ export default function Home() {
                 </View>
                 <Pressable
                   onPress={() => setModalActive((modalActive) => !modalActive)}
+                  style={{ position: "absolute", right: 16 }}
                 >
                   <View
                     style={{
@@ -571,6 +573,7 @@ export default function Home() {
                       fontFamily: "P22Mackinac_Bold",
                       color: Colors.light.textDefault,
                       width: 170,
+                      paddingVertical: 0,
                     }}
                     ref={receiveInputRef}
                     placeholder="0.00"
@@ -590,7 +593,10 @@ export default function Home() {
                     onBlur={() => setReceiveInputActive(false)}
                   />
                 </View>
-                <Pressable onPress={() => setModalActive(true)}>
+                <Pressable
+                  onPress={() => setModalActive(true)}
+                  style={{ position: "absolute", right: 16 }}
+                >
                   <View
                     style={{
                       width: 100,
@@ -648,8 +654,9 @@ const styles = StyleSheet.create({
   valueContainer: {
     backgroundColor: "#fff",
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
+    position: "relative",
     padding: 16,
     borderRadius: 16,
     marginTop: 32,

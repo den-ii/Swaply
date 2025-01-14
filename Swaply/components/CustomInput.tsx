@@ -27,6 +27,7 @@ export default function CustomInput({
   returnKey,
   isValid,
   clearErrors,
+  errorSize,
   rules,
   setDisableAction,
   ...props
@@ -38,6 +39,7 @@ export default function CustomInput({
   error: FieldError | undefined;
   clearErrors: Function;
   isValid: boolean;
+  errorSize?: number;
   resetField: Function;
   control: Control<any>;
   returnKey?: boolean;
@@ -123,7 +125,7 @@ export default function CustomInput({
                 ) : null}
               </View>
               <FontText
-                fontSize={12}
+                fontSize={errorSize ?? 12}
                 color={Colors.error}
                 style={{ marginTop: 4, opacity: !isValid && error ? 1 : 0 }}
               >

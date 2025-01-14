@@ -80,26 +80,26 @@ interface TransferStore {
   sendingIsCFA?: boolean;
   fee?: string;
   rate?: string;
-  recepientNGN?: {
-    bank: string;
-    accountNumber: string;
-    accountName: string;
-    emailAddress: string;
-    narration: string;
-  } | null;
-  recepientCFA?: {
-    momoNumber: string;
-    fullName: string;
-    momoOperator: string;
-  } | null;
+  recepientNGN: {
+    bank?: string;
+    accountNumber?: string;
+    accountName?: string;
+    emailAddress?: string;
+    narration?: string;
+  };
+  recepientCFA: {
+    momoNumber?: string;
+    fullName?: string;
+    momoOperator?: string;
+  };
 }
 export const transferStoreDefaultValue = {
   cfaAmount: "0.00",
   ngnAmount: "0.00",
   sendingIsCFA: true,
   rate: "",
-  recepientNGN: null,
-  recepientCFA: null,
+  recepientNGN: {},
+  recepientCFA: {},
 };
 
 export const transferStore = new Store<TransferStore>(

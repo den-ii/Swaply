@@ -69,7 +69,8 @@ export const PhoneNumberInput = ({
                 paddingVertical: UI.input.verticalPadding,
                 paddingHorizontal: UI.input.horizontalPadding,
                 flexDirection: "row",
-                gap: 8,
+                gap: 6,
+                width: 100,
                 alignItems: "center",
               }}
             >

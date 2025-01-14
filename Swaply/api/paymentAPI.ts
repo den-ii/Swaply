@@ -2,7 +2,7 @@ import { Country } from "@/types/country";
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
-export default async function convertCurrency(
+export async function convertCurrency(
   url: string,
   {
     arg,
@@ -29,6 +29,14 @@ export default async function convertCurrency(
   });
   const data = await res.json();
   console.log("res: ", res.status);
+  console.log("data: ", data);
+  return data;
+}
+
+export async function getListOfBanksNGN(url: string) {
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl);
+  const data = await res.json();
   console.log("data: ", data);
   return data;
 }

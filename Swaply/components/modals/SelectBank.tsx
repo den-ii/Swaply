@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
+  FlatList,
   // Image,
 } from "react-native";
 import Search from "@/components/Search";
@@ -18,34 +19,59 @@ import bankList from "@/constants/bankList";
 import { Image } from "expo-image";
 import { useCloseModal } from "@/hooks/useCloseModal";
 import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
+import { transferStore } from "@/store";
+import { getListOfBanksNGN } from "@/api/paymentAPI";
+import useSWR from "swr";
+import { Bank } from "@/types";
 
 export default function SelectBank({
   modalActive,
   setModalActive,
-  handleForm,
 }: {
   modalActive: boolean;
   setModalActive: Function;
-  handleForm: (key: keyof recepientDetailsNGN, value: string) => void;
 }) {
-  const [banks, setBanks] = useState(bankList);
+  const [bankList, setBankList] = useState<Bank[]>([]);
+  const [banks, setBanks] = useState<Bank[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
+  const { data, isLoading, error } = useSWR(
+    "naira-payment/banks",
+    getListOfBanksNGN,
+    {
+      onSuccess: (data) => {
+        if (data.status) {
+          const banks = data.data;
+          setBankList(banks);
+          setBanks(banks);
+          // transferStore.update((store) => {
+          //   store.recepientNGN.amount = data.amount;
+          // });
+        }
+      },
+    }
+  );
 
   useEffect(() => {
     handleSearchForBank();
   }, [searchValue]);
 
   const handleSearchForBank = () => {
+    if (!searchValue || searchValue.trim() === "") {
+      setBanks(bankList as Bank[]);
+      return;
+    }
     setBanks(
       bankList.filter((bank) =>
         bank.name.toLowerCase().includes(searchValue.toLowerCase())
-      )
+      ) as Bank[]
     );
   };
 
   const handleSetBank = (bankName: string) => {
-    handleForm("bank", bankName);
+    transferStore.update((store) => {
+      store.recepientNGN.bank = bankName;
+    });
     setModalActive(false);
   };
 
@@ -85,33 +111,43 @@ export default function SelectBank({
         <View style={{ marginTop: 16, marginBottom: 10, position: "relative" }}>
           <Search value={searchValue} setValue={setSearchValue} />
         </View>
-        <ScrollView
-          style={{ marginTop: 16 }}
-          showsVerticalScrollIndicator={false}
+        <View
+          style={{ backgroundColor: "white", borderRadius: 20, marginTop: 16 }}
         >
-          <View style={{ backgroundColor: "white", borderRadius: 20 }}>
-            {banks.map((bank) => (
-              <Pressable
-                onPress={() => handleSetBank(bank.name)}
-                key={bank.name}
-              >
-                <View
-                  style={{
-                    padding: 16,
-                    flexDirection: "row",
-                    gap: 16,
-                    alignItems: "center",
-                  }}
-                >
-                  <BankSVG bank={bank.name} />
-
-                  <FontText>{bank.name}</FontText>
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        </ScrollView>
+          <FlatList
+            data={banks}
+            renderItem={({ item }) => (
+              <BankButton bank={item} handleSetBank={handleSetBank} />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </View>
       </>
     </CustomModal>
   );
 }
+
+const BankButton = ({
+  bank,
+  handleSetBank,
+}: {
+  bank: Bank;
+  handleSetBank: Function;
+}) => {
+  return (
+    <Pressable onPress={() => handleSetBank(bank.name)} key={bank.name}>
+      <View
+        style={{
+          padding: 16,
+          flexDirection: "row",
+          gap: 16,
+          alignItems: "center",
+        }}
+      >
+        <BankSVG bank={bank} />
+
+        <FontText>{bank.name}</FontText>
+      </View>
+    </Pressable>
+  );
+};

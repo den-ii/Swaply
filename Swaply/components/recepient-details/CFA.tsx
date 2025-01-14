@@ -13,6 +13,8 @@ import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 import { styles } from "./NGN";
 import { Colors } from "@/constants/Colors";
 import { PhoneNumberInput } from "../PhoneNumberInput";
+import { CountryCode } from "@/types/country";
+import { useState } from "react";
 
 export default function CFARecepientDetails({
   form,
@@ -21,70 +23,25 @@ export default function CFARecepientDetails({
   form: recepientDetailsCFA;
   handleForm: (key: keyof recepientDetailsCFA, value: string) => void;
 }) {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [countryCode, setCountryCode] = useState(CountryCode.BENIN);
+
   return (
     <View>
       <View style={styles.inputContainer}>
         <FontText>Momo number</FontText>
         <View style={{ position: "relative" }}>
-          <PhoneNumberInput />
-          <View style={{ position: "absolute", top: 20, right: 15 }}>
-            {form.momoNumber && (
-              <Pressable onPress={() => handleForm("momoNumber", "")}>
-                <View style={styles.cancel}>
-                  <Close fill="white" width={12} />
-                </View>
-              </Pressable>
-            )}
-          </View>
-        </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <FontText>Full name</FontText>
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholder="John Doe"
-            placeholderTextColor="#AEB7BF"
-            inputMode="text"
-            autoCorrect={false}
-            onChangeText={(value) => handleForm("fullName", value)}
-            value={form.fullName}
+          <PhoneNumberInput
+            countryCode={countryCode}
+            value={phoneNumber}
+            handleValueChange={setPhoneNumber}
+            showError={false}
+            switchCountryCode={setCountryCode}
           />
-          {form.fullName && (
-            <View style={styles.cancelContainer}>
-              <Pressable onPress={() => handleForm("fullName", "")}>
-                <View style={styles.cancel}>
-                  <Close fill="white" width={12} />
-                </View>
-              </Pressable>
-            </View>
-          )}
         </View>
       </View>
-      <View style={styles.inputContainer}>
-        <FontText>Mobile money operator</FontText>
-        <View>
-          <TextInput
-            placeholder="Select operator"
-            inputMode="text"
-            style={styles.input}
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholderTextColor="#AEB7BF"
-            onChangeText={(value) => handleForm("momoOperator", value)}
-            value={form.momoOperator}
-          />
-          {form.momoOperator && (
-            <View style={styles.cancelContainer}>
-              <Pressable onPress={() => handleForm("momoOperator", "")}>
-                <View style={styles.cancel}>
-                  <Close fill="white" width={12} />
-                </View>
-              </Pressable>
-            </View>
-          )}
-        </View>
-      </View>
+      <View></View>
+      <View></View>
     </View>
   );
 }
