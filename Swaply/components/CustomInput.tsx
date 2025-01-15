@@ -30,6 +30,8 @@ export default function CustomInput({
   errorSize,
   rules,
   setDisableAction,
+  success,
+  successMessage,
   ...props
 }: {
   label: string;
@@ -44,6 +46,8 @@ export default function CustomInput({
   control: Control<any>;
   returnKey?: boolean;
   rules?: RegisterOptions<any, string> | undefined;
+  success?: boolean;
+  successMessage?: string;
   setDisableAction?: Function;
 } & TextInputProps) {
   const [focus, setFocus] = useState(false);
@@ -126,10 +130,23 @@ export default function CustomInput({
               </View>
               <FontText
                 fontSize={errorSize ?? 12}
-                color={Colors.error}
-                style={{ marginTop: 4, opacity: !isValid && error ? 1 : 0 }}
+                color={
+                  !isValid && error
+                    ? Colors.error
+                    : success
+                    ? Colors.success
+                    : "#fff"
+                }
+                style={{
+                  marginTop: 4,
+                  opacity: (!isValid && error) || success ? 1 : 0,
+                }}
               >
-                {!isValid && error ? error.message : "empyy"}
+                {!isValid && error
+                  ? error.message
+                  : success
+                  ? successMessage
+                  : "empyy"}
               </FontText>
             </>
           )}

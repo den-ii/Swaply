@@ -1,6 +1,7 @@
 import { Store } from "pullstate";
 import { StatusBarStyle } from "react-native"; // or the correct module where StatusBarStyle is defined
 import { Country } from "./types/country";
+import { Bank } from "./types";
 
 /*------------------------------------ STATUS BAR STORE ------------------------------------------------*/
 
@@ -82,11 +83,12 @@ interface TransferStore {
   fee?: string;
   rate?: string;
   recepientNGN: {
-    bank?: string;
+    bank?: Bank;
     accountNumber?: string;
     accountName?: string;
     emailAddress?: string;
     narration?: string;
+    bank_id?: number;
   };
   recepientCFA: {
     momoNumber?: string;

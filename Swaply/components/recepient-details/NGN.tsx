@@ -11,11 +11,14 @@ import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
 import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
 import CustomInput from "../CustomInput";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { UI } from "@/constants/UI";
 import SelectBank from "../modals/SelectBank";
-import { useState } from "react";
-import { transferStore } from "@/store";
+import { useEffect, useState } from "react";
+import { authStore, transferStore } from "@/store";
+import { verifyBankDetails } from "@/api/paymentAPI";
+import useSWR from "swr";
+import useSWRMutation from "swr/dist/mutation";
 
 export default function NGNRecepientDetails({
   control,
@@ -25,6 +28,8 @@ export default function NGNRecepientDetails({
   clearErrors,
   errors,
   isValid,
+  watching,
+  setProceed,
 }: {
   control: any;
   handleSubmit: Function;
@@ -33,10 +38,55 @@ export default function NGNRecepientDetails({
   clearErrors: Function;
   errors: any;
   isValid: boolean;
+  watching?: any;
+  setProceed: Function;
 }) {
   const [selectBankModal, setSelectBankModal] = useState(false);
+  const [accountName, setAccountName] = useState("");
+  const [success, setSuccess] = useState(false);
   const bank = transferStore.useState((store) => store.recepientNGN?.bank);
-  const errorSize = 10;
+  const token = authStore.useState((store) => store.token);
+
+  const { data, isMutating, trigger, error } = useSWRMutation(
+    "naira-payment/bank/verify",
+    verifyBankDetails,
+    {
+      onSuccess: (data) => {
+        if (data.status) {
+          console.log("Bank details verified:", data);
+          transferStore.update((store) => {
+            store.recepientNGN = {
+              ...store.recepientNGN,
+              accountName: data.data.account_name,
+              bank_id: data.data.id,
+            };
+          });
+          setAccountName(data.data.account_name);
+          setSuccess(true);
+          if (!Object.keys(errors).length) setProceed(true);
+        }
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      setProceed(false);
+      return;
+    }
+    if (!watching.accountNo || !token) return;
+
+    if (bank && watching.accountNo.length >= 10) {
+      console.log("here:");
+      trigger({
+        accountNumber: getValues("accountNo").trim(),
+        bankCode: bank.code,
+        token: token,
+      });
+    }
+
+    setProceed(true);
+  }, [watching.accountNo, Object.keys(errors).length]);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -58,7 +108,7 @@ export default function NGNRecepientDetails({
             }}
           >
             {!bank && <FontText color="#AEB7BF">Access Bank</FontText>}
-            {bank && <FontText>{bank}</FontText>}
+            {bank && <FontText>{bank.name}</FontText>}
             <ChevronDown fill="#AEB7BF" />
           </View>
         </View>
@@ -66,7 +116,6 @@ export default function NGNRecepientDetails({
       <View>
         <CustomInput
           placeholder="0732934459"
-          errorSize={errorSize}
           inputMode="numeric"
           control={control}
           clearErrors={clearErrors}
@@ -75,7 +124,7 @@ export default function NGNRecepientDetails({
           rules={{
             required: "Account number is required, please try again",
             minLength: {
-              value: 13,
+              value: 10,
               message: "Invalid account number",
             },
             maxLength: {
@@ -86,15 +135,16 @@ export default function NGNRecepientDetails({
           label="Account number"
           name="accountNo"
           resetField={resetField}
+          successMessage={accountName}
+          success={success}
           // keyboardType="number-pad"
           autoCorrect={false}
         />
       </View>
-      <View style={{ marginTop: -14 }}>
+      <View style={{ marginTop: -7 }}>
         <CustomInput
           placeholder="johndoe@gmail.com"
           inputMode="email"
-          errorSize={errorSize}
           control={control}
           clearErrors={clearErrors}
           isValid={isValid}
@@ -113,14 +163,13 @@ export default function NGNRecepientDetails({
           autoCorrect={false}
         />
       </View>
-      <View style={{ marginTop: -14 }}>
+      <View style={{ marginTop: -7 }}>
         <CustomInput
           placeholder="Sent with love"
           inputMode="none"
           control={control}
           clearErrors={clearErrors}
           isValid={isValid}
-          errorSize={errorSize}
           error={errors.narration}
           label="Narration (Optional)"
           rules={undefined}
@@ -142,7 +191,7 @@ export default function NGNRecepientDetails({
 export const styles = StyleSheet.create({
   inputContainer: {
     gap: 8,
-    paddingBottom: 18,
+    paddingBottom: 19,
   },
   input: {
     backgroundColor: "white",

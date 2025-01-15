@@ -53,7 +53,7 @@ export default function Sending() {
     let totalAmount = tStoreValue.totalAmount;
     if (tStoreValue.sendingIsCFA) {
       setDescriptionNGN([
-        ["Bank name", tStoreValue.recepientNGN?.bank],
+        ["Bank name", tStoreValue.recepientNGN?.bank?.name],
         ["Account number", tStoreValue.recepientNGN?.accountNumber],
         ["Email address", tStoreValue.recepientNGN?.emailAddress],
         ["Account name", tStoreValue.recepientNGN?.accountName],

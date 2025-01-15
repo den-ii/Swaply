@@ -68,9 +68,10 @@ export default function SelectBank({
     );
   };
 
-  const handleSetBank = (bankName: string) => {
+  const handleSetBank = (bank: Bank) => {
+    console.log("Bank selected:", bank);
     transferStore.update((store) => {
-      store.recepientNGN.bank = bankName;
+      store.recepientNGN.bank = bank;
     });
     setModalActive(false);
   };
@@ -135,7 +136,7 @@ const BankButton = ({
   handleSetBank: Function;
 }) => {
   return (
-    <Pressable onPress={() => handleSetBank(bank.name)} key={bank.name}>
+    <Pressable onPress={() => handleSetBank(bank)} key={bank.id}>
       <View
         style={{
           padding: 16,

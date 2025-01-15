@@ -17,14 +17,8 @@ import { transferStore } from "@/store";
 import NGNRecepientDetails from "@/components/recepient-details/NGN";
 import CFARecepientDetails from "@/components/recepient-details/CFA";
 import Sent from "@/components/modals/Sent";
-import {
-  recepientDetailsNGN,
-  recepientDetailsCFA,
-  recepientNGN,
-} from "@/types/recepient";
 import useInputControl from "@/hooks/useInputControl";
 import { Country } from "@/types/country";
-import { errorResult } from "pullstate";
 
 const ngnForm = {
   accountNumber: "",
@@ -55,28 +49,6 @@ export default function RecipientDetails() {
   const [proceed, setProceed] = useState(false);
   const { sendingIsCFA, sendingCurrency, receivingCurrency } =
     transferStore.useState((store) => store);
-
-  // const checkNGNProceed = () => {
-  //   let proceed = [];
-  //   if (isValid) {
-  //     se
-  //   }
-
-  // };
-
-  useEffect(() => {
-    console.log("errors", errors);
-    console.log("Obj", Object.keys(errors));
-    if (!checked) {
-      setProceed(false);
-      return;
-    }
-
-    if (receivingCurrency === Country.NIGERIA) {
-      const hasErrors = Object.keys(errors).length > 0 || !isValid || !ngnBank;
-      setProceed(!hasErrors);
-    }
-  }, [checked, receivingCurrency, Object.keys(errors).length, ngnBank]);
 
   const handleContinue = () => {
     if (receivingCurrency === Country.NIGERIA) {
@@ -113,8 +85,10 @@ export default function RecipientDetails() {
             resetField={resetField}
             getValues={getValues}
             clearErrors={clearErrors}
+            setProceed={setProceed}
             errors={errors}
             isValid={isValid}
+            watching={watching}
           />
         )}
         {/* {!sendingIsCFA && (
@@ -163,7 +137,7 @@ export default function RecipientDetails() {
           <Button
             text={"Continue"}
             action={handleSubmit(handleContinue)}
-            disabled={!proceed}
+            disabled={!proceed || !checked}
           />
         </View>
       </View>

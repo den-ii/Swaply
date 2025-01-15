@@ -37,6 +37,34 @@ export async function getListOfBanksNGN(url: string) {
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl);
   const data = await res.json();
+  return data;
+}
+
+// v1/naira-payment/bank/verify?accountNumber=0822372081&bankCode=058
+
+export async function verifyBankDetails(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      accountNumber: string;
+      bankCode: string;
+      token: string;
+    };
+  }
+) {
+  console.log("convert currency called:");
+  const { accountNumber, bankCode } = arg;
+  const apiUrl = `${baseUrl}${url}?accountNumber=${accountNumber}&bankCode=${bankCode}`;
+  const res = await fetch(apiUrl, {
+    headers: {
+      Authorization: "Bearer " + arg.token,
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log("res: ", res.status);
   console.log("data: ", data);
   return data;
 }
