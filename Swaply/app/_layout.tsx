@@ -6,7 +6,7 @@ import {
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
 import { useFonts } from "expo-font";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "@/components/Toast";
 import { authStore, statusBarStore, toastStore } from "@/store";
@@ -26,13 +26,13 @@ export default function RootLayout() {
     P22Mackinac_Bold: require("../assets/fonts/P22-Mackinac/P22Mackinac-Bold_23.otf"),
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const instantiate = async () => {
       try {
         const isFaceIDAuth = await AsyncStorage.getItem("isFaceIDAuth");
         const loginToken = await AsyncStorage.getItem("loginToken");
         const email = await AsyncStorage.getItem("email");
-        console.log(isFaceIDAuth, loginToken, email);
+        console.log("loginToken:", loginToken);
 
         if (isFaceIDAuth !== null) {
           authStore.update((s) => {

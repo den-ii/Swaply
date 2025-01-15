@@ -10,6 +10,8 @@ export default function AppLayout() {
   const isAuthenticated = authStore.useState((state) => state.isAuthenticated);
   const isReturningUser = authStore.useState((state) => state.isReturningUser);
 
+  console.log("isReturningUser:", isReturningUser);
+
   if (!isAuthenticated) {
     if (!isReturningUser) return <Redirect href={"/(onboarding)/"} />;
     return <Redirect href={"/(auth)/"} />;
