@@ -44,6 +44,7 @@ export default function NGNRecepientDetails({
   const [selectBankModal, setSelectBankModal] = useState(false);
   const [accountName, setAccountName] = useState("");
   const [success, setSuccess] = useState(false);
+  const [accountNameError, setAccountNameError] = useState(false);
   const bank = transferStore.useState((store) => store.recepientNGN?.bank);
   const token = authStore.useState((store) => store.token);
 
@@ -63,7 +64,12 @@ export default function NGNRecepientDetails({
           });
           setAccountName(data.data.account_name);
           setSuccess(true);
+          setAccountNameError(false);
           if (!Object.keys(errors).length) setProceed(true);
+        } else {
+          setSuccess(false);
+          setProceed(false);
+          setAccountNameError(true);
         }
       },
     }
@@ -72,11 +78,12 @@ export default function NGNRecepientDetails({
   useEffect(() => {
     if (Object.keys(errors).length) {
       setProceed(false);
+      setSuccess(false);
       return;
     }
     if (!watching.accountNo || !token) return;
 
-    if (bank && watching.accountNo.length >= 10) {
+    if (bank?.code && watching.accountNo.length >= 10) {
       console.log("here:");
       trigger({
         accountNumber: getValues("accountNo").trim(),
@@ -86,7 +93,7 @@ export default function NGNRecepientDetails({
     }
 
     setProceed(true);
-  }, [watching.accountNo, Object.keys(errors).length]);
+  }, [watching.accountNo, Object.keys(errors).length, bank?.code]);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -120,6 +127,8 @@ export default function NGNRecepientDetails({
           control={control}
           clearErrors={clearErrors}
           isValid={isValid}
+          customError={accountNameError}
+          customErrorMessage="Invalid account number, kindly try again"
           error={errors.accountNo}
           rules={{
             required: "Account number is required, please try again",

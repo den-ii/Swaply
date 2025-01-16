@@ -15,6 +15,7 @@ import Notifications from "@/assets/images/notifications.svg";
 import SectionIcon from "@/components/more/SectionIcon";
 import ChevronRight from "@/assets/images/chevron-right.svg";
 import { router } from "expo-router";
+import { logoutUser } from "@/api/authApi";
 
 export default function More() {
   return (
@@ -43,7 +44,7 @@ export default function More() {
           <FontText fontFamily="P22" fontSize={34} fontWeight={700}>
             More
           </FontText>
-          <Pressable>
+          <Pressable onPress={logoutUser}>
             <View
               style={{
                 paddingHorizontal: 12,

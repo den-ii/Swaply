@@ -1,6 +1,7 @@
 import { authStore, onboardingStore, toastStore, ToastType } from "@/store";
 import { CountryE } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import useSWRMutation from "swr/mutation";
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
@@ -318,4 +319,17 @@ export async function resetPassword(
   const data = await res.json();
   console.log(data);
   return data;
+}
+
+/* ------------------------------------ Logout ------------------------------------------------ */
+export async function logoutUser() {
+  authStore.update((s) => {
+    s.isAuthenticated = false;
+    s.token = null;
+    s.email = "";
+    s.loginToken = null;
+  });
+  await AsyncStorage.removeItem("email");
+  await AsyncStorage.removeItem("loginToken");
+  router.push("/(auth)/sign-in");
 }

@@ -3,6 +3,10 @@ export enum Country {
   BENIN = "CFA",
 }
 
+export enum CountryCurrency {
+  NGN = "₦",
+  CFA = "CFA",
+}
 
 export enum CountryCode {
   NIGERIA = "+234",

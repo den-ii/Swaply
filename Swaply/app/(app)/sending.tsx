@@ -2,15 +2,24 @@ import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import FontText from "@/components/FontText";
 import Close from "@/assets/images/close.svg";
-import { Modal, Pressable, View, StyleSheet, SafeAreaView } from "react-native";
-import { transferStore } from "@/store";
+import {
+  Modal,
+  Pressable,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Platform,
+} from "react-native";
+import { authStore, transferStore } from "@/store";
 import { Link, useRouter } from "expo-router";
 import CFA from "@/assets/images/CFA_32.svg";
 import NGN from "@/assets/images/NGN_32.svg";
+import useSWRMutation from "swr/mutation";
 import BlueLogo from "@/assets/images/blue_logo.svg";
 import RightDots from "@/assets/images/right-dots.svg";
 import LeftDots from "@/assets/images/left-dots.svg";
 import Button from "@/components/Button";
+import { swap } from "@/api/paymentAPI";
 
 type InfoTuple = [string, string | number | undefined | string[]][] | [];
 
@@ -21,6 +30,7 @@ function Description({ k, v }: { k: string; v: any }) {
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
+        gap: 4,
       }}
     >
       <FontText
@@ -28,6 +38,7 @@ function Description({ k, v }: { k: string; v: any }) {
         fontWeight={!isTotalAmount ? 400 : 600}
         style={{
           color: !isTotalAmount ? Colors.light.neutral : Colors.light.text,
+          width: 100,
         }}
       >
         {k}
@@ -44,9 +55,22 @@ function Description({ k, v }: { k: string; v: any }) {
 
 export default function Sending() {
   const tStoreValue = transferStore.useState((store) => store);
+  const token = authStore.useState((s) => s.token);
   const router = useRouter();
   const [descriptionNGN, setDescriptionNGN] = useState<InfoTuple>([]);
   const [descriptionCFA, setDescriptionCFA] = useState<InfoTuple>([]);
+  const { trigger, data, isMutating } = useSWRMutation("swap/init", swap, {
+    onSuccess: (data) => {
+      console.log("swapping:", data);
+      if (data.status) {
+        router.push("/sent");
+      }
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   useEffect(() => {
     let rate = tStoreValue.rate ?? "0.00";
     let fee = tStoreValue.fee;
@@ -86,12 +110,34 @@ export default function Sending() {
   };
 
   const handleContinue = () => {
-    router.push("/sent");
+    if (tStoreValue.sendingIsCFA) {
+      trigger({
+        sourceCurrency: "CFA",
+        destinationCurrency: "NGN",
+        amount: parseFloat(
+          tStoreValue.sendAmount ? tStoreValue.sendAmount : "0"
+        ),
+        bank_name: tStoreValue.recepientNGN?.bank?.name || "",
+        bankId: tStoreValue.recepientNGN?.bank_id?.toString() || "",
+        accountNumber: tStoreValue.recepientNGN?.accountNumber || "",
+        email: tStoreValue.recepientNGN?.emailAddress || "",
+        narration: tStoreValue.recepientNGN?.narration || "",
+        token: token || "",
+      });
+    }
   };
 
   return (
-    <View style={{ backgroundColor: "#FAFBFB", padding: 16, flex: 1 }}>
-      <>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: Platform.OS === "ios" ? "flex-start" : "flex-end",
+        backgroundColor: "rgba(44, 49, 55, 0.5)",
+      }}
+    >
+      <View
+        style={Platform.OS === "ios" ? styles.iosModal : styles.androidModal}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -206,9 +252,13 @@ export default function Sending() {
             paddingBottom: 40,
           }}
         >
-          <Button text={"Continue"} action={handleContinue} />
+          <Button
+            text={"Continue"}
+            action={handleContinue}
+            loading={isMutating}
+          />
         </View>
-      </>
+      </View>
     </View>
   );
 }
@@ -234,22 +284,18 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     padding: 16,
   },
-  options: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  iosModal: {
+    backgroundColor: "#FAFBFB",
     padding: 16,
+    flex: 1,
   },
-  bankLogo: {
-    backgroundColor: "white",
-    shadowColor: "#313131",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    width: 50,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 50,
+  androidModal: {
+    padding: 16,
+    // flex: 1,
+    backgroundColor: "#FAFBFB",
+
+    height: "93%",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
   },
 });

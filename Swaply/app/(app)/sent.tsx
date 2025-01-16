@@ -6,19 +6,38 @@ import BeneficiaryHeart from "@/assets/images/beneficiary-heart.svg";
 import FontText from "@/components/FontText";
 import { transferStore } from "@/store";
 import SuccessScreen from "@/components/SuccessScreen";
+import { useEffect, useState } from "react";
+import { CountryCurrency } from "@/types/country";
+import Toggle from "@/components/Toggle";
 
 export default function Sent() {
   const router = useRouter();
-  const sendingIsCFA = transferStore.useState((store) => store.sendingIsCFA);
+  const [currency, setCurrency] = useState("");
+  const [inBeneficiary, setInBeneficiary] = useState(false);
+  const { sendingCurrency, sendAmount } = transferStore.useState(
+    (store) => store
+  );
+
+  useEffect(() => {}, []);
+
+  console.log("sendingCurrency:", sendingCurrency);
+
+  const symbol =
+    CountryCurrency[sendingCurrency as keyof typeof CountryCurrency] || "";
+
+  const headerText = `${
+    symbol.length > 1 ? symbol + " " : symbol
+  }${sendAmount} sent!`;
+
+  const saveToBeneficiary = () => {
+    setInBeneficiary(!inBeneficiary);
+  };
 
   const handleOkay = () => {
     router.navigate("/(tabs)/");
   };
   return (
-    <SuccessScreen
-      headerText="CFA 360.00 sent!"
-      leadingText="Transfer Successful"
-    >
+    <SuccessScreen headerText={headerText} leadingText="Transfer Successful">
       <View
         style={{
           borderWidth: 1,
@@ -32,14 +51,24 @@ export default function Sent() {
           style={{
             flexDirection: "row",
             alignItems: "center",
+            justifyContent: "space-between",
             gap: 12,
             padding: 16,
           }}
         >
-          <BeneficiaryHeart />
-          <FontText fontSize={14} fontWeight={500}>
-            Save to beneficiary
-          </FontText>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 12,
+            }}
+          >
+            <BeneficiaryHeart />
+            <FontText fontSize={14} fontWeight={500}>
+              Save to beneficiary
+            </FontText>
+          </View>
+          <Toggle on={inBeneficiary} toggleOn={saveToBeneficiary} />
         </View>
       </View>
       <Button text={"Okay, got it"} action={handleOkay} />

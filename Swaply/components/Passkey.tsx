@@ -178,7 +178,7 @@ export const PasskeyContainer = ({
               <Identity />
               <FontText fontWeight={500}>Use Face Id</FontText>
             </View>
-            <Toggle toggleOn={toggleFaceId} on={faceId} />
+            <Toggle toggleOn={toggleFaceId} on={faceId} withShadow />
           </View>
         )}
         <View

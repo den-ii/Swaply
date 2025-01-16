@@ -43,6 +43,7 @@ export default function AppLayout() {
         options={{
           headerShown: false,
           presentation: "modal",
+          animation: "fade",
         }}
       />
       <Stack.Screen

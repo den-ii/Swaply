@@ -24,7 +24,7 @@ export default function ChooseRecipient() {
     >
       <View style={{ paddingBottom: 16, paddingTop: 8 }}>
         <FontText fontSize={34} fontWeight={700} fontFamily="P22">
-          {sendingIsCFA
+          {!sendingIsCFA
             ? "Send to a mobile money account"
             : "Send to a bank account"}
         </FontText>
