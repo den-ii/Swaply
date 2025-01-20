@@ -110,13 +110,14 @@ export default function Sending() {
   };
 
   const handleContinue = () => {
+    const amount = tStoreValue.sendAmount?.split(",")?.join("");
+    console.log("amountr: ", amount);
     if (tStoreValue.sendingIsCFA) {
+      console.log("amount: ", tStoreValue.sendAmount);
       trigger({
         sourceCurrency: "CFA",
         destinationCurrency: "NGN",
-        amount: parseFloat(
-          tStoreValue.sendAmount ? tStoreValue.sendAmount : "0"
-        ),
+        amount: parseFloat(amount ?? "0"),
         bank_name: tStoreValue.recepientNGN?.bank?.name || "",
         bankId: tStoreValue.recepientNGN?.bank_id?.toString() || "",
         accountNumber: tStoreValue.recepientNGN?.accountNumber || "",

@@ -30,6 +30,11 @@ export default function RecipientDetails() {
   const router = useRouter();
   const ngnBank = transferStore.useState((s) => s.recepientNGN.bank);
 
+  const [checked, setChecked] = useState(false);
+  const [sentModal, setSentModal] = useState(false);
+  const [proceed, setProceed] = useState(false);
+  const { sendingIsCFA, sendingCurrency, receivingCurrency } =
+    transferStore.useState((store) => store);
   const {
     control,
     handleSubmit,
@@ -39,17 +44,7 @@ export default function RecipientDetails() {
     watching,
     isValid,
     errors,
-  } = useInputControl({
-    accountNo: "",
-    emailAddress: "",
-    narration: "",
-  });
-  const [checked, setChecked] = useState(false);
-  const [sentModal, setSentModal] = useState(false);
-  const [proceed, setProceed] = useState(false);
-  const { sendingIsCFA, sendingCurrency, receivingCurrency } =
-    transferStore.useState((store) => store);
-
+  } = useInputControl(sendingCurrency as Country);
   const handleContinue = () => {
     if (receivingCurrency === Country.NIGERIA) {
       transferStore.update((s) => {
@@ -91,9 +86,19 @@ export default function RecipientDetails() {
             watching={watching}
           />
         )}
-        {/* {!sendingIsCFA && (
-          <CFARecepientDetails form={CFAForm} handleForm={handleCFAForm} />
-        )} */}
+        {!sendingIsCFA && (
+          <CFARecepientDetails
+            control={control}
+            handleSubmit={handleSubmit}
+            resetField={resetField}
+            getValues={getValues}
+            clearErrors={clearErrors}
+            setProceed={setProceed}
+            errors={errors}
+            isValid={isValid}
+            watching={watching}
+          />
+        )}
       </View>
       <View style={{ flex: 1, paddingBottom: 30, justifyContent: "flex-end" }}>
         <Pressable onPress={() => setChecked((checked) => !checked)}>

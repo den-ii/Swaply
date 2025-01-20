@@ -103,9 +103,11 @@ export default function Otp({
             fontSize: 34,
             textAlign: "center",
             fontFamily: "Inter_600SemiBold",
+            height: 60,
           }}
           keyboardType="number-pad"
           inputMode="numeric"
+          multiline={true}
           returnKeyType="done"
           onKeyPress={({ nativeEvent }) => handleOtpText(nativeEvent)}
           placeholder="000-000"

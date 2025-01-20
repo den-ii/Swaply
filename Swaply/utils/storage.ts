@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { authStore } from "./store";
+import { authStore } from "@/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function saveEmail(email: string) {

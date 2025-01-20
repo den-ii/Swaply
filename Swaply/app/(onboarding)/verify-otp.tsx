@@ -17,14 +17,14 @@ export default function VerifyOtp() {
     }
   );
   return (
-    <DismissKeyboard>
-      <Otp
-        title="Verify OTP"
-        email={email}
-        action={trigger}
-        actionText={"Verify OTP"}
-        loading={isMutating}
-      />
-    </DismissKeyboard>
+    // <DismissKeyboard>
+    <Otp
+      title="Verify OTP"
+      email={email}
+      action={trigger}
+      actionText={"Verify OTP"}
+      loading={isMutating}
+    />
+    // </DismissKeyboard>
   );
 }

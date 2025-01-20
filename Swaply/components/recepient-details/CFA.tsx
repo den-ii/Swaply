@@ -15,28 +15,60 @@ import { Colors } from "@/constants/Colors";
 import { PhoneNumberInput } from "../PhoneNumberInput";
 import { CountryCode } from "@/types/country";
 import { useState } from "react";
+import CustomInput from "../CustomInput";
 
 export default function CFARecepientDetails({
-  form,
-  handleForm,
+  control,
+  handleSubmit,
+  resetField,
+  getValues,
+  clearErrors,
+  errors,
+  isValid,
+  watching,
+  setProceed,
 }: {
-  form: recepientDetailsCFA;
-  handleForm: (key: keyof recepientDetailsCFA, value: string) => void;
+  control: any;
+  handleSubmit: Function;
+  resetField: Function;
+  getValues: Function;
+  clearErrors: Function;
+  errors: any;
+  isValid: boolean;
+  watching?: any;
+  setProceed: Function;
 }) {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState(CountryCode.BENIN);
-
   return (
     <View>
       <View style={styles.inputContainer}>
-        <FontText>Momo number</FontText>
         <View style={{ position: "relative" }}>
-          <PhoneNumberInput
-            countryCode={countryCode}
-            value={phoneNumber}
-            handleValueChange={setPhoneNumber}
-            showError={false}
-            switchCountryCode={setCountryCode}
+          <CustomInput
+            placeholder="0732934459"
+            inputMode="numeric"
+            control={control}
+            clearErrors={clearErrors}
+            isValid={isValid}
+            // customError={accountNameError}
+            customErrorMessage="Invalid momo number, kindly try again"
+            error={errors.momoNumber}
+            rules={{
+              required: "Momo number is required, please try again",
+              minLength: {
+                value: 10,
+                message: "Invalid momo number",
+              },
+              maxLength: {
+                value: 13,
+                message: "Invalid momo number",
+              },
+            }}
+            label="Momo number"
+            name="momoNumber"
+            resetField={resetField}
+            // successMessage={accountName}
+            // success={success}
+            keyboardType="number-pad"
+            autoCorrect={false}
           />
         </View>
       </View>

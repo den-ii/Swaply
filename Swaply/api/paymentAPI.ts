@@ -87,6 +87,7 @@ export async function swap(
 ) {
   const apiUrl = baseUrl + url;
   const body = { ...arg };
+  console.log("amount:", body.amount);
   delete body.token;
   const res = await fetch(apiUrl, {
     method: "POST",

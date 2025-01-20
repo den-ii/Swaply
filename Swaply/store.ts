@@ -2,6 +2,7 @@ import { Store } from "pullstate";
 import { StatusBarStyle } from "react-native"; // or the correct module where StatusBarStyle is defined
 import { Country } from "./types/country";
 import { Bank } from "./types";
+import * as Notifications from "expo-notifications";
 
 /*------------------------------------ STATUS BAR STORE ------------------------------------------------*/
 
@@ -108,3 +109,11 @@ export const transferStoreDefaultValue = {
 export const transferStore = new Store<TransferStore>(
   transferStoreDefaultValue
 );
+
+/*------------------------------------ NOTIFICATION STORE ------------------------------------------------*/
+interface Notification {
+  token?: string;
+  notification?: Notifications.Notification;
+}
+
+export const notificationStore = new Store<Notification>({});

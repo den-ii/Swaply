@@ -6,17 +6,27 @@ import {
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
 import { useFonts } from "expo-font";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "@/components/Toast";
-import { authStore, statusBarStore, toastStore } from "@/store";
+import {
+  authStore,
+  notificationStore,
+  statusBarStore,
+  toastStore,
+} from "@/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "react-native";
-import { clearAsyncStorage } from "@/utils";
+import { clearAsyncStorage } from "@/utils/storage";
+import { registerForPushNotificationsAsync } from "@/utils/registerPushNotification";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
   const barStyle = statusBarStore.useState((state) => state.barStyle);
+  const notificationListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -56,6 +66,41 @@ export default function RootLayout() {
     };
     instantiate();
   }, []);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) =>
+        notificationStore.update((s) => {
+          s.token = token ?? "";
+        })
+      )
+      .catch((error: any) =>
+        notificationStore.update((s) => {
+          s.token = `${error}`;
+        })
+      );
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        notificationStore.update((s) => {
+          s.notification = notification;
+        });
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      notificationListener.current &&
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+      responseListener.current &&
+        Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  });
 
   useEffect(() => {
     if (fontsLoaded) {

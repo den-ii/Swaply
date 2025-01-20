@@ -1,6 +1,19 @@
+import { Country } from "@/types/country";
 import { useForm, useWatch } from "react-hook-form";
 
-export default function useInputControl(defaultValues: any) {
+const NGNForm = {
+  accountNo: "",
+  emailAddress: "",
+  narration: "",
+};
+
+const CFAForm = {
+  momoNumber: "",
+};
+
+export default function useInputControl(country: Country) {
+  const defaultValues = country === Country.NIGERIA ? NGNForm : CFAForm;
+
   const {
     control,
     handleSubmit,
@@ -18,7 +31,7 @@ export default function useInputControl(defaultValues: any) {
   });
   const watching = useWatch<typeof defaultValues>({
     control,
-    defaultValue: "default", // default value before the render
+    defaultValue: defaultValues, // default value before the render
   });
 
   return {
