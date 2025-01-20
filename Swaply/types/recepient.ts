@@ -1,17 +1,17 @@
-export interface recepientDetailsNGN {
+export interface RecepientDetailsNGN {
   bank: string;
   accountNumber: string;
   emailAddress: string;
   narration: string;
 }
 
-export interface recepientNGN {
+export interface RecepientNGN {
   accountNo: string;
   email: string;
   narration: string;
 }
 
-export interface recepientDetailsCFA {
+export interface RecepientDetailsCFA {
   momoNumber: string;
   fullName: string;
   momoOperator: string;

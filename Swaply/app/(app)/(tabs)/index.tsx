@@ -363,22 +363,29 @@ export default function Home() {
                 >
                   <View
                     style={{
-                      width: 100,
+                      width: 105,
                       padding: 12,
                       flexDirection: "row",
                       alignItems: "center",
                       justifyContent: "space-between",
                       backgroundColor: "#F5F7F8",
-                      borderRadius: 100,
-                      gap: 8,
+                      borderRadius: 105,
                     }}
                   >
-                    <View>
-                      <GetCountrySVG country={sendCountry} />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 8,
+                      }}
+                    >
+                      <View>
+                        <GetCountrySVG country={sendCountry} />
+                      </View>
+                      <FontText fontWeight={600} fontSize={16}>
+                        {sendCountry}
+                      </FontText>
                     </View>
-                    <FontText fontWeight={600} fontSize={16}>
-                      {sendCountry}
-                    </FontText>
                     <ArrowDown />
                   </View>
                 </Pressable>
@@ -600,22 +607,29 @@ export default function Home() {
                 >
                   <View
                     style={{
-                      width: 100,
+                      width: 105,
                       padding: 12,
                       flexDirection: "row",
                       alignItems: "center",
                       justifyContent: "space-between",
                       backgroundColor: "#F5F7F8",
-                      gap: 8,
-                      borderRadius: 100,
+                      borderRadius: 105,
                     }}
                   >
-                    <View>
-                      <GetCountrySVG country={receiveCountry} />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 8,
+                      }}
+                    >
+                      <View>
+                        <GetCountrySVG country={receiveCountry} />
+                      </View>
+                      <FontText fontWeight={600} fontSize={16}>
+                        {receiveCountry}
+                      </FontText>
                     </View>
-                    <FontText fontWeight={600} fontSize={16}>
-                      {receiveCountry}
-                    </FontText>
                     <ArrowDown />
                   </View>
                 </Pressable>

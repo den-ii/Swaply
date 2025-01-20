@@ -9,6 +9,8 @@ const NGNForm = {
 
 const CFAForm = {
   momoNumber: "",
+  fullName: "",
+  mobileMoneyOperator: "",
 };
 
 export default function useInputControl(country: Country) {

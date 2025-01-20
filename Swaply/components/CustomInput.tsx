@@ -15,6 +15,9 @@ import { Controller, Control, Noop, set } from "react-hook-form";
 import type { FieldError, RegisterOptions } from "react-hook-form";
 import { Colors } from "../constants/Colors";
 import { UI } from "@/constants/UI";
+import UserCircle from "@/assets/images/user-circle.svg";
+import * as Contacts from "expo-contacts";
+import { getContact } from "@/utils/others";
 
 export default function CustomInput({
   label,
@@ -34,6 +37,7 @@ export default function CustomInput({
   customErrorMessage,
   success,
   successMessage,
+  showContact,
   ...props
 }: {
   label: string;
@@ -52,6 +56,7 @@ export default function CustomInput({
   successMessage?: string;
   customError?: boolean;
   customErrorMessage?: string;
+  showContact?: boolean;
   setDisableAction?: Function;
 } & TextInputProps) {
   const [focus, setFocus] = useState(false);
@@ -121,16 +126,20 @@ export default function CustomInput({
                   {...props}
                 />
 
-                {value?.length > 0 && focus ? (
-                  <Pressable
-                    onPress={handleReset}
-                    style={styles.cancelContainer}
-                  >
-                    <View style={styles.cancel}>
-                      <Close fill="white" width={12} />
-                    </View>
-                  </Pressable>
-                ) : null}
+                <View style={styles.cancelContainer}>
+                  {value?.length > 0 && focus ? (
+                    <Pressable onPress={handleReset}>
+                      <View style={styles.cancel}>
+                        <Close fill="white" width={12} />
+                      </View>
+                    </Pressable>
+                  ) : null}
+                  {showContact && (
+                    <Pressable onPress={getContact}>
+                      <UserCircle />
+                    </Pressable>
+                  )}
+                </View>
               </View>
               <FontText
                 fontSize={errorSize ?? 12}
@@ -190,8 +199,10 @@ export const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     height: "100%",
-    justifyContent: "center",
-    alignItems: "flex-end",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    justifyContent: "flex-end",
     right: 16,
   },
 });

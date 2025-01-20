@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
 import { registerUser } from "@/api/authApi";
 import { authStore, toastStore, ToastType } from "@/store";
-import { saveEmail } from "@/utils";
+import { saveEmail } from "@/utils/storage";
 import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function GetStarted() {

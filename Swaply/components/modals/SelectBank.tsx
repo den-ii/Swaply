@@ -18,7 +18,7 @@ import { BankSVG } from "../BankSVG";
 import bankList from "@/constants/bankList";
 import { Image } from "expo-image";
 import { useCloseModal } from "@/hooks/useCloseModal";
-import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
+import { RecepientDetailsNGN, RecepientDetailsCFA } from "@/types/recepient";
 import { transferStore } from "@/store";
 import { getListOfBanksNGN } from "@/api/paymentAPI";
 import useSWR from "swr";

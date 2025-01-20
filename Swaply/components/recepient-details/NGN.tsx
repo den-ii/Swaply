@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
-import { recepientDetailsNGN, recepientDetailsCFA } from "@/types/recepient";
+import { RecepientDetailsNGN, RecepientDetailsCFA } from "@/types/recepient";
 import CustomInput from "../CustomInput";
 import { set, useForm } from "react-hook-form";
 import { UI } from "@/constants/UI";
@@ -17,7 +17,6 @@ import SelectBank from "../modals/SelectBank";
 import { useEffect, useState } from "react";
 import { authStore, transferStore } from "@/store";
 import { verifyBankDetails } from "@/api/paymentAPI";
-import useSWR from "swr";
 import useSWRMutation from "swr/dist/mutation";
 
 export default function NGNRecepientDetails({
@@ -106,7 +105,7 @@ export default function NGNRecepientDetails({
               backgroundColor: "white",
               paddingHorizontal: UI.input.horizontalPadding,
               paddingVertical:
-                Platform.OS === "ios" ? UI.input.verticalPadding : 13,
+                Platform.OS === "ios" ? UI.input.verticalPadding : 12,
               borderRadius: 12,
               borderWidth: 1,
               borderColor: "#ECEFF1",

@@ -14,6 +14,7 @@ export const Colors = {
   light: {
     neutral: "#757D87",
     textPrimary: "#026DB5",
+    border: "#ECEFF1",
     success: "#0D9013",
     textDefault: "#2C3137",
     textDisabled: "#AEB7BF",

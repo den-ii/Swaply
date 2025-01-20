@@ -1,4 +1,4 @@
-import { Pressable, View, StyleSheet } from "react-native";
+import { Pressable, View, StyleSheet, Text } from "react-native";
 import Close from "@/assets/images/close.svg";
 import CustomModal from "./CustomModal";
 import FontText from "../FontText";
@@ -66,13 +66,12 @@ export default function DeleteBeneficiary({
             <FontText color={Colors.light.neutral} fontSize={14}>
               Are you sure you want to delete
             </FontText>
-            <FontText
-              fontSize={14}
-              fontWeight={600}
-            >{` ${beneficiary?.firstName} ${beneficiary?.lastName} `}</FontText>
-            <FontText color={Colors.light.neutral} fontSize={14}>
-              from your beneficiary list?
-            </FontText>
+            <Text style={{ fontSize: 14, fontFamily: "Inter_600SemiBold" }}>
+              {` ${beneficiary?.firstName} ${beneficiary?.lastName} `}
+              <Text style={{ color: Colors.light.neutral, fontSize: 14 }}>
+                from your beneficiary list?
+              </Text>
+            </Text>
           </View>
         </View>
         <View

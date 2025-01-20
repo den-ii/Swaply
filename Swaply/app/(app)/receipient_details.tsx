@@ -20,12 +20,6 @@ import Sent from "@/components/modals/Sent";
 import useInputControl from "@/hooks/useInputControl";
 import { Country } from "@/types/country";
 
-const ngnForm = {
-  accountNumber: "",
-  emailAddress: "",
-  narration: "",
-};
-
 export default function RecipientDetails() {
   const router = useRouter();
   const ngnBank = transferStore.useState((s) => s.recepientNGN.bank);

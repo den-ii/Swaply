@@ -104,3 +104,10 @@ export async function swap(
   console.log("data: ", data);
   return data;
 }
+
+export async function getMomoProviders(url: string) {
+  const apiUrl = `${baseUrl}${url}`;
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+  return data;
+}

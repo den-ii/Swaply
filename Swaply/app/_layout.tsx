@@ -67,40 +67,40 @@ export default function RootLayout() {
     instantiate();
   }, []);
 
-  useEffect(() => {
-    registerForPushNotificationsAsync()
-      .then((token) =>
-        notificationStore.update((s) => {
-          s.token = token ?? "";
-        })
-      )
-      .catch((error: any) =>
-        notificationStore.update((s) => {
-          s.token = `${error}`;
-        })
-      );
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync()
+  //     .then((token) =>
+  //       notificationStore.update((s) => {
+  //         s.token = token ?? "";
+  //       })
+  //     )
+  //     .catch((error: any) =>
+  //       notificationStore.update((s) => {
+  //         s.token = `${error}`;
+  //       })
+  //     );
 
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        notificationStore.update((s) => {
-          s.notification = notification;
-        });
-      });
+  //   notificationListener.current =
+  //     Notifications.addNotificationReceivedListener((notification) => {
+  //       notificationStore.update((s) => {
+  //         s.notification = notification;
+  //       });
+  //     });
 
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
-      });
+  //   responseListener.current =
+  //     Notifications.addNotificationResponseReceivedListener((response) => {
+  //       console.log(response);
+  //     });
 
-    return () => {
-      notificationListener.current &&
-        Notifications.removeNotificationSubscription(
-          notificationListener.current
-        );
-      responseListener.current &&
-        Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  });
+  //   return () => {
+  //     notificationListener.current &&
+  //       Notifications.removeNotificationSubscription(
+  //         notificationListener.current
+  //       );
+  //     responseListener.current &&
+  //       Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (fontsLoaded) {

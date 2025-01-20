@@ -21,8 +21,16 @@ export interface Bank {
   updatedAt: Date | string;
 }
 
-export interface recipientNGN {
-  accountNo: string;
-  email: string;
-  narration: string;
+export interface MomoProvider {
+  id: number;
+  name: string;
+  country: string;
+  enabled: number;
+  logoUrl: string;
+  paymentMethod: string;
+  prefixes: string;
+  supportedCountiesCodes: string;
+  deleted: 0;
+  updated_at: Date | string;
+  created_at: Date | string;
 }

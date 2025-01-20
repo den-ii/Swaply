@@ -20,7 +20,7 @@ import CustomInput from "@/components/CustomInput";
 import { authStore, statusBarStore, toastStore, ToastType } from "@/store";
 import { loginUser, forgotPassword } from "@/api/authApi";
 import useSWRMutation from "swr/mutation";
-import { saveEmail } from "@/utils";
+import { saveEmail } from "@/utils/storage";
 import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function SignIn() {
