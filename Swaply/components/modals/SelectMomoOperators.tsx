@@ -56,8 +56,6 @@ export default function SelectMomoOperators({
 }: SelectMomoOperatorsProps) {
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
 
-  console.log("kkproviders:", providers);
-
   const selectOperator = (provider: MomoProvider) => {
     setSelectedProvider(provider);
     closeModal();

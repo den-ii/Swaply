@@ -64,7 +64,17 @@ export default function NGNRecepientDetails({
           setAccountName(data.data.account_name);
           setSuccess(true);
           setAccountNameError(false);
-          if (!Object.keys(errors).length) setProceed(true);
+          if (!Object.keys(errors).length) {
+            setProceed(true);
+            transferStore.update((s) => {
+              s.recepientNGN = {
+                ...s.recepientNGN,
+                accountNumber: getValues("accountNo"),
+                emailAddress: getValues("emailAddress"),
+                narration: getValues("narration"),
+              };
+            });
+          }
         } else {
           setSuccess(false);
           setProceed(false);
@@ -90,8 +100,6 @@ export default function NGNRecepientDetails({
         token: token,
       });
     }
-
-    setProceed(true);
   }, [watching.accountNo, Object.keys(errors).length, bank?.code]);
 
   return (

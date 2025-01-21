@@ -10,7 +10,6 @@ const NGNForm = {
 const CFAForm = {
   momoNumber: "",
   fullName: "",
-  mobileMoneyOperator: "",
 };
 
 export default function useInputControl(country: Country) {
@@ -28,7 +27,7 @@ export default function useInputControl(country: Country) {
     defaultValues: {
       ...defaultValues,
     },
-    reValidateMode: "onSubmit",
+    reValidateMode: "onBlur",
     mode: "onBlur",
   });
   const watching = useWatch<typeof defaultValues>({

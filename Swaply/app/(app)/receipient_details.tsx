@@ -39,17 +39,8 @@ export default function RecipientDetails() {
     isValid,
     errors,
   } = useInputControl(sendingCurrency as Country);
+
   const handleContinue = () => {
-    if (receivingCurrency === Country.NIGERIA) {
-      transferStore.update((s) => {
-        s.recepientNGN = {
-          ...s.recepientNGN,
-          accountNumber: getValues("accountNo"),
-          emailAddress: getValues("emailAddress"),
-          narration: getValues("narration"),
-        };
-      });
-    }
     router.navigate("/sending");
   };
 

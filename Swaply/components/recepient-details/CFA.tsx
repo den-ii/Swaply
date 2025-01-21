@@ -11,13 +11,15 @@ import Close from "@/assets/images/close.svg";
 import ChevronDown from "@/assets/images/chevron-down.svg";
 
 import { Colors } from "@/constants/Colors";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import CustomInput from "../CustomInput";
 import { UI } from "@/constants/UI";
 import useSWR from "swr";
 import { getMomoProviders } from "@/api/paymentAPI";
 import { set } from "react-hook-form";
 import SelectMomoOperators from "../modals/SelectMomoOperators";
+import { authStore, transferStore } from "@/store";
+import { MomoProvider } from "@/types";
 
 export default function CFARecepientDetails({
   control,
@@ -41,19 +43,49 @@ export default function CFARecepientDetails({
   setProceed: Function;
 }) {
   const { data, error, isLoading } = useSWR("momo/providers", getMomoProviders);
-  const [selectedProvider, setSelectedProvider] = useState<Record<
-    string,
-    any
-  > | null>(null);
-  const [providerModalActive, setProviderModalActive] = useState(false);
+  const token = authStore.useState((store) => store.token);
 
-  // useLayoutEffect(() => {
-  //   setSelectedProvider(data?.data[0]?.name.toUpperCase());
-  // }, []);
+  const [selectedProvider, setSelectedProvider] = useState<MomoProvider | null>(
+    null
+  );
+  const [providerModalActive, setProviderModalActive] = useState(false);
 
   function toggleProviderModal() {
     setProviderModalActive((modal) => !modal);
   }
+
+  useEffect(() => {
+    console.log(watching);
+    console.log(errors);
+    if (
+      !watching.momoNumber ||
+      watching.momoNumber.length < 9 ||
+      !watching.fullName
+    ) {
+      console.log("here");
+      setProceed(false);
+      return;
+    }
+    if (Object.keys(errors).length) {
+      console.log("errors", errors);
+      setProceed(false);
+      return;
+    }
+    if (!selectedProvider || !token) {
+      setProceed(false);
+      return;
+    }
+
+    transferStore.update((s) => {
+      s.recepientCFA = {
+        ...s.recepientCFA,
+        momoNumber: getValues("momoNumber"),
+        fullName: getValues("fullName"),
+        momoOperator: selectedProvider.name.toUpperCase(),
+      };
+    });
+    setProceed(true);
+  }, [watching, Object.keys(errors).length, selectedProvider]);
 
   return (
     <View>
@@ -68,7 +100,7 @@ export default function CFARecepientDetails({
           rules={{
             required: "Momo number is required, please try again",
             minLength: {
-              value: 10,
+              value: 9,
               message: "Invalid momo number",
             },
             maxLength: {
