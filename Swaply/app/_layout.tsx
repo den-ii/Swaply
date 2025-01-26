@@ -1,4 +1,4 @@
-import { Slot, SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack, usePathname } from "expo-router";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -16,17 +16,23 @@ import {
   toastStore,
 } from "@/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StatusBar } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { clearAsyncStorage } from "@/utils/storage";
 import { registerForPushNotificationsAsync } from "@/utils/registerPushNotification";
 import * as Notifications from "expo-notifications";
+import useSWRMutation from "swr/mutation";
 import Constants from "expo-constants";
+import { updateNotification } from "@/api/authApi";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
   const barStyle = statusBarStore.useState((state) => state.barStyle);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
+  const { trigger, data, isMutating } = useSWRMutation(
+    "user/update-fcm",
+    updateNotification
+  );
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -35,6 +41,9 @@ export default function RootLayout() {
     Inter_700Bold,
     P22Mackinac_Bold: require("../assets/fonts/P22-Mackinac/P22Mackinac-Bold_23.otf"),
   });
+  const pathname = usePathname();
+  const isAuthenticated = authStore.useState((state) => state.isAuthenticated);
+  const authToken = authStore.useState((state) => state.token);
 
   useLayoutEffect(() => {
     const instantiate = async () => {
@@ -67,40 +76,62 @@ export default function RootLayout() {
     instantiate();
   }, []);
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync()
-  //     .then((token) =>
-  //       notificationStore.update((s) => {
-  //         s.token = token ?? "";
-  //       })
-  //     )
-  //     .catch((error: any) =>
-  //       notificationStore.update((s) => {
-  //         s.token = `${error}`;
-  //       })
-  //     );
+  useEffect(() => {
+    if (
+      (isAuthenticated && pathname === "/") ||
+      (!isAuthenticated && pathname === "/sign-in")
+    ) {
+      statusBarStore.update((s) => {
+        s.barStyle = "light-content";
+      });
+      console.log("here: else");
+      statusBarStore.update((s) => {
+        s.barStyle = "dark-content";
+      });
+    }
+  }, [pathname]);
 
-  //   notificationListener.current =
-  //     Notifications.addNotificationReceivedListener((notification) => {
-  //       notificationStore.update((s) => {
-  //         s.notification = notification;
-  //       });
-  //     });
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        if (!token || !authToken) return;
+        notificationStore.update((s) => {
+          s.token = token;
+        });
+        trigger({
+          fcmToken: "SEKEM",
+          deviceType: Platform.OS === "ios" ? "ios" : "android",
+          deviceToken: token,
+          token: authToken,
+        });
+      })
+      .catch((error: any) =>
+        notificationStore.update((s) => {
+          s.token = `${error}`;
+        })
+      );
 
-  //   responseListener.current =
-  //     Notifications.addNotificationResponseReceivedListener((response) => {
-  //       console.log(response);
-  //     });
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        notificationStore.update((s) => {
+          s.notification = notification;
+        });
+      });
 
-  //   return () => {
-  //     notificationListener.current &&
-  //       Notifications.removeNotificationSubscription(
-  //         notificationListener.current
-  //       );
-  //     responseListener.current &&
-  //       Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      notificationListener.current &&
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+      responseListener.current &&
+        Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded) {

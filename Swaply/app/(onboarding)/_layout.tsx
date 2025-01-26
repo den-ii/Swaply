@@ -5,11 +5,6 @@ import { Stack } from "expo-router";
 import { useLayoutEffect } from "react";
 
 export default function OnboardingLayout() {
-  useLayoutEffect(() => {
-    statusBarStore.update((s) => {
-      s.barStyle = "dark-content";
-    });
-  }, []);
   return (
     <Stack screenOptions={{ animation: "fade" }}>
       <Stack.Screen

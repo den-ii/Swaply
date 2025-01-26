@@ -1,4 +1,10 @@
-import { useEffect, useCallback, useRef, useState } from "react";
+import {
+  useEffect,
+  useCallback,
+  useRef,
+  useState,
+  useLayoutEffect,
+} from "react";
 import {
   Text,
   View,
@@ -258,7 +264,6 @@ export default function Home() {
 
   return (
     <>
-      <StatusBar barStyle={"light-content"} />
       <DismissKeyboard>
         <View
           style={{

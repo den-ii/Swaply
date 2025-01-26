@@ -20,6 +20,7 @@ import RightDots from "@/assets/images/right-dots.svg";
 import LeftDots from "@/assets/images/left-dots.svg";
 import Button from "@/components/Button";
 import { swap } from "@/api/paymentAPI";
+import MakePayment from "@/components/MakePayment";
 
 type InfoTuple = [string, string | number | undefined | string[]][] | [];
 
@@ -57,6 +58,7 @@ export default function Sending() {
   const tStoreValue = transferStore.useState((store) => store);
   const token = authStore.useState((s) => s.token);
   const router = useRouter();
+  const [paystackStart, setPaystackStart] = useState(false);
   const [descriptionNGN, setDescriptionNGN] = useState<InfoTuple>([]);
   const [descriptionCFA, setDescriptionCFA] = useState<InfoTuple>([]);
   const { trigger, data, isMutating } = useSWRMutation("swap/init", swap, {
@@ -90,9 +92,9 @@ export default function Sending() {
         ["Momo number", tStoreValue.recepientCFA?.momoNumber],
         ["Mobile money operator", tStoreValue.recepientCFA?.momoOperator],
         ["Full name", tStoreValue.recepientCFA?.fullName],
-        ["Transaction fee", fee],
+        ["Transaction fee", fee + " NGN"],
         ["Rate", rate],
-        ["Total amount", totalAmount],
+        ["Total amount", totalAmount + " NGN"],
       ]);
     }
   }, [tStoreValue.recepientNGN, tStoreValue.recepientCFA]);
@@ -125,6 +127,8 @@ export default function Sending() {
         narration: tStoreValue.recepientNGN?.narration || "",
         token: token || "",
       });
+    } else {
+      setPaystackStart(true);
     }
   };
 
@@ -260,6 +264,7 @@ export default function Sending() {
           />
         </View>
       </View>
+      <MakePayment autoStart={paystackStart} />
     </View>
   );
 }

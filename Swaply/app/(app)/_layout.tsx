@@ -1,6 +1,7 @@
 import NavBack from "@/components/NavBack";
-import { authStore } from "@/store";
-import { Redirect, Stack } from "expo-router";
+import { authStore, statusBarStore } from "@/store";
+import { Redirect, Stack, usePathname } from "expo-router";
+import { useEffect, useLayoutEffect } from "react";
 
 export const unstable_settings = {
   initialRouteName: "/(tabs)/index",

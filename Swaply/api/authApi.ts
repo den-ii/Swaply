@@ -291,6 +291,40 @@ export async function validateOTP(
   return data;
 }
 
+/*------------------------------------ Update Notification ------------------------------------------------*/
+export async function updateNotification(
+  url: string,
+  {
+    arg,
+  }: {
+    arg: {
+      fcmToken: string;
+      deviceType: string;
+      deviceToken: string;
+      token: string;
+    };
+  }
+) {
+  const { fcmToken, deviceType, deviceToken, token } = arg;
+  console.log("args: ", fcmToken, deviceType, deviceToken, token);
+  const apiUrl = baseUrl + url;
+  const res = await fetch(apiUrl, {
+    method: "PATCH",
+    body: JSON.stringify({
+      fcmToken,
+      deviceType,
+      deviceToken,
+    }),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+}
+
 /*------------------------------------ Reset Password ------------------------------------------------*/
 export async function resetPassword(
   url: string,

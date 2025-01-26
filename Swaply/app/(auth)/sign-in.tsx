@@ -60,11 +60,6 @@ export default function SignIn() {
       emailAddress: email,
     },
   });
-  useLayoutEffect(() => {
-    statusBarStore.update((s) => {
-      s.barStyle = "light-content";
-    });
-  }, []);
 
   useEffect(() => {
     if (passwordError) {
