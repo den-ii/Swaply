@@ -320,8 +320,9 @@ export async function updateNotification(
       "Content-Type": "application/json",
     },
   });
+  console.log("updatenoti", res);
   const data = await res.json();
-  console.log(data);
+  console.log("noti", data);
   return data;
 }
 

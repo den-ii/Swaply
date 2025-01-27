@@ -4,13 +4,12 @@ export default {
     slug: "swaply",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/images/icon-2.png",
     scheme: "myapp",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     splash: {
       image: "./assets/images/splash.png",
-      resizeMode: "contain",
       backgroundColor: "#000000",
     },
     ios: {
@@ -25,7 +24,7 @@ export default {
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
-        backgroundColor: "#ffffff",
+        backgroundColor: "#000000",
       },
       package: "com.swaply.Swaply",
       permissions: [

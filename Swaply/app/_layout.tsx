@@ -101,8 +101,8 @@ export default function RootLayout() {
         trigger({
           fcmToken: "SEKEM",
           deviceType: Platform.OS === "ios" ? "ios" : "android",
-          deviceToken: token,
-          token: authToken,
+          deviceToken: token ?? "",
+          token: authToken ?? "",
         });
       })
       .catch((error: any) =>
