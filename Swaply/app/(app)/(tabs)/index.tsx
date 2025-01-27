@@ -73,7 +73,8 @@ export default function Home() {
       onSuccess: (data) => {
         if (!data.status) {
           reset();
-          setReceiveValue("");
+          if (!reverse) setReceiveValue("");
+          else setSendValue("");
           return;
         }
         if (!data.data) return;
