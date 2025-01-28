@@ -1,5 +1,15 @@
 {
   "build": {
+    "development": {
+      "android": {
+        "buildType": "apk",
+        "channel": "development"
+      },
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development",
+      "environment": "development"
+    },
     "preview": {
       "android": {
         "buildType": "apk",

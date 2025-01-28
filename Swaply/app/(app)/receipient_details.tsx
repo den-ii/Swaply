@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   StyleSheet,
+  KeyboardAvoidingView,
 } from "react-native";
 import Checkbox from "@/assets/images/checkbox.svg";
 import { useRouter } from "expo-router";
@@ -19,6 +20,7 @@ import CFARecepientDetails from "@/components/recepient-details/CFA";
 import Sent from "@/components/modals/Sent";
 import useInputControl from "@/hooks/useInputControl";
 import { Country } from "@/types/country";
+import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function RecipientDetails() {
   const router = useRouter();
@@ -52,40 +54,54 @@ export default function RecipientDetails() {
         backgroundColor: Colors.light.body,
       }}
     >
-      <View style={{ paddingBottom: 16, paddingTop: 8 }}>
-        <FontText fontSize={34} fontWeight={700} fontFamily="P22">
-          Enter recipient’s details
-        </FontText>
-      </View>
-      <View style={{ marginTop: 16 }}>
-        {sendingIsCFA && (
-          <NGNRecepientDetails
-            control={control}
-            handleSubmit={handleSubmit}
-            resetField={resetField}
-            getValues={getValues}
-            clearErrors={clearErrors}
-            setProceed={setProceed}
-            errors={errors}
-            isValid={isValid}
-            watching={watching}
-          />
-        )}
-        {!sendingIsCFA && (
-          <CFARecepientDetails
-            control={control}
-            handleSubmit={handleSubmit}
-            resetField={resetField}
-            getValues={getValues}
-            clearErrors={clearErrors}
-            setProceed={setProceed}
-            errors={errors}
-            isValid={isValid}
-            watching={watching}
-          />
-        )}
-      </View>
-      <View style={{ flex: 1, paddingBottom: 30, justifyContent: "flex-end" }}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={{
+          flex: 1,
+          backgroundColor: Colors.light.body,
+        }}
+        keyboardVerticalOffset={200}
+        enabled
+      >
+        <DismissKeyboard>
+          <View style={{ paddingBottom: 16, paddingTop: 8 }}>
+            <FontText fontSize={34} fontWeight={700} fontFamily="P22">
+              Enter recipient’s details
+            </FontText>
+          </View>
+
+          <View style={{ marginTop: 16 }}>
+            {sendingIsCFA && (
+              <NGNRecepientDetails
+                control={control}
+                handleSubmit={handleSubmit}
+                resetField={resetField}
+                getValues={getValues}
+                clearErrors={clearErrors}
+                setProceed={setProceed}
+                errors={errors}
+                isValid={isValid}
+                watching={watching}
+              />
+            )}
+            {!sendingIsCFA && (
+              <CFARecepientDetails
+                control={control}
+                handleSubmit={handleSubmit}
+                resetField={resetField}
+                getValues={getValues}
+                clearErrors={clearErrors}
+                setProceed={setProceed}
+                errors={errors}
+                isValid={isValid}
+                watching={watching}
+              />
+            )}
+          </View>
+        </DismissKeyboard>
+      </KeyboardAvoidingView>
+
+      <View style={{ paddingBottom: 30, justifyContent: "flex-end" }}>
         <Pressable onPress={() => setChecked((checked) => !checked)}>
           <View
             style={{

@@ -103,7 +103,10 @@ export default function NGNRecepientDetails({
   }, [watching.accountNo, Object.keys(errors).length, bank?.code]);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ paddingBottom: 30 }}
+    >
       <Pressable onPress={() => setSelectBankModal(true)}>
         <View style={styles.inputContainer}>
           <FontText>Select Bank</FontText>
@@ -182,7 +185,7 @@ export default function NGNRecepientDetails({
       <View style={{ marginTop: -7 }}>
         <CustomInput
           placeholder="Sent with love"
-          inputMode="none"
+          inputMode="text"
           control={control}
           clearErrors={clearErrors}
           isValid={isValid}
