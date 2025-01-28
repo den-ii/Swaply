@@ -91,9 +91,9 @@ export default function BeneficiaryList({
   }, [searchVal]);
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       {searchedList.length ? (
-        <View>
+        <View style={{ flex: 1 }}>
           <FontText
             fontSize={12}
             fontWeight={600}
@@ -102,7 +102,10 @@ export default function BeneficiaryList({
           >
             RECENT RECIPIENTS
           </FontText>
-          <ScrollView style={{ gap: 12 }} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            style={{ gap: 12, flex: 1 }}
+            showsVerticalScrollIndicator={false}
+          >
             {searchedList.map((beneficiary) => (
               <BeneficiaryProfile
                 key={beneficiary.id}
@@ -114,6 +117,6 @@ export default function BeneficiaryList({
       ) : (
         <NotFound setSearchVal={setSearchVal} />
       )}
-    </>
+    </View>
   );
 }
