@@ -17,7 +17,10 @@ export default function NavBack() {
         paddingBottom: 16,
       }}
     >
-      <Pressable onPress={() => router.back()}>
+      <Pressable
+        onPress={() => router.back()}
+        style={{ width: 34, height: 34 }}
+      >
         <View
           style={{
             width: 34,

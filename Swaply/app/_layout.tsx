@@ -23,6 +23,7 @@ import * as Notifications from "expo-notifications";
 import useSWRMutation from "swr/mutation";
 import Constants from "expo-constants";
 import { updateNotification } from "@/api/authApi";
+import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
@@ -144,9 +145,11 @@ export default function RootLayout() {
   }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar barStyle={barStyle} />
-      {toastActive && <Toast />}
-      <Slot />
+      <DismissKeyboard>
+        <StatusBar barStyle={barStyle} />
+        {toastActive && <Toast />}
+        <Slot />
+      </DismissKeyboard>
     </GestureHandlerRootView>
   );
 }

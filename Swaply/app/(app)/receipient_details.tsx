@@ -20,7 +20,6 @@ import CFARecepientDetails from "@/components/recepient-details/CFA";
 import Sent from "@/components/modals/Sent";
 import useInputControl from "@/hooks/useInputControl";
 import { Country } from "@/types/country";
-import DismissKeyboard from "@/components/DismissKeyboard";
 
 export default function RecipientDetails() {
   const router = useRouter();
@@ -63,42 +62,40 @@ export default function RecipientDetails() {
         keyboardVerticalOffset={200}
         enabled
       >
-        <DismissKeyboard>
-          <View style={{ paddingBottom: 16, paddingTop: 8 }}>
-            <FontText fontSize={34} fontWeight={700} fontFamily="P22">
-              Enter recipient’s details
-            </FontText>
-          </View>
+        <View style={{ paddingBottom: 16, paddingTop: 8 }}>
+          <FontText fontSize={34} fontWeight={700} fontFamily="P22">
+            Enter recipient’s details
+          </FontText>
+        </View>
 
-          <View style={{ marginTop: 16 }}>
-            {sendingIsCFA && (
-              <NGNRecepientDetails
-                control={control}
-                handleSubmit={handleSubmit}
-                resetField={resetField}
-                getValues={getValues}
-                clearErrors={clearErrors}
-                setProceed={setProceed}
-                errors={errors}
-                isValid={isValid}
-                watching={watching}
-              />
-            )}
-            {!sendingIsCFA && (
-              <CFARecepientDetails
-                control={control}
-                handleSubmit={handleSubmit}
-                resetField={resetField}
-                getValues={getValues}
-                clearErrors={clearErrors}
-                setProceed={setProceed}
-                errors={errors}
-                isValid={isValid}
-                watching={watching}
-              />
-            )}
-          </View>
-        </DismissKeyboard>
+        <View style={{ marginTop: 16 }}>
+          {sendingIsCFA && (
+            <NGNRecepientDetails
+              control={control}
+              handleSubmit={handleSubmit}
+              resetField={resetField}
+              getValues={getValues}
+              clearErrors={clearErrors}
+              setProceed={setProceed}
+              errors={errors}
+              isValid={isValid}
+              watching={watching}
+            />
+          )}
+          {!sendingIsCFA && (
+            <CFARecepientDetails
+              control={control}
+              handleSubmit={handleSubmit}
+              resetField={resetField}
+              getValues={getValues}
+              clearErrors={clearErrors}
+              setProceed={setProceed}
+              errors={errors}
+              isValid={isValid}
+              watching={watching}
+            />
+          )}
+        </View>
       </KeyboardAvoidingView>
 
       <View style={{ paddingBottom: 30, justifyContent: "flex-end" }}>

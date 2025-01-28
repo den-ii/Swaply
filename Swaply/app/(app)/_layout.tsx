@@ -2,6 +2,7 @@ import NavBack from "@/components/NavBack";
 import { authStore, statusBarStore } from "@/store";
 import { Redirect, Stack, usePathname } from "expo-router";
 import { useEffect, useLayoutEffect } from "react";
+import { Platform } from "react-native";
 
 export const unstable_settings = {
   initialRouteName: "/(tabs)/index",
@@ -44,7 +45,7 @@ export default function AppLayout() {
         options={{
           headerShown: false,
           presentation: "modal",
-          animation: "fade",
+          animation: Platform.OS == "ios" ? "default" : "fade",
         }}
       />
       <Stack.Screen
