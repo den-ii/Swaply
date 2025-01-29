@@ -156,7 +156,6 @@ export default function NGNRecepientDetails({
           resetField={resetField}
           successMessage={accountName}
           success={success}
-          // keyboardType="number-pad"
           autoCorrect={false}
         />
       </View>
@@ -178,7 +177,6 @@ export default function NGNRecepientDetails({
           name="email"
           resetField={resetField}
           autoCapitalize="none"
-          // keyboardType="number-pad"
           autoCorrect={false}
         />
       </View>
@@ -194,8 +192,7 @@ export default function NGNRecepientDetails({
           rules={undefined}
           name="narration"
           resetField={resetField}
-          autoCapitalize="none"
-          // keyboardType="number-pad"
+          autoCapitalize="sentences"
           autoCorrect={false}
         />
       </View>

@@ -39,7 +39,7 @@ function Description({ k, v }: { k: string; v: any }) {
         fontWeight={!isTotalAmount ? 400 : 600}
         style={{
           color: !isTotalAmount ? Colors.light.neutral : Colors.light.text,
-          width: "40%",
+          width: "50%",
         }}
       >
         {k}

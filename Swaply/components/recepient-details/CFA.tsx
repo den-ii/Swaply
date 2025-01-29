@@ -131,6 +131,7 @@ export default function CFARecepientDetails({
           name="fullName"
           resetField={resetField}
           autoCorrect={false}
+          autoCapitalize="words"
         />
       </View>
       <View style={[styles.inputContainer, { marginTop: -7 }]}>
