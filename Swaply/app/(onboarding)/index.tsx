@@ -3,7 +3,14 @@ import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
 import React, { useEffect, useState } from "react";
 import ChevronDown from "@/assets/images/chevron-down.svg";
-import { Pressable, TextInput, View, Text, Keyboard } from "react-native";
+import {
+  Pressable,
+  TextInput,
+  View,
+  Text,
+  Keyboard,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "@/components/recepient-details/NGN";
 import Close from "@/assets/images/close.svg";
@@ -83,7 +90,8 @@ export default function GetStarted() {
                 flexDirection: "row",
                 backgroundColor: "white",
                 paddingHorizontal: UI.input.horizontalPadding,
-                paddingVertical: UI.input.verticalPadding,
+                paddingVertical:
+                  Platform.OS === "ios" ? UI.input.verticalPadding : 12,
                 borderRadius: UI.input.borderRadius,
                 borderWidth: UI.input.borderWidth,
                 borderColor: "#ECEFF1",
