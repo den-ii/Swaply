@@ -20,6 +20,7 @@ export default {
       config: {
         usesNonExemptEncryption: false,
       },
+      bundleIdentifier: "com.swaply.Swaply",
     },
     android: {
       adaptiveIcon: {

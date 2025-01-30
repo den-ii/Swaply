@@ -39,12 +39,13 @@ import { set } from "react-hook-form";
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
   const barStyle = statusBarStore.useState((state) => state.barStyle);
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
-  // const { trigger, data, isMutating } = useSWRMutation(
-  //   "user/update-fcm",
-  //   updateNotification
-  // );
+  // const notificationListener = useRef<Notifications.Subscription>();
+  // const responseListener = useRef<Notifications.Subscription>();
+  // const token = authStore.useState((s) => s.token);
+  const { trigger, data, isMutating } = useSWRMutation(
+    "user/update-fcm",
+    updateNotification
+  );
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -55,7 +56,6 @@ export default function RootLayout() {
   });
   const pathname = usePathname();
   const isAuthenticated = authStore.useState((state) => state.isAuthenticated);
-  const authToken = authStore.useState((state) => state.token);
 
   useLayoutEffect(() => {
     const instantiate = async () => {
@@ -102,6 +102,7 @@ export default function RootLayout() {
       });
     }
   }, [pathname]);
+
   useEffect(() => {
     console.log("notification useEffect:");
     let unsubscribeForeground;
@@ -110,10 +111,14 @@ export default function RootLayout() {
       if (await requestUserPermission()) {
         messaging()
           .getToken()
-          .then((token) => console.log(token));
+          .then((token) => {
+            console.log("token: ", token);
+            notificationStore.update((s) => {
+              s.token = token;
+            });
+          });
       }
     };
-
     setupNotifications();
 
     unsubscribeForeground = messaging().onMessage(handlePushNotification);

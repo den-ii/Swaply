@@ -7,12 +7,13 @@ import { Link, router } from "expo-router";
 import { PasskeyContainer } from "@/components/Passkey";
 import useSWRMutation from "swr/mutation";
 import { pinAuthentication } from "@/api/authApi";
-import { authStore, toastStore, ToastType } from "@/store";
+import { authStore, notificationStore, toastStore, ToastType } from "@/store";
 import { useState } from "react";
 import { set } from "react-hook-form";
 
 export default function EntryPoint() {
   const isFaceIdAuth = authStore.useState((s) => s.isFaceIDAuth);
+  const fcmToken = notificationStore.useState((s) => s.token);
   const { trigger, data, isMutating } = useSWRMutation(
     "user/pin/auth",
     pinAuthentication,
@@ -45,7 +46,12 @@ export default function EntryPoint() {
   const loginToken = authStore.useState((s) => s.loginToken);
 
   function done() {
-    if (loginToken) trigger({ pin: passkeys.join(""), token: loginToken });
+    if (loginToken)
+      trigger({
+        pin: passkeys.join(""),
+        token: loginToken,
+        fcmToken: fcmToken ?? "",
+      });
   }
 
   return (

@@ -176,11 +176,11 @@ export async function pinAuthentication(
     arg: {
       pin: string;
       token: string;
-      fcmTokenn: string;
+      fcmToken: string;
     };
   }
 ) {
-  const { pin } = arg;
+  const { pin, fcmToken } = arg;
   console.log("args: ", arg.token);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
@@ -210,14 +210,14 @@ export async function pinAuthentication(
       s.profileImage =
         name[0].charAt(0).toUpperCase() + name[1].charAt(0).toUpperCase();
     });
-    // updateNotification("user/update-fcm", {
-    //   arg: {
-    //     fcmToken: ,
-    //     deviceType: Platform.OS,
-    //     deviceToken: "SEKEM",
-    //     token: token,
-    //   },
-    // });
+    updateNotification("user/update-fcm", {
+      arg: {
+        fcmToken,
+        deviceType: Platform.OS,
+        deviceToken: "SEKEM",
+        token: token,
+      },
+    });
   } else {
     toastStore.update((s) => {
       s.active = true;
