@@ -15,6 +15,7 @@ export async function registerUser(
 ) {
   console.log(arg.email, arg.country);
   const apiUrl = baseUrl + url;
+  console.log("baseUrl:", baseUrl);
   const res = await fetch(apiUrl, {
     method: "POST",
     body: JSON.stringify({ email: arg.email, country: arg.country }),
@@ -330,7 +331,6 @@ export async function updateNotification(
       "Content-Type": "application/json",
     },
   });
-  console.log("updatenoti", res);
   const data = await res.json();
   console.log("noti", data);
   return data;
