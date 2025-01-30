@@ -23,5 +23,5 @@ expo-env.d.ts
 .android/
 ios/
 android/
-# swaply-62fa9-firebase-adminsdk-fbsvc-26bad8e357.json
-# google-services.json
+swaply-62fa9-firebase-adminsdk-fbsvc-26bad8e357.json
+google-services.json
