@@ -19,5 +19,5 @@ web-build/
 
 expo-env.d.ts
 @end expo-cli
-# swaply-62fa9-firebase-adminsdk-fbsvc-26bad8e357.json
-# google-services.json
+swaply-62fa9-firebase-adminsdk-fbsvc-26bad8e357.json
+google-services.json
