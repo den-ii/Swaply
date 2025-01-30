@@ -4,7 +4,7 @@ export default {
     slug: "swaply",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon-2.png",
+    icon: "./assets/images/icon.png",
     scheme: "myapp",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,

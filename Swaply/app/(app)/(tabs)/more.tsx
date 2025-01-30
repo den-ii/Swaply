@@ -96,7 +96,7 @@ export default function More() {
                   </FontText>
                 </View>
                 <FontText fontFamily="p22" fontSize={24} fontWeight={700}>
-                  Ayomide Daniel
+                  Deni Ochiche
                 </FontText>
                 <FontText fontSize={14} color={Colors.light.neutral}>
                   Daniel@gmail.com

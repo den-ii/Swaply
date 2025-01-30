@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
   bankLogo: {
     backgroundColor: "white",
     shadowColor: "#313131",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.1,
+    // shadowRadius: 3,
     width: 32,
     height: 32,
     justifyContent: "center",

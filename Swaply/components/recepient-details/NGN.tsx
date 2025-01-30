@@ -103,7 +103,10 @@ export default function NGNRecepientDetails({
   }, [watching.accountNo, Object.keys(errors).length, bank?.code]);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ paddingBottom: 30 }}
+    >
       <Pressable onPress={() => setSelectBankModal(true)}>
         <View style={styles.inputContainer}>
           <FontText>Select Bank</FontText>
@@ -153,7 +156,6 @@ export default function NGNRecepientDetails({
           resetField={resetField}
           successMessage={accountName}
           success={success}
-          // keyboardType="number-pad"
           autoCorrect={false}
         />
       </View>
@@ -175,14 +177,13 @@ export default function NGNRecepientDetails({
           name="email"
           resetField={resetField}
           autoCapitalize="none"
-          // keyboardType="number-pad"
           autoCorrect={false}
         />
       </View>
       <View style={{ marginTop: -7 }}>
         <CustomInput
           placeholder="Sent with love"
-          inputMode="none"
+          inputMode="text"
           control={control}
           clearErrors={clearErrors}
           isValid={isValid}
@@ -191,8 +192,7 @@ export default function NGNRecepientDetails({
           rules={undefined}
           name="narration"
           resetField={resetField}
-          autoCapitalize="none"
-          // keyboardType="number-pad"
+          autoCapitalize="sentences"
           autoCorrect={false}
         />
       </View>

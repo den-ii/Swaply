@@ -117,6 +117,7 @@ export default function SelectBank({
         >
           <FlatList
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 150 }}
             data={banks}
             renderItem={({ item }) => (
               <BankButton bank={item} handleSetBank={handleSetBank} />
