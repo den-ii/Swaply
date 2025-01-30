@@ -2,6 +2,7 @@ import { authStore, onboardingStore, toastStore, ToastType } from "@/store";
 import { CountryE } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import { Platform } from "react-native";
 import useSWRMutation from "swr/mutation";
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
@@ -175,6 +176,7 @@ export async function pinAuthentication(
     arg: {
       pin: string;
       token: string;
+      fcmTokenn: string;
     };
   }
 ) {
@@ -208,6 +210,14 @@ export async function pinAuthentication(
       s.profileImage =
         name[0].charAt(0).toUpperCase() + name[1].charAt(0).toUpperCase();
     });
+    // updateNotification("user/update-fcm", {
+    //   arg: {
+    //     fcmToken: ,
+    //     deviceType: Platform.OS,
+    //     deviceToken: "SEKEM",
+    //     token: token,
+    //   },
+    // });
   } else {
     toastStore.update((s) => {
       s.active = true;

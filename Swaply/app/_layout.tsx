@@ -1,4 +1,4 @@
-import { Slot, SplashScreen, Stack, usePathname } from "expo-router";
+import { router, Slot, SplashScreen, Stack, usePathname } from "expo-router";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -24,16 +24,27 @@ import useSWRMutation from "swr/mutation";
 import Constants from "expo-constants";
 import { updateNotification } from "@/api/authApi";
 import DismissKeyboard from "@/components/DismissKeyboard";
+import {
+  getInitialNotificationMessageHandler,
+  handlePushNotification,
+  notificationClickSubscription,
+  notificationOpenedApp,
+  requestUserPermission,
+  setBackgroundMessageHandler,
+} from "@/pushNotification";
+import messaging from "@react-native-firebase/messaging";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { set } from "react-hook-form";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
   const barStyle = statusBarStore.useState((state) => state.barStyle);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
-  const { trigger, data, isMutating } = useSWRMutation(
-    "user/update-fcm",
-    updateNotification
-  );
+  // const { trigger, data, isMutating } = useSWRMutation(
+  //   "user/update-fcm",
+  //   updateNotification
+  // );
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -91,48 +102,98 @@ export default function RootLayout() {
       });
     }
   }, [pathname]);
-
   useEffect(() => {
-    registerForPushNotificationsAsync()
-      .then((token) => {
-        if (!token || !authToken) return;
-        notificationStore.update((s) => {
-          s.token = token;
-        });
-        trigger({
-          fcmToken: "SEKEM",
-          deviceType: Platform.OS === "ios" ? "ios" : "android",
-          deviceToken: token ?? "",
-          token: authToken ?? "",
-        });
-      })
-      .catch((error: any) =>
-        notificationStore.update((s) => {
-          s.token = `${error}`;
-        })
-      );
+    console.log("notification useEffect:");
+    let unsubscribeForeground;
 
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        notificationStore.update((s) => {
-          s.notification = notification;
-        });
-      });
+    const setupNotifications = async () => {
+      if (await requestUserPermission()) {
+        messaging()
+          .getToken()
+          .then((token) => console.log(token));
+      }
+    };
 
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
-      });
+    setupNotifications();
+
+    unsubscribeForeground = messaging().onMessage(handlePushNotification);
+
+    messaging().onNotificationOpenedApp(notificationOpenedApp);
+
+    messaging().setBackgroundMessageHandler(setBackgroundMessageHandler);
+
+    messaging()
+      .getInitialNotification()
+      .then(getInitialNotificationMessageHandler);
 
     return () => {
-      notificationListener.current &&
-        Notifications.removeNotificationSubscription(
-          notificationListener.current
-        );
-      responseListener.current &&
-        Notifications.removeNotificationSubscription(responseListener.current);
+      if (unsubscribeForeground) {
+        unsubscribeForeground();
+      }
+      notificationClickSubscription.remove();
     };
   }, []);
+
+  // useEffect(() => {
+  //   const notification = (async () => {
+  //     if (await requestUserPermission()) {
+  //       messaging()
+  //         .getToken()
+  //         .then((token) => console.log(token));
+  //     }
+  //   })();
+
+  //   const unsubscribe = messaging().onMessage(handlePushNotification);
+  //   messaging().onNotificationOpenedApp(notificationOpenedApp);
+
+  //   // Check if the app was opened from a notification (when the app was completely quit)
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(getInitialNotificationMessageHandler);
+
+  //   messaging().setBackgroundMessageHandler(setBackgroundMessageHandler);
+
+  //   // Clean up the event listeners
+  //   return () => {
+  //     unsubscribe();
+  //     notificationClickSubscription.remove();
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync()
+  //     .then((token) => {
+  //       notificationStore.update((s) => {
+  //         s.token = token;
+  //       });
+  //     })
+  //     .catch((error: any) =>
+  //       notificationStore.update((s) => {
+  //         s.token = `${error}`;
+  //       })
+  //     );
+
+  //   notificationListener.current =
+  //     Notifications.addNotificationReceivedListener((notification) => {
+  //       notificationStore.update((s) => {
+  //         s.notification = notification;
+  //       });
+  //     });
+
+  //   responseListener.current =
+  //     Notifications.addNotificationResponseReceivedListener((response) => {
+  //       console.log(response);
+  //     });
+
+  //   return () => {
+  //     notificationListener.current &&
+  //       Notifications.removeNotificationSubscription(
+  //         notificationListener.current
+  //       );
+  //     responseListener.current &&
+  //       Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (fontsLoaded) {
