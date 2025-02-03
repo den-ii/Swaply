@@ -35,9 +35,10 @@ const NumberButton = ({
         style={{
           width: 70,
           height: 70,
-          borderRadius: 70,
+          borderRadius: 35,
           justifyContent: "center",
           alignItems: "center",
+          backgroundColor: "#ECEFF1",
         }}
       ></View>
     );

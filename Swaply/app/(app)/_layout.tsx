@@ -112,6 +112,7 @@ export default function AppLayout() {
         name="account-limit"
         options={{ header: () => <NavBack /> }}
       />
+      <Stack.Screen name="profile" options={{ header: () => <NavBack /> }} />
       <Stack.Screen
         name="notifications"
         options={{ header: () => <NavBack /> }}

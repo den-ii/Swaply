@@ -18,11 +18,27 @@ export async function getUserDetails(
     },
   });
   const data = await res.json();
-  console.log("here:", data);
+  console.log(data);
   if (data.status) {
+    console.log("here:");
+    const nationalityData = await getNationality("", data.data.country);
     authStore.update((s) => {
-      s.userDetails = data.data;
+      s.userDetails = {
+        ...data.data,
+        cca: nationalityData[0].cca2,
+        nationality: nationalityData[0].demonyms.eng.m,
+      };
     });
   }
+
+  return data;
+}
+
+export async function getNationality(url: string, country: string) {
+  const res = await fetch(
+    `https://restcountries.com/v3.1/name/${country}?fullText=true`
+  );
+  const data = await res.json();
+  console.log(data[0].demonyms);
   return data;
 }

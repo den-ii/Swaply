@@ -140,7 +140,7 @@ export default function More() {
               </FontText>
 
               <View style={styles.sectionContainer}>
-                <Pressable>
+                <Pressable onPress={() => router.navigate("/profile")}>
                   <View style={styles.list}>
                     <View style={styles.listDescription}>
                       <SectionIcon Icon={Profile} />

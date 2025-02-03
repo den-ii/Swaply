@@ -1,7 +1,7 @@
 import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
-import { Pressable, View } from "react-native";
+import { Pressable, SafeAreaView, View, Text } from "react-native";
 
 import { useState } from "react";
 import { PasskeyContainer } from "@/components/Passkey";
@@ -13,6 +13,7 @@ export default function CodeChange() {
     passkeys: currentCode,
     fill: currentCodeFill,
     handleKeyPadPress: handleCurrentCodeKeyPadPress,
+    error: currentCodeError,
   } = usePasskeys(currentCodeDone);
   const {
     passkeys: newCode,
@@ -36,46 +37,44 @@ export default function CodeChange() {
     router.push("/code-change-success");
   }
   return (
-    <View
+    <SafeAreaView
       style={{
+        paddingHorizontal: UI.paddingHorizontal,
         flex: 1,
-        padding: UI.paddingHorizontal,
-        backgroundColor: Colors.light.background,
+        backgroundColor: Colors.light.body,
+        // justifyContent: "center",
       }}
     >
-      <View style={{ gap: 8, paddingBottom: 20 }}>
-        <FontText fontFamily="P22" fontSize={34} fontWeight={700}>
-          {step === 0
-            ? "Enter current code"
-            : step === 1
-            ? "Enter new code"
-            : "Confirm new code"}
-        </FontText>
-        <FontText color={Colors.light.neutral} fontWeight={400}>
+      <View style={{ marginTop: 8, gap: 8, paddingBottom: 16 }}>
+        <Text
+          style={{
+            fontFamily: "P22Mackinac_Bold",
+            fontSize: 34,
+          }}
+        >
+          Enter current code
+        </Text>
+        <FontText color={Colors.light.neutral}>
           Enter your current 6-digit code
         </FontText>
       </View>
-      <View style={{ marginTop: 24 }}>
-        {step === 0 ? (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <View style={{ height: "80%", minHeight: 500, maxHeight: 600 }}>
           <PasskeyContainer
             passkeys={currentCode}
             fill={currentCodeFill}
             handleKeyPadPress={handleCurrentCodeKeyPadPress}
+            error={currentCodeError}
+            // loading={isMutating}
+            errorMsg="Incorrect code, you have 5 more attempts."
           />
-        ) : step === 1 ? (
-          <PasskeyContainer
-            passkeys={newCode}
-            fill={newCodeFill}
-            handleKeyPadPress={handleNewCodeKeyPadPress}
-          />
-        ) : (
-          <PasskeyContainer
-            passkeys={verifyNewCode}
-            fill={verifyNewCodeFill}
-            handleKeyPadPress={handleVerifyNewCodeKeyPadPress}
-          />
-        )}
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

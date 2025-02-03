@@ -8,6 +8,7 @@ const tintColorDark = "#fff";
 
 export const Colors = {
   base: "#039AFF",
+  base2: "#FE6C02",
   error: "#F23C57",
   success: "#0D9013",
 
