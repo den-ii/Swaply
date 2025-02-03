@@ -19,7 +19,6 @@ export default function EntryPoint() {
     pinAuthentication,
     {
       onSuccess: (data) => {
-        console.log("data from entry point:", data);
         if (data.status) {
           router.push("/(app)/(tabs)");
         }

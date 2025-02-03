@@ -53,7 +53,6 @@ export default function NGNRecepientDetails({
     {
       onSuccess: (data) => {
         if (data.status) {
-          console.log("Bank details verified:", data);
           transferStore.update((store) => {
             store.recepientNGN = {
               ...store.recepientNGN,

@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { Platform } from "react-native";
 import useSWRMutation from "swr/mutation";
+import { getUserDetails } from "./utilsApi";
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
@@ -13,9 +14,7 @@ export async function registerUser(
   url: string,
   { arg }: { arg: { email: string; country: CountryE } }
 ) {
-  console.log(arg.email, arg.country);
   const apiUrl = baseUrl + url;
-  console.log("baseUrl:", baseUrl);
   const res = await fetch(apiUrl, {
     method: "POST",
     body: JSON.stringify({ email: arg.email, country: arg.country }),
@@ -24,7 +23,6 @@ export async function registerUser(
     },
   });
   const data = await res.json();
-  console.log(data);
   if (data.status || data.errorCode === "INCOMPLETE_ONBOARDING") {
     return { status: true, data };
   } else {
@@ -43,7 +41,6 @@ export async function codeActivation(
   url: string,
   { arg }: { arg: { code: string } }
 ) {
-  console.log(arg.code);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -53,7 +50,6 @@ export async function codeActivation(
     },
   });
   const data = await res.json();
-  console.log(data);
   if (data.status) {
     onboardingStore.update((s) => {
       s.token = data.data.token;
@@ -93,7 +89,6 @@ export async function onboardUser(
   }
 ) {
   const { firstName, lastName, countryCode, phone, pin, token, password } = arg;
-  console.log("args: ", firstName, lastName, countryCode, phone, pin, token);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -111,7 +106,6 @@ export async function onboardUser(
     },
   });
   const data = await res.json();
-  console.log(data);
   return data;
 }
 
@@ -129,7 +123,6 @@ export async function loginUser(
   }
 ) {
   const { email, password } = arg;
-  console.log("args: ", email, password);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -142,7 +135,6 @@ export async function loginUser(
     },
   });
   const data = await res.json();
-  console.log(data);
   if (data.status) {
     const token = data.data.token;
     await AsyncStorage.setItem("loginToken", token);
@@ -182,7 +174,6 @@ export async function pinAuthentication(
   }
 ) {
   const { pin, fcmToken } = arg;
-  console.log("args: ", arg.token);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -195,13 +186,15 @@ export async function pinAuthentication(
     },
   });
   const data = await res.json();
-  console.log("pin:", data);
   if (data.status) {
     const dataRes = data.data.token;
-    console.log("dataRes:", dataRes);
     const token = dataRes.token;
     const name = dataRes.fullName.split(" ");
-    await AsyncStorage.setItem("token", token);
+    try {
+      await AsyncStorage.setItem("token", token);
+    } catch (error) {
+      console.log("Error setting token: ", error);
+    }
     authStore.update((s) => {
       s.token = token;
       s.isAuthenticated = true;
@@ -211,14 +204,23 @@ export async function pinAuthentication(
       s.profileImage =
         name[0].charAt(0).toUpperCase() + name[1].charAt(0).toUpperCase();
     });
-    updateNotification("user/update-fcm", {
-      arg: {
-        fcmToken,
-        deviceType: Platform.OS,
-        deviceToken: "SEKEM",
-        token: token,
-      },
-    });
+    try {
+      updateNotification("user/update-fcm", {
+        arg: {
+          fcmToken,
+          deviceType: Platform.OS,
+          deviceToken: "SEKEM",
+          token: token,
+        },
+      });
+    } catch (error) {
+      console.log("Error updating notification: ", error);
+    }
+    try {
+      getUserDetails("user/profile", { arg: { token } });
+    } catch (error) {
+      console.log("Error getting user details: ", error);
+    }
   } else {
     toastStore.update((s) => {
       s.active = true;
@@ -241,7 +243,6 @@ export async function forgotPassword(
   }
 ) {
   const { email } = arg;
-  console.log("args: ", arg.email);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -253,7 +254,6 @@ export async function forgotPassword(
     },
   });
   const data = await res.json();
-  console.log(data);
   return data;
 }
 
@@ -269,7 +269,6 @@ export async function validateOTP(
   }
 ) {
   const { code } = arg;
-  console.log("args: ", code);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -281,7 +280,6 @@ export async function validateOTP(
     },
   });
   const data = await res.json();
-  console.log("data:", data);
   if (data.status) {
     authStore.update((s) => {
       s.otp = code;
@@ -317,7 +315,6 @@ export async function updateNotification(
   }
 ) {
   const { fcmToken, deviceType, deviceToken, token } = arg;
-  console.log("args: ", fcmToken, deviceType, deviceToken, token);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "PATCH",
@@ -332,7 +329,6 @@ export async function updateNotification(
     },
   });
   const data = await res.json();
-  console.log("noti", data);
   return data;
 }
 
@@ -349,7 +345,6 @@ export async function resetPassword(
   }
 ) {
   const { code, password } = arg;
-  console.log("args: ", code, password);
   const apiUrl = baseUrl + url;
   const res = await fetch(apiUrl, {
     method: "POST",
@@ -362,7 +357,6 @@ export async function resetPassword(
     },
   });
   const data = await res.json();
-  console.log(data);
   return data;
 }
 

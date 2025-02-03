@@ -113,7 +113,6 @@ export default function Sending() {
 
   const handleContinue = () => {
     const amount = tStoreValue.sendAmount?.split(",")?.join("");
-    console.log("amountr: ", amount);
 
     if (tStoreValue.sendingIsCFA) {
       console.log("amount: ", tStoreValue.sendAmount);

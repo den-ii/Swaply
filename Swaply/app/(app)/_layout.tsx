@@ -1,7 +1,9 @@
 import NavBack from "@/components/NavBack";
 import { authStore, statusBarStore } from "@/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Redirect, Stack, usePathname } from "expo-router";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { set } from "react-hook-form";
 import { Platform } from "react-native";
 
 export const unstable_settings = {
@@ -9,10 +11,48 @@ export const unstable_settings = {
 };
 
 export default function AppLayout() {
-  const isAuthenticated = authStore.useState((state) => state.isAuthenticated);
-  const isReturningUser = authStore.useState((state) => state.isReturningUser);
+  const isAuthenticated = authStore.useState((s) => s.isAuthenticated);
+  const [isReturningUser, setIsReturningUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useLayoutEffect(() => {
+    const instantiate = async () => {
+      setIsLoading(true);
+      try {
+        const isFaceIDAuth = await AsyncStorage.getItem("isFaceIDAuth");
+        const loginToken = await AsyncStorage.getItem("loginToken");
+        const token = await AsyncStorage.getItem("token");
+        const email = await AsyncStorage.getItem("email");
+        console.log("token: ", token);
+
+        if (isFaceIDAuth !== null) {
+          authStore.update((s) => {
+            s.isFaceIDAuth = true;
+          });
+        }
+        if (token !== null || loginToken !== null) {
+          authStore.update((s) => {
+            s.loginToken = loginToken;
+            s.isReturningUser = true;
+          });
+          setIsReturningUser(true);
+        }
+        if (email !== null) {
+          authStore.update((s) => {
+            s.email = email;
+          });
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    instantiate();
+  }, []);
 
   console.log("isReturningUser:", isReturningUser);
+  if (isLoading) return null;
 
   if (!isAuthenticated) {
     if (!isReturningUser) return <Redirect href={"/(onboarding)/"} />;

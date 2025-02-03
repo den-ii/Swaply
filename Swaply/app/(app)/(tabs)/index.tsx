@@ -109,8 +109,6 @@ export default function Home() {
       setReverse(true);
     } else setReverse(false);
 
-    console.log(args);
-
     debounceFunc(() => trigger(args));
   }
 
@@ -172,7 +170,6 @@ export default function Home() {
   };
 
   const checkDisabled = () => {
-    console.log(sendValue, receiveValue);
     if (Number(sendValue) <= 0 || sendValue.trim() === "") {
       setDisableContinue(true);
     } else {
@@ -181,8 +178,6 @@ export default function Home() {
   };
 
   const handleContinue = async () => {
-    console.log("sendCountry: ", sendCountry);
-    console.log("sendCountry: ", sendCountry === Country.BENIN);
     await transferStore.update((state) => {
       state.sendAmount = sendValue;
       state.receiveAmount = receiveValue;
@@ -207,7 +202,6 @@ export default function Home() {
   };
 
   const handleConversion = (value: string, sending: boolean) => {
-    console.log("value: conv");
     setLoading(true);
 
     if (value.trim() === "") {
@@ -219,9 +213,7 @@ export default function Home() {
     }
 
     const cleanedValue = value.replace(/,/g, ""); // Remove commas from the string
-    console.log("cleanedValue:", cleanedValue);
     const numericValue = parseInt(cleanedValue);
-    console.log("numericValue:", numericValue);
 
     if (isNaN(numericValue)) {
       console.error("Invalid number input");

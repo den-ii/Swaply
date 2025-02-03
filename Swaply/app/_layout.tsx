@@ -33,8 +33,6 @@ import {
   setBackgroundMessageHandler,
 } from "@/pushNotification";
 import messaging from "@react-native-firebase/messaging";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import { set } from "react-hook-form";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
@@ -57,37 +55,6 @@ export default function RootLayout() {
   const pathname = usePathname();
   const isAuthenticated = authStore.useState((state) => state.isAuthenticated);
 
-  useLayoutEffect(() => {
-    const instantiate = async () => {
-      try {
-        const isFaceIDAuth = await AsyncStorage.getItem("isFaceIDAuth");
-        const loginToken = await AsyncStorage.getItem("loginToken");
-        const email = await AsyncStorage.getItem("email");
-        console.log("loginToken:", loginToken);
-
-        if (isFaceIDAuth !== null) {
-          authStore.update((s) => {
-            s.isFaceIDAuth = true;
-          });
-        }
-        if (loginToken !== null) {
-          authStore.update((s) => {
-            s.loginToken = loginToken;
-            s.isReturningUser = true;
-          });
-        }
-        if (email !== null) {
-          authStore.update((s) => {
-            s.email = email;
-          });
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    instantiate();
-  }, []);
-
   useEffect(() => {
     if (
       (isAuthenticated && pathname === "/") ||
@@ -96,7 +63,6 @@ export default function RootLayout() {
       statusBarStore.update((s) => {
         s.barStyle = "light-content";
       });
-      console.log("here: else");
       statusBarStore.update((s) => {
         s.barStyle = "dark-content";
       });
@@ -112,7 +78,6 @@ export default function RootLayout() {
         messaging()
           .getToken()
           .then((token) => {
-            console.log("token: ", token);
             notificationStore.update((s) => {
               s.token = token;
             });

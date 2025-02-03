@@ -71,7 +71,6 @@ export default function SignIn() {
       s.email = emailAddress;
     });
     if (!password.length) {
-      console.log("password error");
       setPasswordError(true);
       toastStore.update((s) => {
         s.active = true;

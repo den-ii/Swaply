@@ -14,10 +14,8 @@ export async function convertCurrency(
     };
   }
 ) {
-  console.log("convert currency called:");
   const { sourceCurrency, destinationCurrency, amount } = arg;
   const apiUrl = baseUrl + url;
-  console.log(sourceCurrency, destinationCurrency, amount);
   const res = await fetch(apiUrl, {
     method: "POST",
     body: JSON.stringify({
@@ -28,8 +26,6 @@ export async function convertCurrency(
     },
   });
   const data = await res.json();
-  console.log("res: ", res.status);
-  console.log("data: ", data);
   return data;
 }
 
@@ -62,7 +58,6 @@ export async function verifyBankDetails(
     },
   });
   const data = await res.json();
-  console.log("res: ", res.status);
   console.log("data: ", data);
   return data;
 }

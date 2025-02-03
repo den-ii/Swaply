@@ -8,7 +8,6 @@ export const BankSVG = ({ bank }: { bank: Bank }) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  console.log("---", bank.slug, bank.name);
   const bankNameSplit = bank?.name?.split(/[ -]/);
   const initials =
     bankNameSplit[0]?.charAt(0) +

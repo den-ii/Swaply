@@ -43,6 +43,7 @@ interface Auth {
   country?: string;
   fullName?: string;
   profileImage?: string;
+  userDetails?: any;
 }
 
 export const authStore = new Store<Auth>({

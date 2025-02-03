@@ -16,8 +16,15 @@ import SectionIcon from "@/components/more/SectionIcon";
 import ChevronRight from "@/assets/images/chevron-right.svg";
 import { router } from "expo-router";
 import { logoutUser } from "@/api/authApi";
+import { authStore } from "@/store";
 
 export default function More() {
+  const { profileImage, fullName } = authStore.useState((s) => ({
+    profileImage: s.profileImage,
+    fullName: s.fullName,
+  }));
+  const userDetails = authStore.useState((s) => s.userDetails);
+
   return (
     <SafeAreaView
       style={{
@@ -92,14 +99,14 @@ export default function More() {
                   }}
                 >
                   <FontText fontSize={18} fontWeight={600} color={"#fff"}>
-                    AD
+                    {profileImage}
                   </FontText>
                 </View>
                 <FontText fontFamily="p22" fontSize={24} fontWeight={700}>
-                  Deni Ochiche
+                  {fullName}
                 </FontText>
                 <FontText fontSize={14} color={Colors.light.neutral}>
-                  Daniel@gmail.com
+                  {userDetails.email}
                 </FontText>
               </View>
               <View

@@ -55,19 +55,15 @@ export default function CFARecepientDetails({
   }
 
   useEffect(() => {
-    console.log(watching);
-    console.log(errors);
     if (
       !watching.momoNumber ||
       watching.momoNumber.length < 9 ||
       !watching.fullName
     ) {
-      console.log("here");
       setProceed(false);
       return;
     }
     if (Object.keys(errors).length) {
-      console.log("errors", errors);
       setProceed(false);
       return;
     }

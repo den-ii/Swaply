@@ -8,6 +8,7 @@ import { Redirect } from "expo-router";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 
+
 const tabBarStyleIOS = {
   paddingTop: 8,
   height: 86,
