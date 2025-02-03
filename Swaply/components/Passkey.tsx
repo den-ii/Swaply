@@ -48,6 +48,7 @@ export const PasskeyContainer = ({
   showFaceId,
   showFaceIdToggle,
   error,
+  top,
   errorMsg,
 }: {
   passkeys: any[];
@@ -56,6 +57,7 @@ export const PasskeyContainer = ({
   errorMsg?: string;
   loading?: boolean;
   showFaceId?: boolean;
+  top?: number;
   showFaceIdToggle?: boolean;
   handleKeyPadPress: (value: number | string) => void;
 }) => {
@@ -183,7 +185,7 @@ export const PasskeyContainer = ({
         )}
         <View
           style={{
-            // marginTop: 80,
+            marginTop: top || 0,
             alignItems: "center",
           }}
         >

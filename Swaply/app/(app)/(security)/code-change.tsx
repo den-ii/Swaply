@@ -45,7 +45,7 @@ export default function CodeChange() {
         // justifyContent: "center",
       }}
     >
-      <View style={{ marginTop: 8, gap: 8, paddingBottom: 16 }}>
+      <View style={{ marginTop: 8, gap: 8 }}>
         <Text
           style={{
             fontFamily: "P22Mackinac_Bold",
@@ -64,7 +64,7 @@ export default function CodeChange() {
           justifyContent: "center",
         }}
       >
-        <View style={{ height: "80%", minHeight: 500, maxHeight: 600 }}>
+        <View style={{ height: "75%", minHeight: 500, maxHeight: 600 }}>
           <PasskeyContainer
             passkeys={currentCode}
             fill={currentCodeFill}

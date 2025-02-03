@@ -79,7 +79,6 @@ export default function Keypad({
   loading?: boolean;
   showFaceId?: boolean;
 }) {
-  console.log("showFaceId", showFaceId);
   const [numpad, setNumpad] = useState([
     { id: 1, value: 1 },
     { id: 2, value: 2 },
