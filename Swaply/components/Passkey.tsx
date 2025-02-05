@@ -11,6 +11,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import Toggle from "./Toggle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authStore } from "@/store";
+import { checkAuthType } from "@/utils";
 
 export const PasskeyField = ({
   fill,
@@ -68,19 +69,7 @@ export const PasskeyContainer = ({
   const faceIdCanShow = showFaceIdToggle && faceIdAvailable;
 
   useLayoutEffect(() => {
-    const checkAuthType = async () => {
-      const authType = (
-        await LocalAuthentication.supportedAuthenticationTypesAsync()
-      ).includes(2);
-
-      const authLevel = await LocalAuthentication.getEnrolledLevelAsync();
-      setFaceIdAvailable(
-        authLevel === LocalAuthentication.SecurityLevel.BIOMETRIC_STRONG &&
-          authType
-      );
-      console.log("authType:", authLevel);
-    };
-    if (showFaceIdToggle) checkAuthType();
+    if (showFaceIdToggle) checkAuthType().then(setFaceIdAvailable);
   }, []);
 
   useEffect(() => {

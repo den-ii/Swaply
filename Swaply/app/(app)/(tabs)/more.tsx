@@ -19,7 +19,8 @@ import { logoutUser } from "@/api/authApi";
 import { authStore } from "@/store";
 import Toggle from "@/components/Toggle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { checkAuthType } from "@/utils";
 
 export const kycColor = {
   1: "#FFBB8B",
@@ -35,8 +36,16 @@ export default function More() {
     fullName: s.fullName,
     isFaceIDAuth: s.isFaceIDAuth,
   }));
+
+  const [displayFaceId, setDisplayFaceId] = useState(false);
+
   const userDetails = authStore.useState((s) => s.userDetails);
   const kycTier = userDetails.kycTier.split("_")[1] as keyof typeof kycColor;
+
+  useLayoutEffect(() => {
+    checkAuthType().then(setDisplayFaceId);
+  }, []);
+
   const toggleFaceId = async () => {
     try {
       if (!isFaceIDAuth) {
@@ -243,20 +252,22 @@ export default function More() {
                   <ChevronRight fill={Colors.light.neutral} />
                 </View>
               </Pressable>
-              <Pressable>
-                <View style={styles.list}>
-                  <View style={styles.listDescription}>
-                    <SectionIcon Icon={FaceID} />
-                    <FontText fontSize={14} fontWeight={500}>
-                      Face ID unlock
-                    </FontText>
+              {displayFaceId && (
+                <Pressable>
+                  <View style={styles.list}>
+                    <View style={styles.listDescription}>
+                      <SectionIcon Icon={FaceID} />
+                      <FontText fontSize={14} fontWeight={500}>
+                        Face ID unlock
+                      </FontText>
+                    </View>
+                    <Toggle
+                      on={isFaceIDAuth ? true : false}
+                      toggleOn={toggleFaceId}
+                    />
                   </View>
-                  <Toggle
-                    on={isFaceIDAuth ? true : false}
-                    toggleOn={toggleFaceId}
-                  />
-                </View>
-              </Pressable>
+                </Pressable>
+              )}
               <Pressable>
                 <View style={styles.list}>
                   <View style={styles.listDescription}>

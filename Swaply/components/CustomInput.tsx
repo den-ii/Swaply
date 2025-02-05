@@ -17,7 +17,7 @@ import { Colors } from "../constants/Colors";
 import { UI } from "@/constants/UI";
 import UserCircle from "@/assets/images/user-circle.svg";
 import * as Contacts from "expo-contacts";
-import { getContact } from "@/utils/others";
+import { getContact } from "@/utils";
 
 export default function CustomInput({
   label,
