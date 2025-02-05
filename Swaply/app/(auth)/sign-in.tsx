@@ -15,7 +15,7 @@ import Button from "@/components/Button";
 import { Link, router } from "expo-router";
 import Password from "@/components/Password";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { get, useForm } from "react-hook-form";
+import { get, useForm, useWatch } from "react-hook-form";
 import CustomInput from "@/components/CustomInput";
 import { authStore, statusBarStore, toastStore, ToastType } from "@/store";
 import { loginUser, forgotPassword } from "@/api/authApi";
@@ -47,6 +47,11 @@ export default function SignIn() {
   const handleContinue = () => {
     router.push("/verify-otp");
   };
+
+  const defaultValues = {
+    emailAddress: "",
+  };
+
   const {
     control,
     handleSubmit,
@@ -55,9 +60,12 @@ export default function SignIn() {
     clearErrors,
     formState: { errors, isValid },
   } = useForm({
-    defaultValues: {
-      emailAddress: email,
-    },
+    defaultValues,
+  });
+
+  const watching = useWatch<typeof defaultValues>({
+    control,
+    defaultValue: defaultValues, // default value before the render
   });
 
   useEffect(() => {
@@ -172,7 +180,8 @@ export default function SignIn() {
             action={handleSubmit(login)}
             loading={isMutating}
             disabled={
-              getValues("emailAddress").length < 1 || password.length < 1
+              Boolean(watching.emailAddress?.length).valueOf() ||
+              password.length < 1
             }
           />
         </View>

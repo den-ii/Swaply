@@ -14,15 +14,18 @@ export default function Relationship({
   setRelationship,
   setModalActive,
   modalActive,
+  setRelationshipSelected,
 }: {
-  relationship: number;
+  relationship: number | null;
   setRelationship: Function;
+  setRelationshipSelected: Function;
   setModalActive: Function;
   modalActive: boolean;
 }) {
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
 
   const handleSelectRelationship = (index: number) => {
+    setRelationshipSelected(true);
     setRelationship(index);
   };
 

@@ -4,21 +4,40 @@ import DataSecure from "@/components/DataSecure";
 import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView, Pressable, Platform } from "react-native";
 import ChevronDown from "@/assets/images/chevron-down.svg";
 import VerificationInProgress from "@/components/modals/VerificationInProgress";
 import { PhoneNumberInput } from "@/components/PhoneNumberInput";
-import Relationship, {
-  relationshipList,
-} from "@/components/modals/Relationship";
+import Relationship from "@/components/modals/Relationship";
 import InformationSaved from "@/components/modals/InformationSaved";
+import { useForm } from "react-hook-form";
+import { UI } from "@/constants/UI";
+
+const defaultValues = {
+  address: "",
+  name: "",
+  phone: "",
+};
+
+export const relationshipList = ["Spouse", "Child", "Parent", "Sibling"];
 
 export default function NextOfKin() {
-  const [bvn, setBVN] = useState("");
-  const [relationship, setRelationship] = useState(0);
+  const [relationship, setRelationship] = useState(null);
   const [relationShipSelected, setRelationShipSelected] = useState(false);
   const [informationSavedModal, setInformationSavedModal] = useState(false);
   const [relationshipModal, setRelationshipModal] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    resetField,
+    getValues,
+    clearErrors,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues,
+  });
 
   const handleSave = () => {
     setInformationSavedModal(true);
@@ -27,6 +46,7 @@ export default function NextOfKin() {
     // On success, navigate to next screen
     // On failure, show error message
   };
+  const showRelationship = relationShipSelected && relationship !== null;
   return (
     <View
       style={{
@@ -62,25 +82,34 @@ export default function NextOfKin() {
           <CustomInput
             label="Name of Next of Kin"
             inputMode="text"
-            returnKey
+            name="name"
             placeholder="John Doe"
-            value={bvn}
-            setValue={setBVN}
+            clearErrors={clearErrors}
+            resetField={resetField}
+            returnKey
+            error={errors.name}
+            control={control}
+            isValid={isValid}
+            rules={{
+              required: "Name is required",
+            }}
           />
         </View>
-        <View style={{ marginBottom: 16 }}>
+        {/* <View style={{ marginBottom: 16 }}>
           <FontText>Phone number of Next of kin </FontText>
           <PhoneNumberInput />
-        </View>
+        </View> */}
 
-        <View style={{ gap: 12, marginBottom: 16 }}>
+        <View style={{ gap: 12, marginBottom: 16, marginTop: -17 }}>
           <FontText>Relationship to Next of kin </FontText>
           <Pressable onPress={() => setRelationshipModal(true)}>
             <View
               style={{
                 flexDirection: "row",
                 backgroundColor: "white",
-                padding: 16,
+                paddingVertical:
+                  Platform.OS == "android" ? 12 : UI.input.verticalPadding,
+                paddingHorizontal: UI.input.horizontalPadding,
                 borderRadius: 12,
                 borderWidth: 1,
                 borderColor: "#ECEFF1",
@@ -88,9 +117,11 @@ export default function NextOfKin() {
                 position: "relative",
               }}
             >
-              {!relationShipSelected && <FontText></FontText>}
-              {relationShipSelected && (
-                <FontText>{relationshipList[relationship]}</FontText>
+              {!relationShipSelected && (
+                <FontText color="#AEB7BF">Select relationship</FontText>
+              )}
+              {showRelationship && (
+                <Text>{relationshipList[relationship]}</Text>
               )}
               <View style={{ position: "absolute", right: 20 }}>
                 <ChevronDown fill="#AEB7BF" />
@@ -102,10 +133,17 @@ export default function NextOfKin() {
           <CustomInput
             label="Address of Next of Kin"
             inputMode="text"
-            returnKey
             placeholder="Address of next of kin"
-            value={bvn}
-            setValue={setBVN}
+            name="name"
+            clearErrors={clearErrors}
+            resetField={resetField}
+            returnKey
+            error={errors.address}
+            control={control}
+            isValid={isValid}
+            rules={{
+              required: "Address is required",
+            }}
           />
         </View>
       </ScrollView>
@@ -118,6 +156,7 @@ export default function NextOfKin() {
       <Relationship
         relationship={relationship}
         setRelationship={setRelationship}
+        setRelationshipSelected={setRelationShipSelected}
         modalActive={relationshipModal}
         setModalActive={setRelationshipModal}
       />

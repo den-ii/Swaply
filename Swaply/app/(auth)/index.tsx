@@ -45,6 +45,7 @@ export default function EntryPoint() {
   const loginToken = authStore.useState((s) => s.loginToken);
 
   function done() {
+    console.log("done", loginToken);
     if (loginToken)
       trigger({
         pin: passkeys.join(""),

@@ -6,22 +6,50 @@ import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import VerificationInProgress from "@/components/modals/VerificationInProgress";
+import { useForm, useWatch } from "react-hook-form";
+import { authStore } from "@/store";
+import useSWRMutation from "swr/dist/mutation";
+import { verifyBVN as verifyBVNAPI } from "@/api/kycApi/nigeria";
+
+const defaultValues = {
+  bvn: "",
+};
 
 export default function BVN() {
-  const [bvn, setBVN] = useState("");
+  const token = authStore.useState((s) => s.token);
+
   const [verificationInProgress, setVerificationInProgress] = useState(false);
   const [modalActive, setModalActive] = useState(true);
+  const { trigger, isMutating } = useSWRMutation(
+    "kyc/submit-kyc/bvn",
+    verifyBVNAPI
+  );
+
+  const {
+    control,
+    handleSubmit,
+    resetField,
+    getValues,
+    clearErrors,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues,
+  });
+
+  const watching = useWatch<typeof defaultValues>({
+    control,
+    defaultValue: defaultValues, // default value before the render
+  });
 
   useEffect(() => {
     if (verificationInProgress) setModalActive(true);
   }, []);
 
-  const verifyBVN = () => {
+  const verifyBVN = async () => {
+    await trigger({ bvn: getValues("bvn"), token: token ?? "" });
     setVerificationInProgress(true);
     setModalActive(true);
-    // Call API to verify NIN
-    // On success, navigate to next screen
-    // On failure, show error message
   };
   return (
     <View
@@ -51,17 +79,37 @@ export default function BVN() {
           <CustomInput
             label="BVN"
             inputMode="numeric"
+            name="bvn"
+            clearErrors={clearErrors}
+            resetField={resetField}
             returnKey
+            error={errors.bvn}
+            control={control}
+            isValid={isValid}
+            rules={{
+              required: "BVN is required",
+              minLength: {
+                value: 11,
+                message: "Invalid format, please try again",
+              },
+              maxLength: {
+                value: 11,
+                message: "Invalid format, please try again",
+              },
+            }}
             placeholder="Please enter BVN"
-            value={bvn}
-            setValue={setBVN}
           />
         </View>
       </View>
       <View style={{ paddingVertical: 16, gap: 16 }}>
         <DataSecure />
         <View>
-          <Button text="Verify BVN" action={verifyBVN} />
+          <Button
+            text="Verify BVN"
+            action={handleSubmit(verifyBVN)}
+            disabled={watching.bvn?.length === 0}
+            loading={isMutating}
+          />
         </View>
       </View>
       {verificationInProgress && (

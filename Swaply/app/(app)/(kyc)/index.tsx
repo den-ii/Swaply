@@ -8,9 +8,12 @@ import { UI } from "@/constants/UI";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { View, Text, Pressable } from "react-native";
+import CountryKYC from "@/components/kyc";
+import { authStore } from "@/store";
 
 export default function KYC() {
   const [informationUpdateModal, setInformationUpdateModal] = useState(false);
+  const userDetails = authStore.useState((s) => s.userDetails);
   return (
     <View
       style={{
@@ -29,8 +32,7 @@ export default function KYC() {
             Please provide the following documents to verify your account
           </FontText>
         </View>
-        <NGNKYC />
-        {/* <CFAKYC /> */}
+        <CountryKYC country={userDetails.country} />
       </View>
       <Pressable onPress={() => setInformationUpdateModal(true)}>
         <View

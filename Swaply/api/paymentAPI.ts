@@ -1,6 +1,5 @@
 import { Country } from "@/types/country";
-
-const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+import { baseUrl } from "./utilsApi";
 
 export async function convertCurrency(
   url: string,

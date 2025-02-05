@@ -6,22 +6,50 @@ import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import VerificationInProgress from "@/components/modals/VerificationInProgress";
+import { useForm, useWatch } from "react-hook-form";
+import { verifyNIN as verifyNINAPI } from "@/api/kycApi/nigeria";
+import useSWRMutation from "swr/dist/mutation";
+import { authStore } from "@/store";
+
+const defaultValues = {
+  nin: "",
+};
 
 export default function NIN() {
   const [nin, setNin] = useState("");
+  const token = authStore.useState((s) => s.token);
+  const { trigger, isMutating } = useSWRMutation(
+    "kyc/submit-kyc/nin",
+    verifyNINAPI
+  );
   const [verificationInProgress, setVerificationInProgress] = useState(false);
   const [modalActive, setModalActive] = useState(true);
+
+  const {
+    control,
+    handleSubmit,
+    resetField,
+    getValues,
+    clearErrors,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues,
+  });
+
+  const watching = useWatch<typeof defaultValues>({
+    control,
+    defaultValue: defaultValues, // default value before the render
+  });
 
   useEffect(() => {
     if (verificationInProgress) setModalActive(true);
   }, []);
 
-  const verifyNIN = () => {
+  const verifyNIN = async () => {
+    await trigger({ nin: getValues("nin"), token: token ?? "" });
     setVerificationInProgress(true);
     setModalActive(true);
-    // Call API to verify NIN
-    // On success, navigate to next screen
-    // On failure, show error message
   };
   return (
     <View
@@ -51,17 +79,37 @@ export default function NIN() {
           <CustomInput
             label="NIN"
             inputMode="numeric"
+            name="nin"
+            clearErrors={clearErrors}
+            resetField={resetField}
             returnKey
+            error={errors.nin}
+            control={control}
+            isValid={isValid}
+            rules={{
+              required: "NIN is required",
+              minLength: {
+                value: 11,
+                message: "Invalid format, please try again",
+              },
+              maxLength: {
+                value: 11,
+                message: "Invalid format, please try again",
+              },
+            }}
             placeholder="Please enter NIN"
-            value={nin}
-            setValue={setNin}
           />
         </View>
       </View>
       <View style={{ paddingVertical: 16, gap: 16 }}>
         <DataSecure />
         <View>
-          <Button text="Verify NIN" action={verifyNIN} />
+          <Button
+            text="Verify NIN"
+            action={handleSubmit(verifyNIN)}
+            disabled={watching.nin?.length === 0}
+            loading={isMutating}
+          />
         </View>
       </View>
       {verificationInProgress && (

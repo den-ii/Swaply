@@ -17,13 +17,43 @@ import ChevronRight from "@/assets/images/chevron-right.svg";
 import { router } from "expo-router";
 import { logoutUser } from "@/api/authApi";
 import { authStore } from "@/store";
+import Toggle from "@/components/Toggle";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
+
+export const kycColor = {
+  1: "#FFBB8B",
+  2: Colors.base,
+  3: "#FFBB8B",
+  4: "#FFBB8B",
+  5: "#FFBB8B",
+};
 
 export default function More() {
-  const { profileImage, fullName } = authStore.useState((s) => ({
+  const { profileImage, fullName, isFaceIDAuth } = authStore.useState((s) => ({
     profileImage: s.profileImage,
     fullName: s.fullName,
+    isFaceIDAuth: s.isFaceIDAuth,
   }));
   const userDetails = authStore.useState((s) => s.userDetails);
+  const kycTier = userDetails.kycTier.split("_")[1] as keyof typeof kycColor;
+  const toggleFaceId = async () => {
+    try {
+      if (!isFaceIDAuth) {
+        await AsyncStorage.setItem("isFaceIDAuth", "true");
+        authStore.update((s) => {
+          s.isFaceIDAuth = true;
+        });
+      } else {
+        await AsyncStorage.removeItem("isFaceIDAuth");
+        authStore.update((s) => {
+          s.isFaceIDAuth = false;
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <SafeAreaView
@@ -118,12 +148,12 @@ export default function More() {
                   paddingHorizontal: 9,
                   borderRadius: 75,
                   alignItems: "center",
-                  backgroundColor: "#FFBB8B",
+                  backgroundColor: kycColor[kycTier],
                 }}
               >
                 <Star />
                 <FontText fontSize={10.5} fontWeight={500}>
-                  Tier 1
+                  {`Tier ${kycTier}`}
                 </FontText>
               </View>
             </View>
@@ -203,6 +233,17 @@ export default function More() {
             </FontText>
             <View style={styles.sectionContainer}>
               <Pressable>
+                <View style={styles.listWithoutBorder}>
+                  <View style={styles.listDescription}>
+                    <SectionIcon Icon={ContactUs} />
+                    <FontText fontSize={14} fontWeight={500}>
+                      Help & Support
+                    </FontText>
+                  </View>
+                  <ChevronRight fill={Colors.light.neutral} />
+                </View>
+              </Pressable>
+              <Pressable>
                 <View style={styles.list}>
                   <View style={styles.listDescription}>
                     <SectionIcon Icon={FaceID} />
@@ -210,7 +251,10 @@ export default function More() {
                       Face ID unlock
                     </FontText>
                   </View>
-                  <ChevronRight fill={Colors.light.neutral} />
+                  <Toggle
+                    on={isFaceIDAuth ? true : false}
+                    toggleOn={toggleFaceId}
+                  />
                 </View>
               </Pressable>
               <Pressable>
@@ -236,17 +280,6 @@ export default function More() {
                         English
                       </FontText>
                     </View>
-                  </View>
-                  <ChevronRight fill={Colors.light.neutral} />
-                </View>
-              </Pressable>
-              <Pressable>
-                <View style={styles.listWithoutBorder}>
-                  <View style={styles.listDescription}>
-                    <SectionIcon Icon={ContactUs} />
-                    <FontText fontSize={14} fontWeight={500}>
-                      Contact us
-                    </FontText>
                   </View>
                   <ChevronRight fill={Colors.light.neutral} />
                 </View>

@@ -5,8 +5,7 @@ import { router } from "expo-router";
 import { Platform } from "react-native";
 import useSWRMutation from "swr/mutation";
 import { getUserDetails } from "./utilsApi";
-
-const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+import { baseUrl } from "./utilsApi";
 
 /*------------------------------------ Register ------------------------------------------------*/
 

@@ -31,7 +31,7 @@ import {
   notificationOpenedApp,
   requestUserPermission,
   setBackgroundMessageHandler,
-} from "@/pushNotification";
+} from "@/utils/pushNotification";
 import messaging from "@react-native-firebase/messaging";
 
 export default function RootLayout() {

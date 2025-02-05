@@ -14,5 +14,3 @@ export async function getContact() {
   }
   return [];
 }
-
-//ldkjdjjdj

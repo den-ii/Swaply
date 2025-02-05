@@ -5,10 +5,19 @@ import { Pressable, View } from "react-native";
 import Star from "@/assets/images/star.svg";
 import { useState } from "react";
 import Button from "@/components/Button";
+import Toggle from "@/components/Toggle";
 
 export default function Notifications() {
   const [pushNotifications, setPushNotifications] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
+
+  const togglePushNotifications = () => {
+    setPushNotifications((pushNotifications) => !pushNotifications);
+  };
+
+  const toggleEmailNotifications = () => {
+    setEmailNotifications((emailNotifications) => !emailNotifications);
+  };
 
   return (
     <View
@@ -45,7 +54,12 @@ export default function Notifications() {
             }}
           >
             <FontText fontWeight={500}>Push notifications</FontText>
-            <View></View>
+            <View>
+              <Toggle
+                on={pushNotifications}
+                toggleOn={togglePushNotifications}
+              />
+            </View>
           </View>
         </Pressable>
         <Pressable>
@@ -57,7 +71,12 @@ export default function Notifications() {
             }}
           >
             <FontText fontWeight={500}>Email notifications</FontText>
-            <View></View>
+            <View>
+              <Toggle
+                on={emailNotifications}
+                toggleOn={toggleEmailNotifications}
+              />
+            </View>
           </View>
         </Pressable>
       </View>

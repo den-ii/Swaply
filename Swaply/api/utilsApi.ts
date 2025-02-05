@@ -1,6 +1,8 @@
 import { authStore } from "@/store";
+import { saveEmail } from "@/utils/storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+export const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
 export async function getUserDetails(
   url: string,
@@ -21,14 +23,20 @@ export async function getUserDetails(
   console.log(data);
   if (data.status) {
     console.log("here:");
-    const nationalityData = await getNationality("", data.data.country);
-    authStore.update((s) => {
-      s.userDetails = {
-        ...data.data,
-        cca: nationalityData[0].cca2,
-        nationality: nationalityData[0].demonyms.eng.m,
-      };
-    });
+    try {
+      const nationalityData = await getNationality("", data.data.country);
+      await saveEmail(data.data.email);
+      authStore.update((s) => {
+        s.email = data.data.email;
+        s.userDetails = {
+          ...data.data,
+          cca: nationalityData[0].cca2,
+          nationality: nationalityData[0].demonyms.eng.m,
+        };
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return data;

@@ -19,10 +19,16 @@ export default function DataSecure() {
         <ShieldStar />
       </View>
       <View>
-        <FontText fontSize={12} style={{ flexWrap: "wrap", marginRight: 16 }}>
+        <Text
+          style={{
+            fontFamily: "Inter_400Medium",
+            fontSize: 12,
+            paddingRight: 16,
+          }}
+        >
           The data provided will only be used for verification and stored
           securely
-        </FontText>
+        </Text>
       </View>
     </View>
   );
