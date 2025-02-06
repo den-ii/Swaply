@@ -364,10 +364,14 @@ export async function logoutUser() {
   authStore.update((s) => {
     s.isAuthenticated = false;
     s.token = null;
-    s.email = "";
     s.loginToken = null;
   });
-  await AsyncStorage.removeItem("email");
-  await AsyncStorage.removeItem("loginToken");
+  try {
+    await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("loginToken");
+  } catch (error) {
+    console.log("Error removing token: ", error);
+  }
+
   router.push("/(auth)/sign-in");
 }

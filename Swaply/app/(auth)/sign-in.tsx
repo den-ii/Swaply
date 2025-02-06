@@ -42,6 +42,7 @@ export default function SignIn() {
     forgotPassword
   );
   const email = authStore.useState((s) => s.email);
+  console.log("email: ", email);
   const [password, setPassword] = useState("");
 
   const handleContinue = () => {
@@ -49,7 +50,7 @@ export default function SignIn() {
   };
 
   const defaultValues = {
-    emailAddress: "",
+    emailAddress: email || "",
   };
 
   const {
@@ -99,6 +100,11 @@ export default function SignIn() {
     forgotPasswordTrigger({ email: emailAddress });
     router.push("/verify-otp");
   };
+
+  const permit =
+    watching?.emailAddress?.length &&
+    password.length > 0 &&
+    !errors.emailAddress?.message;
   return (
     // <View>
     <View
@@ -179,10 +185,7 @@ export default function SignIn() {
             text={"Log In"}
             action={handleSubmit(login)}
             loading={isMutating}
-            disabled={
-              Boolean(watching.emailAddress?.length).valueOf() ||
-              password.length < 1
-            }
+            disabled={!permit}
           />
         </View>
         <Pressable onPress={() => router.push("/(onboarding)/")}>

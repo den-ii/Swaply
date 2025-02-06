@@ -14,6 +14,7 @@ export default function AppLayout() {
   const isAuthenticated = authStore.useState((s) => s.isAuthenticated);
   const [isReturningUser, setIsReturningUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const pathname = usePathname();
 
   useLayoutEffect(() => {
     const instantiate = async () => {
@@ -38,6 +39,7 @@ export default function AppLayout() {
           setIsReturningUser(true);
         }
         if (email !== null) {
+          console.log("email: ", email);
           authStore.update((s) => {
             s.email = email;
           });
@@ -50,6 +52,20 @@ export default function AppLayout() {
     };
     instantiate();
   }, []);
+
+  useEffect(() => {
+    if (
+      (isAuthenticated && pathname === "/") ||
+      (!isAuthenticated && pathname === "/sign-in")
+    ) {
+      statusBarStore.update((s) => {
+        s.barStyle = "light-content";
+      });
+      statusBarStore.update((s) => {
+        s.barStyle = "dark-content";
+      });
+    }
+  }, [pathname]);
 
   console.log("isReturningUser:", isReturningUser);
   if (isLoading) return null;
