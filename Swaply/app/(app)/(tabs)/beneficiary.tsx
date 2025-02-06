@@ -1,12 +1,12 @@
 import { Text, View } from "react-native";
 import FontText from "@/components/FontText";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { UI } from "@/constants/UI";
 import { Colors } from "@/constants/Colors";
 import Search from "@/components/Search";
 import NoBeneficiary from "@/components/beneficiary/NoBeneficiary";
 import { useState } from "react";
 import BeneficiaryList from "@/components/beneficiary/BeneficiaryList";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const beneficiaries = [
   // {

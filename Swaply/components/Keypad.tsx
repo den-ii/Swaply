@@ -5,6 +5,7 @@ import Backspace from "@/assets/images/backspace.svg";
 import * as Haptics from "expo-haptics";
 import Identity from "@/assets/images/identity2.svg";
 import * as SecureStore from "expo-secure-store";
+import { checkAuthType } from "@/utils";
 
 const NumberButton = ({
   value,

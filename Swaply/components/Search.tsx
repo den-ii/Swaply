@@ -17,14 +17,16 @@ export default function Search({
       <View
         style={{
           position: "absolute",
-          top: Platform.OS === "ios" ? 16 : 17,
+          justifyContent: "center",
+          alignItems: "center",
+          height: 45,
           left: 12,
           zIndex: 2,
         }}
       >
         <SearchIcon />
       </View>
-      <View style={{ height: 50 }}>
+      <View style={{ height: 45 }}>
         <TextInput
           placeholder="Search..."
           style={{

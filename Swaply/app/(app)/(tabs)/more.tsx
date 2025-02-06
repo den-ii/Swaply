@@ -1,7 +1,7 @@
 import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
-import { Pressable, SafeAreaView, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Star from "@/assets/images/star.svg";
 import Profile from "@/assets/images/profile.svg";
@@ -21,6 +21,7 @@ import Toggle from "@/components/Toggle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { checkAuthType } from "@/utils";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const kycColor = {
   1: "#FFBB8B",
@@ -75,7 +76,6 @@ export default function More() {
       <View
         style={{
           flex: 1,
-          paddingTop: 16,
           paddingHorizontal: UI.paddingHorizontal,
         }}
       >
@@ -161,7 +161,7 @@ export default function More() {
                 }}
               >
                 <Star />
-                <FontText fontSize={10.5} fontWeight={500}>
+                <FontText fontSize={10.5} fontWeight={700} fontFamily="p22">
                   {`Tier ${kycTier}`}
                 </FontText>
               </View>

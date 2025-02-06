@@ -71,7 +71,7 @@ export default function AccountLimit() {
                   }}
                 >
                   <Star />
-                  <FontText fontSize={10.5} fontWeight={500}>
+                  <FontText fontSize={10.5} fontWeight={700} fontFamily="p22">
                     {`Tier ${index + 1}`}
                   </FontText>
                 </View>

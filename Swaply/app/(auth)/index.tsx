@@ -8,12 +8,14 @@ import { PasskeyContainer } from "@/components/Passkey";
 import useSWRMutation from "swr/mutation";
 import { pinAuthentication } from "@/api/authApi";
 import { authStore, notificationStore, toastStore, ToastType } from "@/store";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { set } from "react-hook-form";
+import { checkAuthType } from "@/utils";
 
 export default function EntryPoint() {
   const isFaceIdAuth = authStore.useState((s) => s.isFaceIDAuth);
   const fcmToken = notificationStore.useState((s) => s.token);
+  const [authTypeValid, setAuthTypeValid] = useState(false);
   const { trigger, data, isMutating } = useSWRMutation(
     "user/pin/auth",
     pinAuthentication,
@@ -43,6 +45,10 @@ export default function EntryPoint() {
     isMutating
   );
   const loginToken = authStore.useState((s) => s.loginToken);
+
+  useLayoutEffect(() => {
+    checkAuthType().then(setAuthTypeValid);
+  }, []);
 
   function done() {
     console.log("done", loginToken);
@@ -80,7 +86,7 @@ export default function EntryPoint() {
           fill={fill}
           handleKeyPadPress={handleKeyPadPress}
           error={error}
-          showFaceId={isFaceIdAuth}
+          showFaceId={isFaceIdAuth && authTypeValid}
           loading={isMutating}
           errorMsg="Incorrect code, you have 5 more attempts."
         />
