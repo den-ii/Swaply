@@ -7,7 +7,6 @@ import {
   Text,
   Keyboard,
 } from "react-native";
-import HomeHeaderBanner from "@/assets/images/home_header.svg";
 import FontText from "@/components/FontText";
 import { Colors } from "@/constants/Colors";
 import { UI } from "@/constants/UI";
@@ -21,6 +20,7 @@ import { authStore, statusBarStore, toastStore, ToastType } from "@/store";
 import { loginUser, forgotPassword } from "@/api/authApi";
 import useSWRMutation from "swr/mutation";
 import { saveEmail } from "@/utils/storage";
+import HeaderBanner from "@/components/HeaderBanner";
 
 export default function SignIn() {
   const [passwordError, setPasswordError] = useState(false);
@@ -114,7 +114,7 @@ export default function SignIn() {
       }}
     >
       <View>
-        <HomeHeaderBanner />
+        <HeaderBanner />
       </View>
       <View
         style={{

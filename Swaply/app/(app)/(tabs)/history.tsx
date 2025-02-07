@@ -7,9 +7,11 @@ import { Pressable, Text, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FilterIcon from "@/assets/images/filter.svg";
+import Filter from "@/components/filter";
 
 export default function History() {
   const [searchVal, setSearchVal] = useState("");
+  const [filterOpen, setFilterOpen] = useState(false);
   return (
     <SafeAreaView
       style={{
@@ -32,6 +34,7 @@ export default function History() {
             <Search value={searchVal} setValue={setSearchVal} />
           </View>
           <Pressable
+            onPress={() => setFilterOpen(true)}
             style={{
               width: 45,
               height: 45,
@@ -69,6 +72,7 @@ export default function History() {
           </View>
         </View>
       </View>
+      <Filter modalActive={filterOpen} setModalActive={setFilterOpen} />
     </SafeAreaView>
   );
 }

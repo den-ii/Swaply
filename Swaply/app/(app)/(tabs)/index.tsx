@@ -26,7 +26,6 @@ import { UI } from "@/constants/UI";
 import { GetCountrySVG } from "@/components/GetCountrySVG";
 import Button from "@/components/Button";
 import ArrowDown from "@/assets/images/arrow-down.svg";
-import HomeHeaderBanner from "@/assets/images/home_header.svg";
 import Calc from "@/assets/images/calc.svg";
 import CFA_flag from "@/assets/images/CFA_32.svg";
 import NGN_flag from "@/assets/images/NGN_32.svg";
@@ -41,6 +40,7 @@ import Minus from "@/assets/images/minus.svg";
 import Times from "@/assets/images/times.svg";
 import Equals from "@/assets/images/equals.svg";
 import Entypo from "@expo/vector-icons/Entypo";
+import HeaderBanner from "@/components/HeaderBanner";
 
 export default function Home() {
   const debounceFunc = useDebounce();
@@ -262,7 +262,7 @@ export default function Home() {
         }}
       >
         <View style={{ position: "relative" }}>
-          <HomeHeaderBanner />
+          <HeaderBanner />
 
           <View
             style={{
