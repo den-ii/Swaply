@@ -9,7 +9,6 @@ import useSWRMutation from "swr/mutation";
 import { pinAuthentication } from "@/api/authApi";
 import { authStore, notificationStore, toastStore, ToastType } from "@/store";
 import { useLayoutEffect, useState } from "react";
-import { set } from "react-hook-form";
 import { checkAuthType } from "@/utils";
 
 export default function EntryPoint() {
@@ -36,7 +35,7 @@ export default function EntryPoint() {
         }
       },
       onError: (error) => {
-        console.error(error);
+        console.error("here:", error);
       },
     }
   );

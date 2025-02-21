@@ -1,7 +1,7 @@
 import NavBack from "@/components/NavBack";
 import { authStore, statusBarStore } from "@/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Redirect, Stack, usePathname } from "expo-router";
+import { Redirect, router, Stack, usePathname } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { set } from "react-hook-form";
 import { Platform } from "react-native";
@@ -44,6 +44,9 @@ export default function AppLayout() {
             s.email = email;
           });
         }
+        // if (!loginToken) {
+        //   router.navigate("/(auth)/sign-in");
+        // }
       } catch (e) {
         console.log(e);
       } finally {
@@ -70,10 +73,10 @@ export default function AppLayout() {
   console.log("isReturningUser:", isReturningUser);
   if (isLoading) return null;
 
-  if (!isAuthenticated) {
-    if (!isReturningUser) return <Redirect href={"/(onboarding)/"} />;
-    return <Redirect href={"/(auth)/"} />;
-  }
+  // if (!isAuthenticated) {
+  //   if (!isReturningUser) return <Redirect href={"/(onboarding)/"} />;
+  //   return <Redirect href={"/(auth)/"} />;
+  // }
   return (
     <Stack screenOptions={{}}>
       <Stack.Screen

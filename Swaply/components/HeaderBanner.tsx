@@ -12,7 +12,7 @@ export default function HeaderBanner() {
     >
       <ImageBackground
         source={require("../assets/images/curve.png")}
-        style={{ width: "100%", height: 200 }}
+        style={{ width: "100%", height: 114 }}
       />
     </View>
   );
