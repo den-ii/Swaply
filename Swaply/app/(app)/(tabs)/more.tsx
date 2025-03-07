@@ -41,7 +41,7 @@ export default function More() {
   const [displayFaceId, setDisplayFaceId] = useState(false);
 
   const userDetails = authStore.useState((s) => s.userDetails);
-  const kycTier = userDetails.kycTier.split("_")[1] as keyof typeof kycColor;
+  const kycTier = userDetails?.kycTier?.split("_")[1] as keyof typeof kycColor;
 
   useLayoutEffect(() => {
     checkAuthType().then(setDisplayFaceId);
@@ -145,7 +145,7 @@ export default function More() {
                   {fullName}
                 </FontText>
                 <FontText fontSize={14} color={Colors.light.neutral}>
-                  {userDetails.email}
+                  {userDetails?.email}
                 </FontText>
               </View>
               <View

@@ -5,13 +5,30 @@ import Close from "@/assets/images/close.svg";
 import { ScrollView } from "react-native-gesture-handler";
 import CalenderIcon from "@/assets/images/calendar.svg";
 import Button from "../Button";
+import { useEffect, useState } from "react";
 
 export default function MainFilter({
   toggleEndPicker,
   toggleStartPicker,
+  startDate,
+  startDateString,
+  endDate,
+  endDateString,
+  currencySelected,
+  toggleCurrencySelect,
+  clearFilter,
+  applyFilter,
 }: {
   toggleEndPicker: () => void;
   toggleStartPicker: () => void;
+  startDate: Date | null;
+  endDate: Date | null;
+  currencySelected: string[];
+  toggleCurrencySelect: (currency: string) => void;
+  startDateString: string;
+  endDateString: string;
+  clearFilter: () => void;
+  applyFilter: () => void;
 }) {
   return (
     <>
@@ -48,29 +65,37 @@ export default function MainFilter({
             </FontText>
             <ScrollView horizontal>
               <Pressable
+                onPress={() => toggleCurrencySelect("All")}
                 style={{
                   paddingHorizontal: 16,
                   height: 32,
                   justifyContent: "center",
-                  backgroundColor: "#F5F7F8",
+                  backgroundColor: currencySelected.includes("All")
+                    ? "#D8EFFF"
+                    : "#F5F7F8",
                   borderRadius: 50,
                 }}
               >
                 <FontText
                   fontSize={12}
                   fontWeight={600}
-                  color="#757D87"
+                  color={
+                    currencySelected.includes("All") ? "#026DB5" : "#757D87"
+                  }
                   style={{ letterSpacing: 0.1 }}
                 >
                   All
                 </FontText>
               </Pressable>
               <Pressable
+                onPress={() => toggleCurrencySelect("NGN")}
                 style={{
                   paddingHorizontal: 16,
                   height: 32,
                   justifyContent: "center",
-                  backgroundColor: "#F5F7F8",
+                  backgroundColor: currencySelected.includes("NGN")
+                    ? "#D8EFFF"
+                    : "#F5F7F8",
                   borderRadius: 50,
                   marginLeft: 8,
                 }}
@@ -78,18 +103,23 @@ export default function MainFilter({
                 <FontText
                   fontSize={12}
                   fontWeight={600}
-                  color="#757D87"
+                  color={
+                    currencySelected.includes("NGN") ? "#026DB5" : "#757D87"
+                  }
                   style={{ letterSpacing: 0.1 }}
                 >
                   NGN
                 </FontText>
               </Pressable>
               <Pressable
+                onPress={() => toggleCurrencySelect("CFA")}
                 style={{
                   paddingHorizontal: 16,
                   height: 32,
                   justifyContent: "center",
-                  backgroundColor: "#F5F7F8",
+                  backgroundColor: currencySelected.includes("CFA")
+                    ? "#D8EFFF"
+                    : "#F5F7F8",
                   borderRadius: 50,
                   marginLeft: 8,
                 }}
@@ -97,7 +127,9 @@ export default function MainFilter({
                 <FontText
                   fontSize={12}
                   fontWeight={600}
-                  color="#757D87"
+                  color={
+                    currencySelected.includes("CFA") ? "#026DB5" : "#757D87"
+                  }
                   style={{ letterSpacing: 0.1 }}
                 >
                   CFA
@@ -144,14 +176,18 @@ export default function MainFilter({
                     borderRadius: 50,
                     height: 32,
                     width: 141,
-                    backgroundColor: "#D8EFFF",
+                    backgroundColor: startDate ? "#D8EFFF" : "#f5f7f8",
                     maxWidth: "40%",
                   }}
                   onPress={toggleStartPicker}
                 >
-                  <CalenderIcon fill="#026DB5" />
-                  <FontText fontSize={12} fontWeight={600} color="#026DB5">
-                    23 Jun, 2019
+                  <CalenderIcon fill={startDate ? "#026DB5" : "#757D87"} />
+                  <FontText
+                    fontSize={12}
+                    fontWeight={600}
+                    color={startDate ? "#026DB5" : "#757D87"}
+                  >
+                    {startDateString}
                   </FontText>
                 </Pressable>
                 <FontText fontSize={12} fontWeight={600} color="#757D87">
@@ -166,14 +202,18 @@ export default function MainFilter({
                     borderRadius: 50,
                     height: 32,
                     width: 141,
-                    backgroundColor: "#f5f7f8",
+                    backgroundColor: endDate ? "#D8EFFF" : "#f5f7f8",
                     maxWidth: "40%",
                   }}
                   onPress={toggleEndPicker}
                 >
-                  <CalenderIcon fill="#757D87" />
-                  <FontText fontSize={12} fontWeight={600} color="#757D87">
-                    23 Jun, 2019
+                  <CalenderIcon fill={endDate ? "#026DB5" : "#757D87"} />
+                  <FontText
+                    fontSize={12}
+                    fontWeight={600}
+                    color={endDate ? "#026DB5" : "#757D87"}
+                  >
+                    {endDateString}
                   </FontText>
                 </Pressable>
               </View>
@@ -182,10 +222,10 @@ export default function MainFilter({
         </View>
       </View>
       <View style={{ marginTop: 12, gap: 4, paddingBottom: 12 }}>
-        <Button text="Apply Filter" action={() => {}} />
+        <Button text="Apply Filter" action={applyFilter} />
         <Button
           text="Clear Filter"
-          action={() => {}}
+          action={clearFilter}
           bgColor={Colors.light.body}
           textColor="#2c3137"
         />

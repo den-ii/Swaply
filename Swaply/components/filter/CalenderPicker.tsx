@@ -53,19 +53,41 @@ const DateHeader = ({ date }: { date: Date }) => {
   );
 };
 
+function checkMarkedDate(
+  startPicker: boolean,
+  endPicker: boolean,
+  startDate: Date | null,
+  endDate: Date | null
+) {
+  if (startPicker) {
+    return startDate ? startDate : new Date();
+  } else if (endPicker) {
+    return endDate ? endDate : new Date();
+  }
+  return new Date();
+}
+
 export default function CalenderPicker({
   startPicker,
   endPicker,
+  startDate,
+  endDate,
+  applyCalenderFilter,
 }: {
   startPicker: boolean;
   endPicker: boolean;
+  startDate: Date | null;
+  endDate: Date | null;
+  applyCalenderFilter: (markedDate: Date) => void;
 }) {
-  const [markedDate, setMarkedDate] = useState<Date>(new Date());
+  console.log(startDate);
+  const [markedDate, setMarkedDate] = useState<Date>(
+    checkMarkedDate(startPicker, endPicker, startDate, endDate)
+  );
   const currentDate = new Date();
 
   const changeMarkedDate = (date: any) => {
-    const newDate = new Date(date.year, date.month - 1, date.day + 1);
-    setMarkedDate(newDate);
+    setMarkedDate(new Date(date.timestamp));
   };
 
   return (
@@ -182,7 +204,7 @@ export default function CalenderPicker({
         />
       </View>
       <View style={{ marginTop: 16 }}>
-        <Button text="Apply" action={() => {}} />
+        <Button text="Apply" action={() => applyCalenderFilter(markedDate)} />
       </View>
     </View>
   );

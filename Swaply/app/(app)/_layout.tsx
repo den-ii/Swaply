@@ -99,6 +99,7 @@ export default function AppLayout() {
         name="beneficiary_details"
         options={{ header: () => <NavBack /> }}
       />
+      <Stack.Screen name="receipt" options={{ header: () => <NavBack /> }} />
       <Stack.Screen
         name="sending"
         options={{

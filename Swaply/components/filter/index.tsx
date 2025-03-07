@@ -10,6 +10,16 @@ import CalenderIcon from "@/assets/images/calendar.svg";
 import Button from "../Button";
 import MainFilter from "./MainFilter";
 import CalendarPicker from "./CalenderPicker";
+import { filterStore } from "@/store";
+
+function convertDateToString(date: Date) {
+  const options: Intl.DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  };
+  return date.toLocaleDateString("en-GB", options).replace(" ", " ");
+}
 
 export default function Filter({
   modalActive,
@@ -21,12 +31,74 @@ export default function Filter({
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
   const [endPicker, setEndPicker] = useState(false);
   const [startPicker, setStartPicker] = useState(false);
+  const startDate = filterStore.useState((s) => s.startDate);
+  const currencySelected = filterStore.useState((s) => s.currencySelected);
+
+  const [startDateString, setStartDateString] = useState<string>(
+    convertDateToString(new Date())
+  );
+  const [endDateString, setEndDateString] = useState<string>(
+    convertDateToString(new Date())
+  );
+
+  const endDate = filterStore.useState((s) => s.endDate);
 
   const calenderPicker = endPicker || startPicker;
 
   const toggleStartPicker = () => {
     setEndPicker(false);
     setStartPicker((picker) => !picker);
+  };
+
+  const clearFilter = () => {
+    filterStore.update((s) => {
+      s.currencySelected = [];
+      s.startDate = null;
+      s.endDate = null;
+      s.active = false;
+    });
+  };
+
+  const applyFilter = () => {
+    if (startDate || endDate || currencySelected) {
+      filterStore.update((s) => {
+        s.active = true;
+      });
+    }
+    closeModal();
+  };
+
+  const toggleCurrencySelect = (currency: string) => {
+    if (currencySelected.includes(currency)) {
+      const newCurrencySelected = currencySelected.filter(
+        (selected) => selected !== currency
+      );
+      filterStore.update((s) => {
+        s.currencySelected = newCurrencySelected;
+      });
+    } else {
+      filterStore.update((s) => {
+        s.currencySelected = [...s.currencySelected, currency];
+      });
+    }
+  };
+
+  const applyCalenderFilter = (markedDate: Date) => {
+    console.log("markedDate", markedDate);
+    if (startPicker) {
+      filterStore.update((s) => {
+        s.startDate = markedDate;
+      });
+      setStartDateString(convertDateToString(markedDate));
+    } else if (endPicker) {
+      filterStore.update((s) => {
+        s.endDate = markedDate;
+      });
+      setStartDateString(convertDateToString(markedDate));
+    }
+
+    setEndPicker(false);
+    setStartPicker(false);
   };
 
   const toggleEndPicker = () => {
@@ -78,10 +150,24 @@ export default function Filter({
           <MainFilter
             toggleStartPicker={toggleStartPicker}
             toggleEndPicker={toggleEndPicker}
+            startDate={startDate}
+            endDate={endDate}
+            toggleCurrencySelect={toggleCurrencySelect}
+            currencySelected={currencySelected}
+            startDateString={startDateString}
+            endDateString={endDateString}
+            clearFilter={clearFilter}
+            applyFilter={applyFilter}
           />
         )}
         {calenderPicker && (
-          <CalendarPicker startPicker={startPicker} endPicker={endPicker} />
+          <CalendarPicker
+            startPicker={startPicker}
+            endPicker={endPicker}
+            startDate={startDate}
+            endDate={endDate}
+            applyCalenderFilter={applyCalenderFilter}
+          />
         )}
       </>
     </CustomModal>

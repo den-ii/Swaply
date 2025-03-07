@@ -3,15 +3,44 @@ import Search from "@/components/Search";
 import { UI } from "@/constants/UI";
 import GraySwaply from "@/assets/images/gray-swaply.svg";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, ScrollView } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { SafeAreaView } from "react-native-safe-area-context";
 import FilterIcon from "@/assets/images/filter.svg";
 import Filter from "@/components/filter";
+import { filterStore } from "@/store";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+const FiltersItem = () => {
+  return <Pressable></Pressable>;
+};
+
+export const Filters = () => {
+  const { currencySelected, startDate, endDate } = filterStore.useState(
+    ({ currencySelected, startDate, endDate }) => ({
+      currencySelected,
+      startDate,
+      endDate,
+    })
+  );
+
+  return <ScrollView></ScrollView>;
+};
 
 export default function History() {
   const [searchVal, setSearchVal] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
+  const { currencySelected, startDate, endDate } = filterStore.useState(
+    ({ currencySelected, startDate, endDate }) => ({
+      currencySelected,
+      startDate,
+      endDate,
+    })
+  );
+
+  const filterActive = filterStore.useState((s) => s.active);
+
+  console.log(filterActive);
+
   return (
     <SafeAreaView
       style={{
@@ -41,10 +70,10 @@ export default function History() {
               borderRadius: 45,
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#F5F7F8",
+              backgroundColor: filterActive ? "#039AFF" : "#F5F7F8",
             }}
           >
-            <FilterIcon />
+            <FilterIcon fill={filterActive ? "#fff" : "#757D87"} />
           </Pressable>
         </View>
         <View

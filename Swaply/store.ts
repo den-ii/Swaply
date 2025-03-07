@@ -4,13 +4,13 @@ import { Country } from "./types/country";
 import { Bank } from "./types";
 import * as Notifications from "expo-notifications";
 
-/*------------------------------------ STATUS BAR STORE ------------------------------------------------*/
+/*------------------------------------ Status-bar Store ------------------------------------------------*/
 
 export const statusBarStore = new Store<{ barStyle: StatusBarStyle }>({
   barStyle: "light-content",
 });
 
-/*------------------------------------ TOAST STORE ------------------------------------------------*/
+/*------------------------------------ Toast Store ------------------------------------------------*/
 
 export enum ToastType {
   ERROR = "error",
@@ -30,7 +30,7 @@ export const toastStore = new Store<Toast>({
   active: false,
 });
 
-/*------------------------------------ AUTH STORE ------------------------------------------------*/
+/*------------------------------------ Auth Store  ------------------------------------------------*/
 
 interface Auth {
   isAuthenticated: boolean;
@@ -51,7 +51,7 @@ export const authStore = new Store<Auth>({
   email: "",
 });
 
-/*------------------------------------ ONBOARDING STORE ------------------------------------------------*/
+/*------------------------------------ Onboarding Store ------------------------------------------------*/
 
 interface Onboarding {
   firstName: string;
@@ -73,7 +73,7 @@ export const onboardingStore = new Store<Onboarding>({
   token: "",
 });
 
-/*------------------------------------ TRANSFER STORE ------------------------------------------------*/
+/*------------------------------------ Transfer Store ------------------------------------------------*/
 
 interface TransferStore {
   sendAmount?: string;
@@ -111,10 +111,25 @@ export const transferStore = new Store<TransferStore>(
   transferStoreDefaultValue
 );
 
-/*------------------------------------ NOTIFICATION STORE ------------------------------------------------*/
+/*------------------------------------ Notification Store ------------------------------------------------*/
 interface Notification {
   token?: string;
   notification?: Notifications.Notification;
 }
 
 export const notificationStore = new Store<Notification>({});
+
+/*------------------------------------ Filter Store ------------------------------------------------*/
+interface Filter {
+  startDate: Date | null;
+  endDate: Date | null;
+  currencySelected: string[];
+  active: boolean;
+}
+
+export const filterStore = new Store<Filter>({
+  startDate: null,
+  endDate: null,
+  currencySelected: [],
+  active: false,
+});
