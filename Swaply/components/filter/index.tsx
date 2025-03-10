@@ -1,6 +1,6 @@
 import { useCloseModal } from "@/hooks/useCloseModal";
 import CustomModal from "../modals/CustomModal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import FontText from "../FontText";
 import { Colors } from "@/constants/Colors";
@@ -31,17 +31,14 @@ export default function Filter({
   const { translateY, closeModal } = useCloseModal(modalActive, setModalActive);
   const [endPicker, setEndPicker] = useState(false);
   const [startPicker, setStartPicker] = useState(false);
-  const startDate = filterStore.useState((s) => s.startDate);
-  const currencySelected = filterStore.useState((s) => s.currencySelected);
-
+  const filterDataFromStore = filterStore.useState((s) => s);
+  const [filterData, setFilterData] = useState(filterDataFromStore);
   const [startDateString, setStartDateString] = useState<string>(
     convertDateToString(new Date())
   );
   const [endDateString, setEndDateString] = useState<string>(
     convertDateToString(new Date())
   );
-
-  const endDate = filterStore.useState((s) => s.endDate);
 
   const calenderPicker = endPicker || startPicker;
 
@@ -51,50 +48,69 @@ export default function Filter({
   };
 
   const clearFilter = () => {
+    const emptyFilter = {
+      currencySelected: [],
+      startDate: null,
+      endDate: null,
+      active: false,
+    };
     filterStore.update((s) => {
       s.currencySelected = [];
       s.startDate = null;
       s.endDate = null;
       s.active = false;
     });
+    setFilterData(emptyFilter);
   };
 
   const applyFilter = () => {
-    if (startDate || endDate || currencySelected) {
+    if (
+      filterData.startDate ||
+      filterData.endDate ||
+      filterData.currencySelected
+    ) {
       filterStore.update((s) => {
         s.active = true;
+        s.currencySelected = filterData.currencySelected;
+        s.endDate = filterData.endDate;
+        s.startDate = filterData.startDate;
       });
     }
     closeModal();
   };
 
   const toggleCurrencySelect = (currency: string) => {
-    if (currencySelected.includes(currency)) {
-      const newCurrencySelected = currencySelected.filter(
+    if (filterData.currencySelected.includes(currency)) {
+      const newCurrencySelected = filterData.currencySelected.filter(
         (selected) => selected !== currency
       );
-      filterStore.update((s) => {
-        s.currencySelected = newCurrencySelected;
-      });
+
+      setFilterData((filterData) => ({
+        ...filterData,
+        currencySelected: newCurrencySelected,
+      }));
     } else {
-      filterStore.update((s) => {
-        s.currencySelected = [...s.currencySelected, currency];
-      });
+      setFilterData((filterData) => ({
+        ...filterData,
+        currencySelected: [...filterData.currencySelected, currency],
+      }));
     }
   };
 
   const applyCalenderFilter = (markedDate: Date) => {
     console.log("markedDate", markedDate);
     if (startPicker) {
-      filterStore.update((s) => {
-        s.startDate = markedDate;
-      });
+      setFilterData((filterData) => ({
+        ...filterData,
+        startDate: markedDate,
+      }));
       setStartDateString(convertDateToString(markedDate));
     } else if (endPicker) {
-      filterStore.update((s) => {
-        s.endDate = markedDate;
-      });
-      setStartDateString(convertDateToString(markedDate));
+      setFilterData((filterData) => ({
+        ...filterData,
+        endDate: markedDate,
+      }));
+      setEndDateString(convertDateToString(markedDate));
     }
 
     setEndPicker(false);
@@ -150,10 +166,10 @@ export default function Filter({
           <MainFilter
             toggleStartPicker={toggleStartPicker}
             toggleEndPicker={toggleEndPicker}
-            startDate={startDate}
-            endDate={endDate}
+            startDate={filterData.startDate}
+            endDate={filterData.endDate}
             toggleCurrencySelect={toggleCurrencySelect}
-            currencySelected={currencySelected}
+            currencySelected={filterData.currencySelected}
             startDateString={startDateString}
             endDateString={endDateString}
             clearFilter={clearFilter}
@@ -164,8 +180,8 @@ export default function Filter({
           <CalendarPicker
             startPicker={startPicker}
             endPicker={endPicker}
-            startDate={startDate}
-            endDate={endDate}
+            startDate={filterData.startDate}
+            endDate={filterData.endDate}
             applyCalenderFilter={applyCalenderFilter}
           />
         )}

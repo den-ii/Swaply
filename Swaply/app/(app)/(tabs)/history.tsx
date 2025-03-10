@@ -9,9 +9,35 @@ import FilterIcon from "@/assets/images/filter.svg";
 import Filter from "@/components/filter";
 import { filterStore } from "@/store";
 import { SafeAreaView } from "react-native-safe-area-context";
+import CloseIcon from "@/assets/images/close.svg";
 
-const FiltersItem = () => {
-  return <Pressable></Pressable>;
+const FiltersItem = ({
+  text,
+  action,
+}: {
+  text: string;
+  action: (currency: string) => void;
+}) => {
+  return (
+    <Pressable
+      style={{
+        flexDirection: "row",
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        borderRadius: 50,
+        borderColor: "#416680",
+        alignItems: "center",
+        gap: 8,
+        borderWidth: 1,
+      }}
+      onPress={() => action(text)}
+    >
+      <FontText fontWeight={600} fontSize={12} style={{ letterSpacing: 0.1 }}>
+        {text}
+      </FontText>
+      <CloseIcon fill={Colors.light.textDefault} width={12} height={12} />
+    </Pressable>
+  );
 };
 
 export const Filters = () => {
@@ -23,7 +49,39 @@ export const Filters = () => {
     })
   );
 
-  return <ScrollView></ScrollView>;
+  const removeCurrency = (currency: string) => {
+    filterStore.update((s) => {
+      s.currencySelected = s.currencySelected.filter((c) => c !== currency);
+    });
+  };
+
+  const removeStartDate = () =>
+    filterStore.update((s) => {
+      s.startDate = null;
+    });
+
+  const removeEndDate = () =>
+    filterStore.update((s) => {
+      s.endDate = null;
+    });
+
+  return (
+    <ScrollView horizontal contentContainerStyle={{ gap: 8 }}>
+      {currencySelected.map((currency) => (
+        <FiltersItem key={currency} text={currency} action={removeCurrency} />
+      ))}
+      {startDate && (
+        <FiltersItem
+          key={"startDate"}
+          text={"Start date"}
+          action={removeStartDate}
+        />
+      )}
+      {endDate && (
+        <FiltersItem key={"endDate"} text={"End date"} action={removeEndDate} />
+      )}
+    </ScrollView>
+  );
 };
 
 export default function History() {
@@ -76,6 +134,10 @@ export default function History() {
             <FilterIcon fill={filterActive ? "#fff" : "#757D87"} />
           </Pressable>
         </View>
+
+        <View>
+          <Filters />
+        </View>
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
@@ -101,7 +163,9 @@ export default function History() {
           </View>
         </View>
       </View>
-      <Filter modalActive={filterOpen} setModalActive={setFilterOpen} />
+      {filterOpen && (
+        <Filter modalActive={filterOpen} setModalActive={setFilterOpen} />
+      )}
     </SafeAreaView>
   );
 }
