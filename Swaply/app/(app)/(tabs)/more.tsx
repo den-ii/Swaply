@@ -14,7 +14,7 @@ import ContactUs from "@/assets/images/contact-us.svg";
 import Notifications from "@/assets/images/notifications.svg";
 import SectionIcon from "@/components/more/SectionIcon";
 import ChevronRight from "@/assets/images/chevron-right.svg";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { logoutUser } from "@/api/authApi";
 import { authStore } from "@/store";
 import Toggle from "@/components/Toggle";
@@ -32,6 +32,7 @@ export const kycColor = {
 };
 
 export default function More() {
+  const router = useRouter();
   const { profileImage, fullName, isFaceIDAuth } = authStore.useState((s) => ({
     profileImage: s.profileImage,
     fullName: s.fullName,
@@ -179,7 +180,7 @@ export default function More() {
               </FontText>
 
               <View style={styles.sectionContainer}>
-                <Pressable onPress={() => router.navigate("/profile")}>
+                <Pressable onPress={() => router.push("/(app)/(profile)")}>
                   <View style={styles.list}>
                     <View style={styles.listDescription}>
                       <SectionIcon Icon={Profile} />

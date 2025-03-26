@@ -12,7 +12,7 @@ export default function CountrySVG({
   country: string;
   size: number;
 }) {
-  switch (country.toUpperCase()) {
+  switch (country?.toUpperCase()) {
     case "NG":
       if (size === 32) {
         return <NGN_32 />;

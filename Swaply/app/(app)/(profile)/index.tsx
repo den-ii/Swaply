@@ -10,6 +10,7 @@ import NGN from "@/assets/images/NGN_32.svg";
 import useSWR, { preload } from "swr";
 import CountrySVG from "@/components/CountrySVG";
 import Button from "@/components/Button";
+import { router } from "expo-router";
 
 export default function Profile() {
   const { userDetails, profileImage } = authStore.useState((s) => ({
@@ -82,7 +83,7 @@ export default function Profile() {
                   right: 0,
                 }}
               >
-                <CountrySVG country={userDetails.cca} size={20} />
+                <CountrySVG country={userDetails?.cca} size={20} />
               </View>
             </View>
           </View>
@@ -90,34 +91,34 @@ export default function Profile() {
             <FontText color={Colors.light.neutral} fontSize={12}>
               First name
             </FontText>
-            <FontText fontWeight={500}>{userDetails.firstName ?? ""}</FontText>
+            <FontText fontWeight={500}>{userDetails?.firstName ?? ""}</FontText>
           </View>
           <View>
             <FontText color={Colors.light.neutral} fontSize={12}>
               Last name
             </FontText>
-            <FontText fontWeight={500}>{userDetails.lastName ?? ""}</FontText>
+            <FontText fontWeight={500}>{userDetails?.lastName ?? ""}</FontText>
           </View>
 
           <View>
             <FontText color={Colors.light.neutral} fontSize={12}>
               Email address
             </FontText>
-            <FontText fontWeight={500}>{userDetails.email ?? ""}</FontText>
+            <FontText fontWeight={500}>{userDetails?.email ?? ""}</FontText>
           </View>
           <View>
             <FontText color={Colors.light.neutral} fontSize={12}>
               Phone number
             </FontText>
-            <FontText fontWeight={500}>{`${userDetails.countryCode} - ${
-              userDetails.phone ?? ""
+            <FontText fontWeight={500}>{`${userDetails?.countryCode} - ${
+              userDetails?.phone ?? ""
             }`}</FontText>
           </View>
           <View>
             <FontText color={Colors.light.neutral} fontSize={12}>
               Nationality
             </FontText>
-            <FontText fontWeight={500}>{userDetails.nationality}</FontText>
+            <FontText fontWeight={500}>{userDetails?.nationality}</FontText>
           </View>
         </View>
         <View style={{ marginTop: 24 }}>
@@ -125,7 +126,7 @@ export default function Profile() {
             text="Delete account"
             bgColor="#FDDBE0"
             textColor="#F23C57"
-            action={() => {}}
+            action={() => router.push("/delete-account-info")}
           />
         </View>
       </ScrollView>
