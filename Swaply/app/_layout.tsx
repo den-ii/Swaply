@@ -33,6 +33,7 @@ import {
   setBackgroundMessageHandler,
 } from "@/utils/pushNotification";
 import messaging from "@react-native-firebase/messaging";
+import BaseUrlPrompt from "@/components/BaseUrlPrompt";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
@@ -180,6 +181,7 @@ export default function RootLayout() {
         <StatusBar barStyle={barStyle} />
         {toastActive && <Toast />}
         <Slot />
+        <BaseUrlPrompt />
       </DismissKeyboard>
     </GestureHandlerRootView>
   );

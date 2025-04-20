@@ -2,7 +2,9 @@ import { authStore } from "@/store";
 import { saveEmail } from "@/utils/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+import { API } from "./index";
+
+const baseUrl = API.BaseUrl;
 
 export async function getUserDetails(
   url: string,

@@ -1,4 +1,6 @@
-import { baseUrl } from "../utilsApi";
+import { API } from "../index";
+
+const baseUrl = API.BaseUrl;
 
 export async function verifyNIN(
   url: string,

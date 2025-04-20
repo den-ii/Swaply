@@ -5,8 +5,9 @@ import { router } from "expo-router";
 import { Platform } from "react-native";
 import useSWRMutation from "swr/mutation";
 import { getUserDetails } from "./utilsApi";
-import { baseUrl } from "./utilsApi";
+import { API } from "./index";
 
+const baseUrl = API.BaseUrl;
 /*------------------------------------ Register ------------------------------------------------*/
 
 export async function registerUser(
@@ -14,6 +15,8 @@ export async function registerUser(
   { arg }: { arg: { email: string; country: CountryE } }
 ) {
   const apiUrl = baseUrl + url;
+  console.log("baseUrl: ", baseUrl);
+
   const res = await fetch(apiUrl, {
     method: "POST",
     body: JSON.stringify({ email: arg.email, country: arg.country }),

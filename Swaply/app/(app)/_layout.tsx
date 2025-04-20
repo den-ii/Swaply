@@ -73,10 +73,10 @@ export default function AppLayout() {
   console.log("isReturningUser:", isReturningUser);
   if (isLoading) return null;
 
-  // if (!isAuthenticated) {
-  //   if (!isReturningUser) return <Redirect href={"/(onboarding)/"} />;
-  //   return <Redirect href={"/(auth)/"} />;
-  // }
+  if (!isAuthenticated) {
+    if (!isReturningUser) return <Redirect href={"/(onboarding)/"} />;
+    return <Redirect href={"/(auth)/"} />;
+  }
   return (
     <Stack screenOptions={{}}>
       <Stack.Screen
