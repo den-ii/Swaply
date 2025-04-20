@@ -34,10 +34,12 @@ import {
 } from "@/utils/pushNotification";
 import messaging from "@react-native-firebase/messaging";
 import BaseUrlPrompt from "@/components/BaseUrlPrompt";
+import { API } from "@/api";
 
 export default function RootLayout() {
   const toastActive = toastStore.useState((state) => state.active);
   const barStyle = statusBarStore.useState((state) => state.barStyle);
+  // const [baseUrlSet, setBaseUrlSet] = useState("");
   // const notificationListener = useRef<Notifications.Subscription>();
   // const responseListener = useRef<Notifications.Subscription>();
   // const token = authStore.useState((s) => s.token);
@@ -166,6 +168,15 @@ export default function RootLayout() {
   //   };
   // }, []);
 
+  // useEffect(() => {
+  //   const initializingBaseUrl = async () => {
+  //     if (baseUrlSet) {
+  //       await API.init();
+  //     }
+  //   };
+  //   initializingBaseUrl();
+  // }, [baseUrlSet]);
+
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
@@ -181,7 +192,7 @@ export default function RootLayout() {
         <StatusBar barStyle={barStyle} />
         {toastActive && <Toast />}
         <Slot />
-        <BaseUrlPrompt />
+        {/* <BaseUrlPrompt setBaseUrlSet={setBaseUrlSet} /> */}
       </DismissKeyboard>
     </GestureHandlerRootView>
   );

@@ -2,12 +2,13 @@ import { API } from "@/api";
 import React, { useState } from "react";
 import { Modal, View, Text, TextInput, Button, StyleSheet } from "react-native";
 
-const BaseUrlPrompt = () => {
+const BaseUrlPrompt = ({ setBaseUrlSet }: { setBaseUrlSet: Function }) => {
   const [visible, setVisible] = useState(true);
   const [input, setInput] = useState("");
 
-  const setBaseUrl = () => {
-    API.BaseUrl = input;
+  const setBaseUrl = async () => {
+    await API.setBaseUrl(input);
+    setBaseUrlSet(true);
     setVisible(false);
   };
 
