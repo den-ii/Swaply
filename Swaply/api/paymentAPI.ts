@@ -107,3 +107,15 @@ export async function getMomoProviders(url: string) {
   const data = await res.json();
   return data;
 }
+
+export async function getBeneficiaries(url: string, token: string) {
+  const apiUrl = `${baseUrl}${url}`;
+  const res = await fetch(apiUrl, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const data = await res.json();
+  return data;
+}
